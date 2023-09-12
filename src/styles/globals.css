@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    @import "base/Main.css";
+
+    @import "base/Header.css";
+    @import "base/Forms.css";
+    @import "base/Buttons.css";
+}
+
+@layer components {
+    @import "components/helpers/IconAndText.css";
+
+    @import "components/Buttons.css";
+    @import "components/SearchAndFilters.css";
+}

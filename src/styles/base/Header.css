@@ -1,0 +1,48 @@
+@keyframes logo-slide-down {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes logo-slide-up {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-100%);
+    }
+}
+
+header {
+    @apply p-1;
+    @apply bg-slate-900;
+    @apply z-10;
+
+    & nav {
+        @apply flex;
+
+        & .logo {
+            @apply relative;
+    
+            & h1 {
+                @apply text-5xl;
+            }
+    
+            & ul {
+                @apply absolute;
+                @apply z-0;
+    
+                @apply bg-black;
+                @apply min-w-[200%];
+    
+                & li > a {
+                    @apply p-6;
+                }
+            }
+        }
+    }
+
+}

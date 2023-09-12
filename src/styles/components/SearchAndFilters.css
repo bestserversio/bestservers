@@ -1,0 +1,19 @@
+.search-and-filters {
+    @apply flex;
+    @apply flex-col;
+    @apply gap-4;
+
+    & > div:first-child {
+        @apply mx-auto;
+    
+        & > form {
+            @apply flex;
+            @apply flex-wrap;
+            @apply gap-2;
+        }
+    }
+
+    & > div:last-child {
+
+    }
+}

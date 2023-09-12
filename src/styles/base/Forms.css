@@ -1,0 +1,32 @@
+form {
+    & > div {
+        @apply flex;
+        @apply flex-col;
+        @apply gap-2;
+
+        @apply p-4;
+
+        & > label {
+            @apply font-bold;
+            @apply text-white;
+        }
+        
+        & input, select, textarea {
+            @apply w-full;
+            @apply p-2;
+            
+            @apply bg-cyan-900;
+            @apply rounded;
+
+            @apply ring-4;
+            @apply ring-cyan-950;
+            @apply focus:ring-cyan-800;
+            @apply hover:ring-cyan-900;
+        }
+    }
+
+    & > div:last-child {
+        @apply flex;
+        @apply justify-center;
+    }
+}

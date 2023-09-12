@@ -1,0 +1,230 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum CategoryFlag {
+  DISCORD
+  A2S
+}
+
+enum UserRole {
+  ADMIN
+  MODERATOR
+  USER
+}
+
+enum ServerRole {
+  ADMIN
+  MODERATOR
+  MEMBER
+  USER
+}
+
+enum ServerLinkType {
+  WEBSITE
+  TWITTER
+  FACEBOOK
+  GITHUB
+  INSTAGRAM
+  TIKTOK
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id String @id @default(cuid())
+
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  isRestricted  Boolean   @default(false)
+
+  roles UserRole[] @default([USER])
+
+  avatar  String?
+  name    String?
+  aboutMe String? @db.Text
+
+  accounts Account[]
+  sessions Session[]
+
+  servers       Server[]
+  serverReviews ServerReview[]
+  serverUsers   ServerUser[]
+  serverKeys    ServerClaimKey[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+
+  flags CategoryFlag[]
+
+  parentId Int?
+  parent   Category? @relation("children", fields: [parentId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  banner String?
+  icon   String?
+
+  url         String
+  name        String
+  description String? @db.Text
+
+  children Category[] @relation("children")
+  servers  Server[]
+}
+
+model Server {
+  id Int @id @default(autoincrement())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  visible   Boolean  @default(true)
+
+  url String? @unique
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+
+  ip   String?
+  ip6   String?
+  port Int?
+  hostName String?
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+
+  name             String?
+  descriptionShort String?
+  description      String? @db.Text
+  features         String? @db.Text
+  rules            String? @db.Text
+
+  online   Boolean @default(false)
+  curUsers Int     @default(0)
+  maxUsers Int     @default(0)
+  mapName  String?
+
+  rank     Int @default(0)
+  avgUsers Int @default(0)
+
+  locationLat Float?
+  locationLon Float?
+
+  lastQueried DateTime?
+
+  stats   ServerStat[]
+  reviews ServerReview[]
+  users   ServerUser[]
+  keys    ServerClaimKey[]
+  links   ServerLink[]
+
+  @@unique([ip, port])
+}
+
+model ServerStat {
+  serverId Int
+  server   Server @relation(fields: [serverId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  date DateTime @default(now())
+
+  online   Boolean @default(false)
+  curUsers Int     @default(0)
+  maxUsers Int     @default(0)
+  rank     Int     @default(0)
+
+  @@id([serverId, date])
+}
+
+model ServerReview {
+  serverId Int
+  server   Server @relation(fields: [serverId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+    modRating Int
+    modDetails String @db.Text
+
+    gameplayRating Int
+    gameplayDetails String @db.Text
+
+    performanceRating Int
+    performanceDetails String @db.Text
+
+  other String @db.Text
+
+  @@id([serverId, userId])
+}
+
+model ServerUser {
+  serverId Int
+  server   Server @relation(fields: [serverId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  role ServerRole @default(USER)
+
+  @@id([serverId, userId])
+}
+
+model ServerClaimKey {
+  serverId Int
+  server   Server @relation(fields: [serverId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  key     String   @default(uuid())
+  expires DateTime
+
+  @@id([serverId, userId])
+}
+
+model ServerLink {
+  serverId Int
+  server   Server @relation(fields: [serverId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  type ServerLinkType @default(WEBSITE)
+  name String?
+  url  String
+
+  @@id([serverId, type, url])
+}
