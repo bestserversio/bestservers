@@ -75,7 +75,7 @@ export const serversRouter = createTRPCRouter({
                 .default(false)
         }))
         .mutation(async ({ ctx, input }) => {
-            // If both IPv4 and IPv6 addresses aren't present, don't procede.
+            // If both IPv4 and IPv6 addresses aren't present, don't proceed.
             if (!input.ip && !input.ip6)
                 throw new TRPCError({ code: "PARSE_ERROR" });
             
@@ -85,7 +85,7 @@ export const serversRouter = createTRPCRouter({
                         ip: input.ip,
                         port: input.port
                     }
-                })
+                });
             } catch (err) {
                 console.error(err);
 
