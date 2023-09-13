@@ -5,7 +5,8 @@ export default function Page() {
     return (
         <>
             <Meta
-
+                title="About Us - Best Servers"
+                contentTitle="About Us"
             />
             <Wrapper>
                 
