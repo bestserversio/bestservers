@@ -6,9 +6,9 @@ import ServerBrowser from "@components/servers/Browser";
 export default function Index() {
     return (
         <Wrapper>
-            <SearchAndFilters />
-            
-            <ServerBrowser />
+            <SearchAndFilters>
+                <ServerBrowser />
+            </SearchAndFilters>
         </Wrapper>
     );
 }
