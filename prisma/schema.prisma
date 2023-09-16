@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum CategoryFlag {
+enum PlatformFlag {
   DISCORD
   A2S
 }
@@ -61,7 +61,7 @@ model Session {
 }
 
 model User {
-  id String @id @default(cuid())
+  id  String  @id @default(cuid())
   url String? @unique
 
   email         String?   @unique
@@ -92,10 +92,23 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Category {
+model Platform {
   id Int @id @default(autoincrement())
 
-  flags CategoryFlag[]
+  flags PlatformFlag[]
+
+  banner String?
+  icon   String?
+
+  url         String
+  name        String
+  description String? @db.Text
+
+  servers Server[]
+}
+
+model Category {
+  id Int @id @default(autoincrement())
 
   parentId Int?
   parent   Category? @relation("children", fields: [parentId], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -123,10 +136,13 @@ model Server {
   userId String?
   user   User?   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: SetNull)
 
-  ip   String?
-  ip6   String?
-  port Int?
+  ip       String?
+  ip6      String?
+  port     Int?
   hostName String?
+
+  platformId Int
+  platform   Platform @relation(fields: [platformId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   categoryId Int?
   category   Category? @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: SetNull)
@@ -180,14 +196,14 @@ model ServerReview {
   userId String
   user   User   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
-    modRating Int
-    modDetails String @db.Text
+  modRating  Int
+  modDetails String @db.Text
 
-    gameplayRating Int
-    gameplayDetails String @db.Text
+  gameplayRating  Int
+  gameplayDetails String @db.Text
 
-    performanceRating Int
-    performanceDetails String @db.Text
+  performanceRating  Int
+  performanceDetails String @db.Text
 
   other String @db.Text
 
