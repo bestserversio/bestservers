@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import ArrowIcon from "./icons/Arrow";
 import Link from "next/link";
+import IconAndText from "./helpers/IconAndText";
 
 export default function Header () {
     const [isMobile, setIsMobile] = useState(false);
@@ -42,53 +43,66 @@ export default function Header () {
 
     return (
         <header>
-            <nav>
-                <div className="logo">
-                    <div className="flex flex-wrap gap-2 items-center">
-                        <Link href="/">
+            <div className="content">
+                <nav>
+                    <div className="logo">
+                        <div className="flex flex-wrap gap-2 items-center">
+                            <Link href="/">
+                                <h1>
+                                    <span className="text-green-500">B</span>est <span className="text-green-500">S</span>ervers
+                                </h1>
+                            </Link>
+                            <button
+                                onClick={() => {
+                                    if (isSiteListOpen)
+                                        setIsSiteListClosing(true);
+
+                                    setIsSiteListOpen(!isSiteListOpen);
+                                }}
+                            >
+                                {isSiteListOpen ? (
+                                    <ArrowIcon
+                                        className="fill-gray-200 w-8 h-8 rotate-180"
+                                    />
+                                ) : (
+                                    <ArrowIcon
+                                        className="fill-gray-200 w-8 h-8"
+                                    />
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                    <Link href="/">
+                        <IconAndText
+                            icon={<></>}
+                            text={<>Home</>}
+                        />
+                    </Link>
+                    <Link href="/servers">
+                        <IconAndText
+                            icon={<></>}
+                            text={<>Servers</>}
+                        />
+                    </Link>
+                </nav>
+                <ul
+                    className={isSiteListOpen ? `flex animate-logo-slide-down` : `animate-logo-slide-up ${!isSiteListClosing ? `hidden` : ``}`}
+                    ref={logoMenu}
+                >
+                    <li>
+                        <Link href="https://bestmods.io">
                             <h1>
-                                <span className="text-green-500">B</span>est <span className="text-green-500">S</span>ervers
+                                <span className="text-sky-500">B</span>est <span className="text-sky-500">Mods</span>
                             </h1>
                         </Link>
-                        <button
-                            onClick={() => {
-                                if (isSiteListOpen)
-                                    setIsSiteListClosing(true);
-
-                                setIsSiteListOpen(!isSiteListOpen);
-                            }}
-                        >
-                            {isSiteListOpen ? (
-                                <ArrowIcon
-                                    className="fill-gray-200 w-8 h-8 rotate-180"
-                                />
-                            ) : (
-                                <ArrowIcon
-                                    className="fill-gray-200 w-8 h-8"
-                                />
-                            )}
-                        </button>
-                    </div>
-
-                </div>
-            </nav>
-            <ul
-                className={isSiteListOpen ? `flex animate-logo-slide-down` : `animate-logo-slide-up ${!isSiteListClosing ? `hidden` : ``}`}
-                ref={logoMenu}
-            >
-                <li>
-                    <Link href="https://bestmods.io">
-                        <h1>
-                            <span className="text-sky-500">B</span>est <span className="text-sky-500">Mods</span>
-                        </h1>
-                    </Link>
-                    <Link href="https://gamecom.io">
-                        <h1>
-                            <span className="text-red-500">G</span>ame<span className="text-red-500">C</span>om
-                        </h1>
-                    </Link>
-                </li>
-            </ul>
+                        <Link href="https://gamecom.io">
+                            <h1>
+                                <span className="text-red-500">G</span>ame<span className="text-red-500">C</span>om
+                            </h1>
+                        </Link>
+                    </li>
+                </ul>
+            </div>
         </header>
     );
 }
