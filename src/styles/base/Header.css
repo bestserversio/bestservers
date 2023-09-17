@@ -23,6 +23,8 @@ header {
 
     & nav {
         @apply flex;
+        @apply gap-4;
+        @apply items-center;
 
         & .logo {
             @apply relative;

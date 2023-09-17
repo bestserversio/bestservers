@@ -1,0 +1,6 @@
+.content {
+    @apply relative;
+    @apply mx-auto;
+    @apply w-full;
+    @apply sm:px-8;
+}
