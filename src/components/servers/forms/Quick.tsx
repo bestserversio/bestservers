@@ -4,16 +4,14 @@ import { Field, Form, Formik } from "formik";
 import { useContext } from "react";
 
 export default function ServerQuickForm({
-    isDiscord,
     inline
 } : {
-    isDiscord?: boolean
     inline?: boolean
 }) {
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
 
-    const addMut = api.servers.add.useMutation({
+    const addMut = api.servers.addGameServer.useMutation({
         onError: (opts) => {
             const { message } = opts;
 
@@ -40,7 +38,11 @@ export default function ServerQuickForm({
                 port: 0
             }}
             onSubmit={(values) => {
-                addMut.mutate(values);
+                addMut.mutate({
+                    ip: values.ip,
+                    ip6: values.ip6,
+                    port: values.port
+                });
             }}
         >
             <Form className={inline ? "form-inline" : undefined}>
