@@ -102,9 +102,14 @@ model Platform {
 
   url         String
   name        String
+  nameShort   String?
   description String? @db.Text
 
-  servers Server[]
+  jsInternal String?
+  jsExternal String?
+
+  servers     Server[]
+  serverRanks ServerRank[]
 }
 
 model Category {
@@ -141,8 +146,8 @@ model Server {
   port     Int?
   hostName String?
 
-  platformId Int
-  platform   Platform @relation(fields: [platformId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  platformId Int?
+  platform   Platform? @relation(fields: [platformId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   categoryId Int?
   category   Category? @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: SetNull)
@@ -156,10 +161,9 @@ model Server {
   online   Boolean @default(false)
   curUsers Int     @default(0)
   maxUsers Int     @default(0)
+  bots     Int     @default(0)
   mapName  String?
-
-  rank     Int @default(0)
-  avgUsers Int @default(0)
+  avgUsers Int     @default(0)
 
   locationLat Float?
   locationLon Float?
@@ -171,6 +175,7 @@ model Server {
   users   ServerUser[]
   keys    ServerClaimKey[]
   links   ServerLink[]
+  ranks   ServerRank[]
 
   @@unique([ip, port])
 }
@@ -244,4 +249,14 @@ model ServerLink {
   url  String
 
   @@id([serverId, type, url])
+}
+
+model ServerRank {
+  platformId Int
+  platform   Platform @relation(fields: [platformId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  serverId Int
+  server   Server @relation(fields: [serverId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@id([platformId, serverId])
 }
