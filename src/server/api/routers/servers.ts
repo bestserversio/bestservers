@@ -6,7 +6,6 @@ import { ServerLinkType } from "@prisma/client";
 import z from "zod";
 
 import { isAdmin } from "@utils/auth";
-import { PrismaClientUnknownRequestError } from "@prisma/client/runtime/library";
 import { ProcessPrismaError } from "@utils/error";
 
 // Limits
@@ -93,7 +92,7 @@ export const serversRouter = createTRPCRouter({
                 .optional(),
             port: z.number()
                 .min(1, "Port number out of range (< 1)")
-                .max(65535, "Port number out of range (> 65535)"),
+                .max(65535, "Port number out of range (> 65535)")
         }))
         .mutation(async ({ ctx, input }) => {
             // If both IPv4 and IPv6 addresses aren't present, don't proceed.
@@ -130,10 +129,38 @@ export const serversRouter = createTRPCRouter({
             
             visible: z.boolean()
                 .optional(),
+                
+            platform: z.number()
+                .optional(),
+            category: z.number()
+                .nullable()
+                .optional(),
 
             url: z.string()
                 .min(SERVER_URL_MIN, `URL too short (< ${SERVER_URL_MIN.toString()})`)
                 .max(SERVER_URL_MAX, `URL too long (> ${SERVER_URL_MAX.toString()})`)
+                .nullable()
+                .optional(),
+            name: z.string()
+                .min(SERVER_NAME_MIN, `Name too short (< ${SERVER_NAME_MIN.toString()})`)
+                .max(SERVER_NAME_MAX, `URL too long (> ${SERVER_NAME_MAX.toString()})`)
+                .nullable()
+                .optional(),
+            descriptionShort: z.string()
+                .max(SERVER_DESCRIPTIONSHORT_MAX, `Description short too long (> ${SERVER_DESCRIPTIONSHORT_MAX.toString()})`)
+                .nullable()
+                .optional(),
+            description: z.string()
+                .max(SERVER_DESCRIPTION_MAX, `Description too long (> ${SERVER_DESCRIPTION_MAX.toString()})`)
+                .nullable()
+                .optional(),
+            features: z.string()
+                .max(SERVER_FEATURES_MAX, `Features too long (> ${SERVER_FEATURES_MAX.toString()})`)
+                .nullable()
+                .optional(),
+            rules: z.string()
+                .max(SERVER_RULES_MAX, `Rules too long (> ${SERVER_RULES_MAX.toString()})`)
+                .nullable()
                 .optional(),
 
             ip: z.string()
@@ -141,25 +168,31 @@ export const serversRouter = createTRPCRouter({
                     version: "v4",
                     message: "IPv4 address not in correct format."
                 })
+                .nullable()
                 .optional(),
             ip6: z.string()
                 .ip({
                     version: "v6",
                     message: "IPv6 address not in correct format."
                 })
+                .nullable()
                 .optional(),
             port: z.number()
                 .min(1, "Port number out of range (< 1)")
                 .max(65535, "Port number out of range (> 65535)")
+                .nullable()
                 .optional(),
             hostName: z.string()
                 .min(SERVER_HOSTNAME_MIN, `Host name too short (< ${SERVER_HOSTNAME_MIN.toString()})`)
                 .max(SERVER_HOSTNAME_MAX, `Host name too long (> ${SERVER_HOSTNAME_MAX.toString()})`)
+                .nullable()
                 .optional(),
             
             locationLat: z.number()
+                .nullable()
                 .optional(),
             locationLon: z.number()
+                .nullable()
                 .optional(),
 
             links: z.array(z.object({
@@ -181,30 +214,30 @@ export const serversRouter = createTRPCRouter({
                         id: input.id
                     },
                     data: {
-                        ...(admin && input.visible !== undefined && {
+                        ...(input.platform !== undefined && {
+                            platformId: input.platform
+                        }),
+                        categoryId: input.category,
+
+                        ...(admin && {
                             visible: input.visible
                         }),
-                        ...(input.url !== undefined && {
-                            url: input.url
-                        }),
-                        ...(input.ip !== undefined && {
-                            ip: input.ip
-                        }),
-                        ...(input.ip6 !== undefined && {
-                            ip6: input.ip6
-                        }),
-                        ...(input.port !== undefined && {
-                            port: input.port
-                        }),
-                        ...(input.hostName !== undefined && {
-                            hostName: input.hostName
-                        }),
-                        ...(input.locationLat !== undefined && {
-                            locationLat: input.locationLat
-                        }),
-                        ...(input.locationLon !== undefined && {
-                            locationLon: input.locationLon
-                        }),
+
+                        url: input.url,
+                        name: input.name,
+                        descriptionShort: input.descriptionShort,
+                        description: input.description,
+                        features: input.features,
+                        rules: input.rules,
+
+                        ip: input.ip,
+                        ip6: input.ip6,
+                        port: input.port,
+                        hostName: input.hostName,
+
+                        locationLat: input.locationLat,
+                        locationLon: input.locationLon,
+                        
                         ...(input.links !== undefined && {
                             links: {
                                 deleteMany: {
