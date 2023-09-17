@@ -1,5 +1,5 @@
 import { type Prisma } from "@prisma/client";
-import { UserPublicSelect } from "./User";
+import { UserPublic, UserPublicSelect } from "./User";
 
 export const ServerPublicSelect = {
     id: true,
@@ -17,6 +17,7 @@ export const ServerPublicSelect = {
     port: true,
     hostName: true,
 
+    platform: true,
     category: true,
 
     name: true,
@@ -39,4 +40,15 @@ export const ServerPublicSelect = {
 
 export type ServerPublic = Prisma.ServerGetPayload<{
     select: typeof ServerPublicSelect
+}>
+
+export type ServerWithRelations = Prisma.ServerGetPayload<{
+    include: {
+        user: {
+            select: typeof UserPublicSelect
+        },
+
+        platform: true,
+        category: true
+    }
 }>
