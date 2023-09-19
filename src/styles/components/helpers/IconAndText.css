@@ -1,0 +1,5 @@
+.container-icon-and-text {
+    @apply flex;
+    @apply items-center;
+    @apply gap-2;
+}
