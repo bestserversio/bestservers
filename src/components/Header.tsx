@@ -2,6 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import ArrowIcon from "./icons/Arrow";
 import Link from "next/link";
 import IconAndText from "./helpers/IconAndText";
+import HomeIcon from "./icons/header/Home";
+import ServersIcon from "./icons/header/Servers";
+import GamesIcon from "./icons/header/Games";
+import AboutIcon from "./icons/header/AboutIcon";
 
 export default function Header () {
     const [isMobile, setIsMobile] = useState(false);
@@ -74,14 +78,38 @@ export default function Header () {
                     </div>
                     <Link href="/">
                         <IconAndText
-                            icon={<></>}
+                            icon={<>
+                                <HomeIcon className="w-12 h-12 fill-white" />
+                            </>}
                             text={<>Home</>}
+                            inline={true}
+                        />
+                    </Link>
+                    <Link href="/platforms">
+                        <IconAndText
+                            icon={<>
+                                <GamesIcon className="w-12 h-12 fill-white" />
+                            </>}
+                            text={<>Platforms/Games</>}
+                            inline={true}
                         />
                     </Link>
                     <Link href="/servers">
                         <IconAndText
-                            icon={<></>}
+                            icon={<>
+                                <ServersIcon className="w-12 h-12 fill-white" />
+                            </>}
                             text={<>Servers</>}
+                            inline={true}
+                        />
+                    </Link>
+                    <Link href="/about">
+                        <IconAndText
+                            icon={<>
+                                <AboutIcon className="w-12 h-12 fill-white" />
+                            </>}
+                            text={<>About Us</>}
+                            inline={true}
                         />
                     </Link>
                 </nav>
