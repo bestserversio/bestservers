@@ -1,0 +1,7 @@
+.servers-browser {
+    & > div:first-child {
+        @apply flex;
+        @apply flex-col;
+        @apply gap-4;
+    }
+}

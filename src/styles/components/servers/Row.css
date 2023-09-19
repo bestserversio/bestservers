@@ -1,0 +1,22 @@
+.server-row {
+    @apply bg-gradient-to-b;
+    @apply from-slate-800/70;
+    @apply to-slate-900/70;
+
+    @apply ring-4;
+    @apply ring-cyan-950/70;
+    @apply hover:ring-cyan-900/70;
+    @apply duration-150;
+
+    @apply rounded-md;
+    @apply p-2;
+
+    @apply grid;
+    @apply grid-cols-12;
+    @apply auto-cols-auto;
+
+    & > div {
+        @apply flex;
+        @apply items-center;
+    }
+}

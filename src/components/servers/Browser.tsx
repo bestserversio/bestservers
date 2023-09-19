@@ -1,10 +1,10 @@
 import Loader from "@components/Loader"
-import { Server } from "@prisma/client"
 import { api } from "@utils/api"
 import { useContext, useState } from "react"
 import InfiniteScroll from "react-infinite-scroller"
 import ServerRow from "./Row"
 import { SearchAndFiltersCtx } from "@components/SearchAndFilters"
+import { type ServerPublic } from "~/types/Server"
 
 export default function ServerBrowser ({
     limit = 10
@@ -32,7 +32,7 @@ export default function ServerBrowser ({
         void fetchNextPage();
     }
 
-    const servers: Server[] = [];
+    const servers: ServerPublic[] = [];
 
     if (data) {
         data.pages.map((pg) => {
@@ -44,7 +44,7 @@ export default function ServerBrowser ({
     }
 
     return (
-        <div>
+        <>
             {!data || servers.length > 0 ? (
                 <InfiniteScroll
                     pageStart={0}
@@ -53,22 +53,20 @@ export default function ServerBrowser ({
                     hasMore={needMoreServers}
                     className="servers-browser"
                 >
-                    <table>
-                        <tbody>
-                            {servers.map((server, index) => {
-                                return (
-                                    <ServerRow
-                                        server={server}
-                                        key={`server-${index.toString()}`}
-                                    />
-                                );
-                            })}
-                        </tbody>
-                    </table>
+                    <div>
+                        {servers.map((server, index) => {
+                            return (
+                                <ServerRow
+                                    server={server}
+                                    key={`server-${index.toString()}`}
+                                />
+                            );
+                        })}
+                    </div>
                 </InfiniteScroll>
             ) : (
                 <p>No servers found.</p>
             )}
-        </div>
+        </>
     );
 }
