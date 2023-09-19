@@ -7,6 +7,7 @@ import z from "zod";
 
 import { isAdmin } from "@utils/auth";
 import { ProcessPrismaError } from "@utils/error";
+import { ServerPublicSelect } from "~/types/Server";
 
 // Limits
 export const SERVER_URL_MIN = 3;
@@ -42,6 +43,8 @@ export const serversRouter = createTRPCRouter({
             const servers = await ctx.prisma.server.findMany({
                 take: input.limit + 1,
                 cursor: input.cursor ? { id: input.cursor } : undefined,
+
+                select: ServerPublicSelect,
 
                 where: {
                     ...(input.search && {
