@@ -13,7 +13,11 @@
 @layer components {
     @import "components/helpers/IconAndText.css";
 
+    @import "components/servers/Browser.css";
+    @import "components/servers/Row.css";
+
     @import "components/Content.css";
+    @import "components/Background.css";
     @import "components/Buttons.css";
     @import "components/SearchAndFilters.css";
 }

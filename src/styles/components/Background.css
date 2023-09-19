@@ -1,0 +1,23 @@
+#bg {
+    @apply fixed;
+    @apply top-0;
+    @apply left-0;
+    @apply -z-20;
+    @apply w-full;
+    @apply h-full;
+
+    @apply bg-cover;
+
+    transition: background-image ease-in-out 2s;
+}
+
+#bg-overlay {
+    @apply fixed;
+    @apply top-0;
+    @apply left-0;
+    @apply -z-10;
+    @apply w-full;
+    @apply h-full;
+
+    @apply bg-black/90;
+}
