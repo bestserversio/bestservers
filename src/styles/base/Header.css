@@ -18,16 +18,18 @@
 
 header {
     @apply p-1;
-    @apply bg-slate-900;
+    @apply bg-slate-900/60;
     @apply z-10;
 
     & nav {
-        @apply flex;
+        @apply grid;
+        @apply grid-cols-6;
         @apply gap-4;
         @apply items-center;
 
         & .logo {
             @apply relative;
+            @apply col-span-2;
     
             & h1 {
                 @apply text-5xl;
@@ -44,6 +46,12 @@ header {
                     @apply p-6;
                 }
             }
+        }
+
+        & > a {
+            @apply duration-150;
+            @apply opacity-80;
+            @apply hover:opacity-100;
         }
     }
 

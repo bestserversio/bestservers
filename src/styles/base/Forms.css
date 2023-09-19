@@ -15,13 +15,13 @@ form {
             @apply w-full;
             @apply p-2;
             
-            @apply bg-cyan-900;
+            @apply bg-slate-900/70;
             @apply rounded;
 
             @apply ring-4;
-            @apply ring-cyan-950;
-            @apply focus:ring-cyan-800;
-            @apply hover:ring-cyan-900;
+            @apply ring-cyan-950/70;
+            @apply focus:ring-cyan-700/70;
+            @apply hover:ring-cyan-800/70;
         }
     }
 

@@ -1,10 +1,6 @@
 main {
     @apply min-h-screen;
 
-    @apply bg-gradient-to-b;
-    @apply bg-gray-900;
-    @apply bg-gray-950;
-
     @apply text-gray-200;
 
     & h1, h2, h3, h4, h5 {
