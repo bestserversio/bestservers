@@ -32,7 +32,8 @@ export const env = createEnv({
   client: {
     NEXT_PUBLIC_BASE_URL: z.string().optional(),
     NEXT_PUBLIC_UPLOADS_URL: z.string().optional(),
-    NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: z.string().optional()
+    NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: z.string().optional(),
+    NEXT_PUBLIC_BACKGROUND_SPEED: z.string().optional()
   },
 
   /**
@@ -52,7 +53,8 @@ export const env = createEnv({
 
     NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
     NEXT_PUBLIC_UPLOADS_URL: process.env.NEXT_PUBLIC_UPLOADS_URL,
-    NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID
+    NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID,
+    NEXT_PUBLIC_BACKGROUND_SPEED: process.env.NEXT_PUBLIC_BACKGROUND_SPEED
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
