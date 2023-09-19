@@ -35,8 +35,12 @@ export default function SearchAndFilters ({
         <div className="search-and-filters">
             <div>
                 <form>
-                    <div>
-                        <select multiple={true} value={categories?.toString()}>
+                    <div className="w-1/3">
+                        <label>Platforms</label>
+                        <select
+                            multiple={true}
+                            value={categories?.toString()}
+                        >
                             {categoriesList?.map((category, index) => {
                                 return (
                                     <option
@@ -47,7 +51,8 @@ export default function SearchAndFilters ({
                             })}
                         </select>
                     </div>
-                    <div>
+                    <div className="w-2/3">
+                        <label>Search</label>
                         <input
                             value={search}
                             onChange={(e) => {
