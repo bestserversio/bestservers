@@ -5,10 +5,11 @@
 
     & > div:first-child {
         @apply mx-auto;
+        @apply container;
+        @apply w-full;
     
         & > form {
             @apply flex;
-            @apply flex-wrap;
             @apply gap-2;
         }
     }
