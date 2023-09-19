@@ -31,7 +31,6 @@ export const ServerPublicSelect = {
     maxUsers: true,
     mapName: true,
 
-    rank: true,
     avgUsers: true,
 
     locationLat: true,
