@@ -13,7 +13,11 @@ export const PLATFORM_NAME_MAX = 128;
 export const PLATFORM_DESCRIPTION_MAX = 30_720;
 
 export const platformsRouter = createTRPCRouter({
-    get: publicProcedure
+    all: publicProcedure
+        .query(({ ctx }) => {
+            return ctx.prisma.platform.findMany();
+        }),
+    allInf: publicProcedure
         .input(z.object({
             limit: z.number().default(10),
             cursor: z.number().nullish()
@@ -38,6 +42,7 @@ export const platformsRouter = createTRPCRouter({
                 nextPlatform
             }
         }),
+    
     addOrUpdate: adminProcedure
         .input(z.object({
             id: z.number()

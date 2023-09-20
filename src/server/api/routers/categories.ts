@@ -37,6 +37,17 @@ export const categoriesRouter = createTRPCRouter({
                 nextCategory
             };
         }),
+    allMapped: publicProcedure
+        .query(({ ctx }) => {
+            return ctx.prisma.category.findMany({
+                include: {
+                    children: true
+                },
+                where: {
+                    parent: null
+                }
+            })
+        }),
     addOrUpdate: adminProcedure
         .input(z.object({
             id: z.number().optional(),
