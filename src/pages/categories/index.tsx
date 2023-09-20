@@ -5,8 +5,10 @@ export default function Page() {
     return (
         <>
             <Meta
-
+                title="Categories - Best Servers"
+                contentTitle="Categories"
             />
+            
             <Wrapper>
                 
             </Wrapper>
