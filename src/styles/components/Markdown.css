@@ -1,0 +1,42 @@
+.markdown {
+    & h1, h2, h3, h4, h5 {
+        @apply not-italic;
+        @apply pt-2;
+        @apply pb-1;
+    }
+
+    & ol {
+        @apply list-decimal;
+    }
+
+    & ul {
+        @apply list-disc;
+    }
+
+    & ol > li, ul > li {
+        @apply ml-12;
+    }
+
+    & p {
+        @apply leading-6;
+        @apply pb-2;
+    }
+
+    & img {
+        @apply py-2;
+    }
+
+    & pre {
+        @apply bg-gray-900;
+        @apply rounded-sm;
+        @apply text-white;
+        @apply p-4;
+    }
+}
+
+.markdown-code-inline {
+    @apply bg-gray-950;
+    @apply px-1;
+    @apply rounded-sm;
+    @apply text-cyan-300;
+}
