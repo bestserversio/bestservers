@@ -7,10 +7,30 @@
         @apply mx-auto;
         @apply container;
         @apply w-full;
-    
-        & > form {
-            @apply flex;
-            @apply gap-2;
+
+        & > div {
+            & > div {
+                @apply grid;
+                @apply grid-cols-1;
+                @apply sm:grid-cols-8;
+                @apply gap-4;
+
+                & > div {
+                    @apply flex;
+                    @apply flex-col;
+                    @apply gap-1;
+                }
+
+                & > div:nth-child(1), > div:nth-child(2) {
+                    @apply col-span-1;
+                    @apply sm:col-span-2;
+                }
+
+                & > div:nth-child(3) {
+                    @apply col-span-1;
+                    @apply sm:col-span-4;
+                }
+            }
         }
     }
 

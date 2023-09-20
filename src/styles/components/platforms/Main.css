@@ -1,0 +1,14 @@
+.platforms-grid {
+    @apply grid;
+    @apply gap-x-4;
+    @apply gap-y-6;
+
+    @apply py-6;
+
+    @apply grid-cols-1;
+    @apply sm:grid-cols-2;
+    @apply md:grid-cols-3;
+    @apply lg:grid-cols-4;
+
+    @apply auto-rows-fr;
+}
