@@ -31,13 +31,21 @@ export const serversRouter = createTRPCRouter({
     all: publicProcedure
         .input(z.object({
             categories: z.array(z.number()).optional(),
-            sort: z.string().default("curUsers"),
-            sortDir: z.string().default("desc"),
-            online: z.boolean().optional(),
-            search: z.string().optional(),
+            platforms: z.array(z.number()).optional(),
 
-            cursor: z.number().nullish(),
-            limit: z.number().default(10)
+            sort: z.string()
+                .default("curUsers"),
+            sortDir: z.string()
+                .default("desc"),
+            online: z.boolean()
+                .optional(),
+            search: z.string()
+                .optional(),
+
+            cursor: z.number()
+                .nullish(),
+            limit: z.number()
+                .default(10)
         }))
         .query(async ({ ctx, input }) => {
             const servers = await ctx.prisma.server.findMany({
@@ -51,13 +59,61 @@ export const serversRouter = createTRPCRouter({
                         OR: [
                             {
                                 name: {
-                                    contains: input.search
+                                    contains: input.search,
+                                    mode: "insensitive"
+                                }
+                            },
+                            {
+
+                                description: {
+                                    contains: input.search,
+                                    mode: "insensitive"
+                                }
+                            },
+                            {
+                                mapName: {
+                                    contains: input.search,
+                                    mode: "insensitive"
+                                }
+                            },
+                            {
+                                platform: {
+                                    name: {
+                                        contains: input.search,
+                                        mode: "insensitive"
+                                    }
+                                }
+                            },
+                            {
+                                platform: {
+                                    nameShort: {
+                                        contains: input.search,
+                                        mode: "insensitive"
+                                    }
+                                }
+                            },
+                            {
+                                category: {
+                                    name: {
+                                        contains: input.search,
+                                        mode: "insensitive"
+                                    }
                                 }
                             }
                         ]
                     }),
                     ...(input.online !== undefined && {
                         online: input.online
+                    }),
+                    ...(input.categories && input.categories.length > 0 && {
+                        categoryId: {
+                            in: input.categories
+                        }
+                    }),
+                    ...(input.platforms && input.platforms.length > 0 && {
+                        platformId: {
+                            in: input.platforms
+                        }
                     })
                 },
                 orderBy: {
