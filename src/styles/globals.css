@@ -16,8 +16,12 @@
     @import "components/servers/Browser.css";
     @import "components/servers/Row.css";
 
+    @import "components/platforms/Main.css";
+    @import "components/platforms/Row.css";
+
     @import "components/Content.css";
     @import "components/Background.css";
     @import "components/Buttons.css";
     @import "components/SearchAndFilters.css";
+    @import "components/Markdown.css";
 }
