@@ -5,3 +5,10 @@ export type CategoryWithChildren = Prisma.CategoryGetPayload<{
         children: true
     }
 }>
+
+export type CategoryWithChildrenAndParent = Prisma.CategoryGetPayload<{
+    include: {
+        parent: true,
+        children: true
+    }
+}>
