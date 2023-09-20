@@ -8,8 +8,9 @@ datasource db {
 }
 
 enum PlatformFlag {
-  DISCORD
   A2S
+  DISCORD
+  TEAMSPEAK3
 }
 
 enum UserRole {
