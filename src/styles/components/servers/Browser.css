@@ -1,5 +1,37 @@
 .servers-browser {
+    @apply grid;
+    @apply grid-cols-8;
+
     & > div:first-child {
+        @apply col-span-1;
+
+        & div:last-child > ul {
+            @apply list-none;
+
+            & li {
+                @apply p-6;
+                @apply cursor-pointer;
+            }
+        }
+    }
+
+    & > div:nth-child(2) {
+        @apply col-span-1;
+
+        & div:last-child > ul {
+            @apply list-none;
+
+            & li {
+                @apply p-6;
+                @apply cursor-pointer;
+            }
+        }
+    }
+
+    & > div:last-child {
+        @apply col-span-1;
+        @apply sm:col-span-6;
+
         @apply flex;
         @apply flex-col;
         @apply gap-4;
