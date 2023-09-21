@@ -9,7 +9,8 @@ export default {
         },
         "animation": {
             "logo-slide-down": "logo-slide-down 1s ease-out",
-            "logo-slide-up": "logo-slide-up 1s ease-out"
+            "logo-slide-up": "logo-slide-up 1s ease-out",
+            "gameplayer-slide-in": "gameplayer-slide-in 1s ease-out"
         }
     },
   },
