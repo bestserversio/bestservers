@@ -125,9 +125,7 @@ export const serversRouter = createTRPCRouter({
 
             if (servers.length > input.limit) {
                 const next = servers.pop();
-
-                if (next)
-                    nextServer = next.id;
+                nextServer = next?.id;
             }
 
             return {
@@ -323,5 +321,49 @@ export const serversRouter = createTRPCRouter({
                     })
                 });
             }
+        }),
+    allStats: publicProcedure
+        .input(z.object({
+            id: z.number(),
+            timeframe: z.number().optional()
+        }))
+        .query(({ ctx, input }) => {
+            let timeframe: Date | null = null;
+
+            if (input.timeframe) {
+                switch (input.timeframe) {
+                    case 0:
+                        timeframe = new Date(Date.now() - 86400);
+
+                        break;
+
+                    case 1:
+                        timeframe = new Date(Date.now() - 604800);
+
+                        break;
+
+                    case 2:
+                        timeframe = new Date(Date.now() - 2678400);
+
+                        break;
+
+                    case 3:
+                        timeframe = new Date(Date.now() - 31536000);
+
+                        break;
+                }
+            }
+
+            return ctx.prisma.serverStat.findMany({
+                where: {
+                    serverId: input.id,
+
+                    ...(timeframe && {
+                        createdAt: {
+                            gte: timeframe
+                        }
+                    })
+                }
+            });
         })
 })
