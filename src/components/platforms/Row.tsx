@@ -35,7 +35,8 @@ export default function PlatformRow({
                             width={500}
                             height={300}
                             alt="Game Banner"
-                            objectFit="cover"
+                            className="object-cover"
+                            priority={true}
                         />
                     )}
                 </div>
