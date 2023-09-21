@@ -33,8 +33,8 @@ export default function Page({
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const { params } = ctx;
 
-    const catUrl1 = params?.category?.[0]?.toString();
-    const catUrl2 = params?.category?.[1]?.toString();
+    const catUrl1 = params?.url?.[0]?.toString();
+    const catUrl2 = params?.url?.[1]?.toString();
 
     let category: CategoryWithChildrenAndParent | null = null;
 

@@ -40,7 +40,7 @@ export default function ({
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const { params } = ctx;
 
-    const url = params?.platform?.toString();
+    const url = params?.url?.toString();
 
     let platform: Platform | null = null;
 
