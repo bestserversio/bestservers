@@ -1,0 +1,39 @@
+@keyframes gameplayer-slide-in {
+    0% {
+        transform: translateY(-200%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.gameplayer {
+    @apply m-auto;
+    @apply absolute;
+    @apply z-10;
+
+    @apply p-6;
+    @apply rounded;
+
+    @apply animate-gameplayer-slide-in;
+
+    & > div:first-child {
+        @apply flex;
+        @apply justify-between;
+        @apply bg-slate-800;
+    }
+
+    & > div:last-child {
+        @apply p-6;
+        @apply bg-slate-700;
+
+        & iframe {
+            @apply w-full;
+            @apply h-3/4;
+        }
+
+        & canvas {
+            @apply w-full;
+        }
+    }
+}
