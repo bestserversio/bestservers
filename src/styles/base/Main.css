@@ -2,6 +2,7 @@ main {
     @apply min-h-screen;
 
     @apply text-gray-200;
+    @apply break-words;
 
     & h1, h2, h3, h4, h5 {
         @apply font-bold;

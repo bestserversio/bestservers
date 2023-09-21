@@ -17,7 +17,7 @@
 }
 
 header {
-    @apply p-1;
+    @apply p-4;
     @apply bg-slate-900/60;
     @apply z-10;
 
