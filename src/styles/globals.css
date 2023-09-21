@@ -7,7 +7,6 @@
 
     @import "base/Header.css";
     @import "base/Forms.css";
-    @import "base/Buttons.css";
 }
 
 @layer components {
@@ -22,6 +21,6 @@
     @import "components/Content.css";
     @import "components/Background.css";
     @import "components/Buttons.css";
-    @import "components/SearchAndFilters.css";
     @import "components/Markdown.css";
+    @import "components/GamePlayer.css";
 }
