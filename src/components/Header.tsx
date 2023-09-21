@@ -90,7 +90,7 @@ export default function Header () {
                             icon={<>
                                 <GamesIcon className="w-12 h-12 fill-white" />
                             </>}
-                            text={<>Platforms/Games</>}
+                            text={<>Platforms</>}
                             inline={true}
                         />
                     </Link>
