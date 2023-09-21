@@ -1,15 +1,23 @@
 import Link from "next/link";
 import { type ServerPublic } from "~/types/Server";
+import ServerLink from "./Link";
+import { useContext } from "react";
+import { GameplayerCtx } from "@components/GamePlayer";
+import { PlatformFlag } from "@prisma/client";
 
 export default function ServerRow ({
     server
 } : {
     server: ServerPublic
 }) {
-    const uploadsUrl = process.env.NEXT_PUBLIC_UPLOADS_URL;
+    const gameplayerCtx = useContext(GameplayerCtx);
+    
+    let joinUrl: string | undefined = undefined;
 
-    const viewUrl = `/servers/view/${server.url ? server.url : `${server.id.toString()}`}`;
-    const steamConnectUrl = `steam://connect/${server.ip}:${server.port?.toString()}`;
+    if (server.platform?.flags.includes(PlatformFlag.A2S))
+        joinUrl = `steam://connect/${server.ip}:${server.port?.toString()}`
+    else if (server.platform?.flags.includes(PlatformFlag.DISCORD) && server.hostName)
+        joinUrl = server.hostName;
 
     return (
         <div className="server-row">
@@ -33,14 +41,33 @@ export default function ServerRow ({
                 </div>
             </div>
             <div className="col-span-2 flex gap-4">
-                <Link
-                    href={steamConnectUrl}
+                {(server.platform?.jsInternal || server.platform?.jsExternal) && (
+                    <button
+                        onClick={() => {
+                            if (!gameplayerCtx)
+                                return;
+
+                            gameplayerCtx.setVisible(true);
+
+                            if (server.platform?.jsInternal)
+                                gameplayerCtx.setInternal(server.platform.jsInternal);
+                            else if (server.platform?.jsExternal)
+                                gameplayerCtx.setExternal(server.platform.jsExternal);
+                        }}
+                    >Play</button>
+                )}
+
+                {joinUrl && (
+                    <Link
+                        href={joinUrl}
+                        className="button"
+                    >Join</Link>
+                )}
+
+                <ServerLink
+                    server={server}
                     className="button"
-                >Connect!</Link>
-                <Link
-                    href={viewUrl}
-                    className="button"
-                >More Info</Link>
+                >More Info</ServerLink>
             </div>
         </div>
     );
