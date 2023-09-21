@@ -4,6 +4,7 @@ import GoogleAnalytics from "./GoogleAnalytics";
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
 import SuccessBox from "./statements/Success";
 import ErrorBox from "./statements/Error";
+import GamePlayer from "./GamePlayer";
 
 const bgImages = [
     "csgo.jpg",
@@ -100,7 +101,9 @@ export default function Wrapper ({
                     title={successCtx?.title}
                     message={successCtx?.msg}
                 />
-                {children}
+                <GamePlayer>
+                    {children}
+                </GamePlayer>
             </div>
         </main>
     );
