@@ -1,40 +1,110 @@
-import Loader from "@components/Loader"
 import { api } from "@utils/api"
-import { useEffect, useState } from "react"
-import InfiniteScroll from "react-infinite-scroller"
-import ServerRow from "./Row"
+import { createContext, useEffect, useState, Dispatch, SetStateAction } from "react"
 import { type ServerPublic } from "~/types/Server"
-import IconAndText from "@components/helpers/IconAndText"
-import Image from "next/image"
+import { Region } from "@prisma/client"
+import ServerBrowserCol from "./browser/Col"
+import ServerBrowserTable from "./browser/Table"
+
+export type FiltersType = {
+    filterCategories: number[]
+    setFilterCategories: Dispatch<SetStateAction<number[]>>
+    filterPlatforms: number[]
+    setFilterPlatforms: Dispatch<SetStateAction<number[]>>
+    filterRegions: Region[]
+    setFilterRegions: Dispatch<SetStateAction<Region[]>>
+    filterSearch?: string
+    setFilterSearch: Dispatch<SetStateAction<string | undefined>>
+    filterMapName?: string
+    setFilterMapName: Dispatch<SetStateAction<string | undefined>>
+    filterOffline?: boolean
+    setFilterOffline: Dispatch<SetStateAction<boolean | undefined>>
+    filterHideEmpty?: boolean
+    setFilterHideEmpty: Dispatch<SetStateAction<boolean | undefined>>
+    filterHideFull?: boolean
+    setFilterHideFull: Dispatch<SetStateAction<boolean | undefined>>
+    filterMinCurUsers?: number
+    setFilterMinCurUsers: Dispatch<SetStateAction<number | undefined>>
+    filterMaxCurUsers?: number
+    setFilterMaxCurUsers: Dispatch<SetStateAction<number | undefined>> 
+
+    sort: string
+    setSort: Dispatch<SetStateAction<string>>
+    sortDir: string
+    setSortDir: Dispatch<SetStateAction<string>>
+}
+export const FiltersCtx = createContext<FiltersType | undefined>(undefined);
 
 export default function ServerBrowser ({
-    limit = 10
+    limit = 10,
+    table,
+
+    preFilterCategories = [],
+    preFilterPlatforms = [],
+    preFilterRegions = [],
+    preFilterSearch,
+    preFilterMapName,
+    preFilterOffline,
+    preFilterHideEmpty,
+    preFilterHideFull,
+    preFilterMinCurUsers,
+    preFilterMaxCurUsers,
+    preSort = "curUsers",
+    preSortDir = "desc"
 } : {
     limit?: number
+    table?: boolean
+
+    preFilterCategories?: number[]
+    preFilterPlatforms?: number[]
+    preFilterRegions?: Region[]
+    preFilterSearch?: string
+    preFilterMapName?: string
+    preFilterOffline?: boolean
+    preFilterHideEmpty?: boolean
+    preFilterHideFull?: boolean
+    preFilterMinCurUsers?: number
+    preFilterMaxCurUsers?: number,
+
+    preSort?: string
+    preSortDir?: string
 }) {
     // Filters and sorting.
-    const [filterSearch, setFilterSearch] = useState<string | undefined>(undefined);
-    const [filterCategories, setFilterCategories] = useState<number[]>([]);
-    const [filterPlatforms, setFilterPlatforms] = useState<number[]>([]);
-    const [filterOnline, setFilterOnline] = useState<boolean | undefined>(undefined);
+    const [filterCategories, setFilterCategories] = useState<number[]>(preFilterCategories);
+    const [filterPlatforms, setFilterPlatforms] = useState<number[]>(preFilterPlatforms);
+    const [filterRegions, setFilterRegions] = useState<Region[]>(preFilterRegions);
+    const [filterSearch, setFilterSearch] = useState<string | undefined>(preFilterSearch);
+    const [filterMapName, setFilterMapName] = useState<string | undefined>(preFilterMapName);
+    const [filterOffline, setFilterOffline] = useState<boolean | undefined>(preFilterOffline);
+    const [filterHideEmpty, setFilterHideEmpty] = useState<boolean | undefined>(preFilterHideEmpty);
+    const [filterHideFull, setFilterHideFull] = useState<boolean | undefined>(preFilterHideFull);
+    const [filterMinCurUsers, setFilterMinCurUsers] = useState<number | undefined>(preFilterMinCurUsers);
+    const [filterMaxCurUsers, setFilterMaxCurUsers] = useState<number | undefined>(preFilterMaxCurUsers);
 
-    const [sort, setSort] = useState("curUsers");
-    const [sortDir, setSortDir] = useState("desc");
+    const [sort, setSort] = useState(preSort);
+    const [sortDir, setSortDir] = useState(preSortDir);
     
     const [needMoreServers, setNeedMoreServers] = useState(true);
 
     // Reset need more servers when filters or sorting are changed.
     useEffect(() => {
         setNeedMoreServers(true); // Reset to true when filters or sorting change
-    }, [filterSearch, filterCategories, filterPlatforms, filterOnline, sort, sortDir]);
+    }, [filterPlatforms, filterCategories, filterSearch, filterMapName, filterOffline, filterHideEmpty, filterHideFull, filterRegions, filterMinCurUsers, filterMaxCurUsers, sort, sortDir]);
 
     const { data, fetchNextPage } = api.servers.all.useInfiniteQuery({
         limit: limit,
 
-        search: filterSearch || undefined,
         categories: filterCategories,
         platforms: filterPlatforms,
-        online: filterOnline,
+        regions: filterRegions,
+
+        search: filterSearch || undefined,
+        mapName: filterMapName || undefined,
+
+        showOffline: filterOffline,
+        hideEmpty: filterHideEmpty,
+        hideFull: filterHideFull,
+        minCurUsers: filterMinCurUsers,
+        maxCurUsers: filterMaxCurUsers,
         
         sort: sort,
         sortDir: sortDir,
@@ -57,192 +127,51 @@ export default function ServerBrowser ({
         })
     }
 
-    const categoriesQuery = api.categories.allMapped.useQuery();
-    const categories = categoriesQuery.data;
-
-    const platformsQuery = api.platforms.all.useQuery();
-    const platforms = platformsQuery.data;
-
-    const uploadsUrl = process.env.NEXT_PUBLIC_UPLOADS_URL ?? "";
+    const serversOrLoading = !data || servers.length > 0;
 
     return (
-        <div className="servers-browser">
-            <div className="form">
-                <div>
-                    <label>Sort</label>
-                    <select
-                        onChange={(e) => {
-                            const val = e.target.value;
+        <FiltersCtx.Provider value={{
+            filterCategories: filterCategories,
+            setFilterCategories: setFilterCategories,
+            filterPlatforms: filterPlatforms,
+            setFilterPlatforms: setFilterPlatforms,
+            filterRegions: filterRegions,
+            setFilterRegions: setFilterRegions,
+            filterSearch: filterSearch,
+            setFilterSearch: setFilterSearch,
+            filterMapName: filterMapName,
+            setFilterMapName: setFilterMapName,
+            filterOffline: filterOffline,
+            setFilterOffline: setFilterOffline,
+            filterHideEmpty: filterHideEmpty,
+            setFilterHideEmpty: setFilterHideEmpty,
+            filterHideFull: filterHideFull,
+            setFilterHideFull: setFilterHideFull,
+            filterMinCurUsers: filterMinCurUsers,
+            setFilterMinCurUsers: setFilterMinCurUsers,
+            filterMaxCurUsers: filterMaxCurUsers,
+            setFilterMaxCurUsers: setFilterMaxCurUsers,
 
-                            setSort(val);
-                        }}
-                        defaultValue={sort}
-                    >
-                        <option value="curUsers">Current Users</option>
-                        <option value="maxUsers">Maximum Users</option>
-                        <option value="avgUsers">Average Users</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Sort Direction</label>
-                    <select
-                        onChange={(e) => {
-                            const val = e.target.value;
-
-                            setSortDir(val);
-                        }}
-                        defaultValue={sortDir}
-                    >
-                        <option value="asc">Ascending</option>
-                        <option value="desc">Desending</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Search</label>
-                    <input
-                        onChange={(e) => {
-                            const val = e.currentTarget.value;
-
-                            setFilterSearch(val);
-                        }}
-                    />
-                </div>
-            </div>
-            <div>
-                <div>
-                    <div>
-                        <h4>Platforms</h4>
-                    </div>
-                    <div>
-                        <ul>
-                            {platforms?.map((plat, index) => {
-                                let icon = process.env.NEXT_PUBLIC_DEFAULT_PLATFORM_ICON;
-
-                                if (plat.icon)
-                                    icon = uploadsUrl + plat.icon;
-
-                                return (
-                                    <li
-                                        onClick={() => {
-                                            const newPlatforms = [...filterPlatforms];
-
-                                            const loc = newPlatforms.findIndex(tmp => tmp == plat.id);
-
-                                            if (loc !== -1)
-                                                newPlatforms.splice(loc, 1);
-                                            else
-                                                newPlatforms.push(plat.id);
-
-                                            setFilterPlatforms(newPlatforms);
-                                        }}
-                                        key={`platform-${index.toString()}`}
-                                        className={(filterPlatforms.length < 1 || filterPlatforms.includes(plat.id)) ? "opacity-100" : "opacity-75"}
-                                    >
-                                        <IconAndText
-                                            icon={
-                                                <>
-                                                    {icon && (
-                                                        <Image
-                                                            src={icon}
-                                                            width={32}
-                                                            height={32}
-                                                            alt="Platform Icon"
-                                                            className="rounded-full"
-                                                        />
-                                                    )}
-                                                </>
-                                            }
-                                            text={<>{plat.nameShort || plat.name}</>}
-                                            inline={true}
-                                        />
-                                    </li>
-                                )
-                            })}
-                        </ul>
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <h4>Categories</h4>
-                    </div>
-                    <div>
-                        <ul>
-                            {categories?.map((cat, index) => {
-                                return (
-                                    <li key={`catPar-${index.toString()}`}>
-                                        <span
-                                            onClick={() => {
-                                                const newCategories = [...filterCategories];
-
-                                                const loc = newCategories.findIndex(tmp => tmp == cat.id);
-
-                                                if (loc !== -1)
-                                                    newCategories.splice(loc, 1);
-                                                else
-                                                    newCategories.push(cat.id);
-
-                                                setFilterCategories(newCategories);
-                                                
-                                            }}
-                                            className={(filterCategories.length < 1 || filterCategories.includes(cat.id)) ? "opacity-100" : "opacity-75"}
-                                        >
-                                            {cat.name}
-                                        </span>
-
-                                        {cat.children.length > 0 && (
-                                            <ul>
-                                                {cat.children.map((child, index) => {
-                                                    return (
-                                                        <li
-                                                            onClick={() => {
-                                                                const newCategories = [...filterCategories];
-
-                                                                const loc = newCategories.findIndex(tmp => tmp == child.id);
-                
-                                                                if (loc !== -1)
-                                                                    newCategories.splice(loc, 1);
-                                                                else
-                                                                    newCategories.push(child.id);
-                
-                                                                setFilterCategories(newCategories);
-                                                            }}
-                                                            key={`catChi-${index.toString()}`}
-                                                            className={(filterCategories.length < 1 || filterCategories.includes(child.id)) ? "opacity-100" : "opacity-75"}
-                                                        >
-                                                            {child.name}
-                                                        </li>
-                                                    );
-                                                })}
-                                            </ul>
-                                        )}
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    </div>
-                </div>
-                {!data || servers.length > 0 ? (
-                    <InfiniteScroll
-                        pageStart={0}
-                        loadMore={loadMore}
-                        loader={<Loader key="loader" />}
-                        hasMore={needMoreServers}
-                    >
-                        {servers.map((server, index) => {
-                            return (
-                                <ServerRow
-                                    server={server}
-                                    key={`server-${index.toString()}`}
-                                />
-                            );
-                        })}
-                    </InfiniteScroll>
-                ) : (
-                    <div>
-                        <p>No servers found.</p>
-                    </div>
-                )}
-            </div>
-        </div>
+            sort: sort,
+            setSort: setSort,
+            sortDir: sortDir,
+            setSortDir: setSortDir
+        }}>
+            {table ? (
+                <ServerBrowserTable
+                    servers={servers}
+                    loadMore={loadMore}
+                    needMoreServers={needMoreServers}
+                    serversOrLoading={serversOrLoading}
+                />
+            ) : (
+                <ServerBrowserCol
+                    servers={servers}
+                    loadMore={loadMore}
+                    needMoreServers={needMoreServers}
+                    serversOrLoading={serversOrLoading}
+                />
+            )}
+        </FiltersCtx.Provider>
     );
 }
