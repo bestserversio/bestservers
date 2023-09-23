@@ -1,7 +1,6 @@
 import Markdown from "@components/markdown/Markdown";
 import { type Platform } from "@prisma/client";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function PlatformRow({
     platform,
