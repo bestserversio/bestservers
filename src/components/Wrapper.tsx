@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import GoogleAnalytics from "./GoogleAnalytics";
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
@@ -13,6 +13,10 @@ const bgImages = [
     "rust.jpg",
     "tf2.webp"
 ]
+
+export const ViewPortCtx = createContext({
+    isMobile: false
+})
 
 export default function Wrapper ({
     children
@@ -77,34 +81,38 @@ export default function Wrapper ({
     }, [curBg, isMobile, bgImages])
 
     return (
-        <main className={isMobile ? "bg-gradient-to-b from-gray-900 to-gray-950" : undefined}>
-            <div
-                id="bg"
-                className={isMobile ? "hidden" : undefined}
-                style={{
-                    backgroundImage: (!isMobile && curBg) ? `url('/images/background/${curBg}')` : undefined
-                }}
-            />
-            <div
-                id="bg-overlay"
-                className={isMobile ? "hidden" : undefined}
-            />
+        <ViewPortCtx.Provider value={{
+            isMobile: isMobile
+        }}>
+            <main className={isMobile ? "bg-gradient-to-b from-gray-900 to-gray-950" : undefined}>
+                <div
+                    id="bg"
+                    className={isMobile ? "hidden" : undefined}
+                    style={{
+                        backgroundImage: (!isMobile && curBg) ? `url('/images/background/${curBg}')` : undefined
+                    }}
+                />
+                <div
+                    id="bg-overlay"
+                    className={isMobile ? "hidden" : undefined}
+                />
 
-            <Header />
-            <GoogleAnalytics />
-            <div className="content">
-                <ErrorBox
-                    title={errorCtx?.title}
-                    message={errorCtx?.msg}
-                />
-                <SuccessBox
-                    title={successCtx?.title}
-                    message={successCtx?.msg}
-                />
-                <GamePlayer>
-                    {children}
-                </GamePlayer>
-            </div>
-        </main>
+                <Header />
+                <GoogleAnalytics />
+                <div className="content">
+                    <ErrorBox
+                        title={errorCtx?.title}
+                        message={errorCtx?.msg}
+                    />
+                    <SuccessBox
+                        title={successCtx?.title}
+                        message={successCtx?.msg}
+                    />
+                    <GamePlayer>
+                        {children}
+                    </GamePlayer>
+                </div>
+            </main>
+        </ViewPortCtx.Provider>
     );
 }
