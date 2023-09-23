@@ -17,6 +17,8 @@ export const ServerPublicSelect = {
     port: true,
     hostName: true,
 
+    region: true,
+
     platform: true,
     category: true,
 
