@@ -5,7 +5,7 @@ import ServerBrowser from "@components/servers/Browser";
 export default function Index() {
     return (
         <Wrapper>
-            <ServerBrowser />
+            <ServerBrowser table={true} />
         </Wrapper>
     );
 }

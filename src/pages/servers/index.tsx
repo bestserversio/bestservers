@@ -11,7 +11,7 @@ export default function Page() {
             />
             <Wrapper>
                 <h1>Servers</h1>
-                <ServerBrowser />
+                <ServerBrowser table={true} />
             </Wrapper>
         </>
     );
