@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Region } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -192,6 +192,8 @@ async function seedServers() {
             port: 27015,
             hostName: "cm1-goze1.bestservers.io",
 
+            region: Region.NA,
+
             platformId: 1,
             categoryId: 5,
 
@@ -218,6 +220,8 @@ async function seedServers() {
             ip: INTERNAL_IP1,
             port: 27016,
             hostName: "cm1-god2.bestservers.io",
+
+            region: Region.NA,
 
             platformId: 1,
             categoryId: 1,
@@ -246,6 +250,8 @@ async function seedServers() {
             port: 27015,
             hostName: "cm2-2fort.bestservers.io",
 
+            region: Region.EU,
+
             platformId: 2,
             categoryId: 1,
 
@@ -272,6 +278,8 @@ async function seedServers() {
             ip: INTERNAL_IP2,
             port: 27016,
             hostName: "cm2-cp.bestservers.io",
+
+            region: Region.EU,
 
             platformId: 2,
             categoryId: 1,
@@ -300,6 +308,8 @@ async function seedServers() {
             port: 27017,
             hostName: "cm2-darkrp.bestservers.io",
 
+            region: Region.EU,
+
             platformId: 3,
             categoryId: 1,
 
@@ -326,6 +336,8 @@ async function seedServers() {
             ip: INTERNAL_IP2,
             port: 27018,
             hostName: "cm2-ttt.bestservers.io",
+
+            region: Region.EU,
 
             platformId: 3,
             categoryId: 1,
@@ -357,6 +369,8 @@ async function seedServers() {
             platformId: 5,
             categoryId: 7,
 
+            region: Region.NA,
+
             name: "[CM1] MiniGames | Fun | No Lag",
             descriptionShort: "CM1's new MiniGames server with no autos/awps allowed!",
             description: "CM1's new MiniGames server!",
@@ -381,6 +395,8 @@ async function seedServers() {
             port: 27018,
             hostName: "cm1-gosurf.bestservers.io",
 
+            region: Region.AS,
+
             platformId: 1,
             categoryId: 8,
 
@@ -396,8 +412,8 @@ async function seedServers() {
             mapName: "surf_kitsune",
             avgUsers: 54,
 
-            locationLat: 47.3232312321,
-            locationLon: 10.12321321351
+            locationLat: 12.123125123,
+            locationLon: 31.123213157
         }
     });
 
@@ -407,6 +423,8 @@ async function seedServers() {
             ip: INTERNAL_IP1,
             port: 27019,
             hostName: "cm1-gosurfdm.bestservers.io",
+
+            region: Region.NA,
 
             platformId: 1,
             categoryId: 9,
@@ -435,6 +453,8 @@ async function seedServers() {
             port: 28015,
             hostName: "cm1-rustvan.bestservers.io",
 
+            region: Region.SA,
+
             platformId: 4,
             categoryId: 1,
 
@@ -461,6 +481,8 @@ async function seedServers() {
             ip: INTERNAL_IP2,
             port: 28015,
             hostName: "cm2-rustvan.bestservers.io",
+
+            region: Region.EU,
 
             platformId: 4,
             categoryId: 1,
@@ -489,6 +511,8 @@ async function seedServers() {
             port: 27020,
             hostName: "cm1-csjb.bestservers.io",
 
+            region: Region.NA,
+
             platformId: 5,
 
             name: "[CM1] Jailbreak | 800 tick | No Lag",
@@ -514,6 +538,8 @@ async function seedServers() {
             ip: INTERNAL_IP1,
             port: 27021,
             hostName: "cm1-csd2.bestservers.io",
+
+            region: Region.NA,
 
             platformId: 5,
             categoryId: 1,
@@ -542,6 +568,8 @@ async function seedServers() {
             port: 27022,
             hostName: "cm1-tfdodgeball.bestservers.io",
 
+            region: Region.NA,
+
             platformId: 2,
             categoryId: 1,
 
@@ -568,6 +596,8 @@ async function seedServers() {
             ip: INTERNAL_IP1,
             port: 27023,
             hostName: "cm1-tfturbine.bestservers.io",
+
+            region: Region.NA,
 
             platformId: 2,
             categoryId: 1,
@@ -596,6 +626,8 @@ async function seedServers() {
             port: 27024,
             hostName: "cm1-tf2ware.bestservers.io",
 
+            region: Region.NA,
+
             platformId: 2,
             categoryId: 1,
 
@@ -621,6 +653,8 @@ async function seedServers() {
             ip: INTERNAL_IP1,
             port: 27025,
             hostName: "cm1-echo.bestservers.io",
+
+            region: Region.NA,
 
             platformId: 2,
             categoryId: 1,
@@ -648,6 +682,8 @@ async function seedServers() {
             port: 27026,
             hostName: "cm1-echo2.bestservers.io",
 
+            region: Region.NA,
+
             platformId: 2,
             categoryId: 1,
 
@@ -673,6 +709,8 @@ async function seedServers() {
             ip: INTERNAL_IP1,
             port: 27027,
             hostName: "cm1-echo3.bestservers.io",
+
+            region: Region.OC,
 
             platformId: 2,
             categoryId: 1,
@@ -700,6 +738,8 @@ async function seedServers() {
             port: 27028,
             hostName: "cm1-echo4.bestservers.io",
 
+            region: Region.OC,
+
             platformId: 2,
             categoryId: 1,
 
@@ -725,6 +765,8 @@ async function seedServers() {
             ip: INTERNAL_IP1,
             port: 27029,
             hostName: "cm1-echo5.bestservers.io",
+
+            region: Region.AF,
 
             platformId: 2,
             categoryId: 1,
