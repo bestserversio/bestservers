@@ -14,6 +14,10 @@
 
     @import "components/servers/Browser.css";
     @import "components/servers/Row.css";
+    @import "components/servers/filters/Main.css";
+    @import "components/servers/filters/Platforms.css";
+    @import "components/servers/filters/Categories.css";
+    @import "components/servers/filters/Regions.css";
 
     @import "components/platforms/Main.css";
     @import "components/platforms/Row.css";

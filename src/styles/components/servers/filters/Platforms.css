@@ -1,0 +1,50 @@
+.server-filters-platforms {
+    & > div:first-child {
+        @apply rounded-t-md;
+        @apply bg-cyan-800/70;
+        @apply p-4;
+        @apply text-center;
+    }
+
+    & > div:last-child  {
+        @apply bg-slate-800/70;
+
+        & > ul {
+            @apply list-none;
+
+            & li {
+                @apply p-6;
+                @apply cursor-pointer;
+            }
+        }
+    }
+}
+
+.server-filters-platforms-style1 {
+    @apply max-h-[50%];
+
+    & > div:last-child {
+        & > ul {
+            @apply overflow-y-scroll;
+
+            &::-webkit-scrollbar {
+                @apply w-2;
+                @apply rounded;
+            }
+            
+            &::-webkit-scrollbar-track {
+                @apply bg-black/20;
+            }
+            
+            &::-webkit-scrollbar-thumb {
+                @apply bg-gray-700/50;
+                
+                @apply rounded-lg;
+            }
+            
+            &::-webkit-scrollbar-thumb:hover {
+                @apply bg-gray-600/50;
+            }
+        }
+    }
+}

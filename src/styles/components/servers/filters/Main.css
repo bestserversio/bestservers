@@ -1,0 +1,60 @@
+.server-filters-main {
+
+}
+
+.server-filters-style1 {
+    @apply mx-auto;
+    @apply container;
+    @apply w-full;
+
+    & > div:last-child {
+        @apply grid;
+        @apply grid-cols-1;
+        @apply sm:grid-cols-8;
+        @apply gap-4;
+
+        & > div:nth-child(1), > div:nth-child(2) {
+            @apply col-span-1;
+            @apply sm:col-span-2;
+        }
+    
+        & > div:nth-child(3) {
+            @apply col-span-1;
+            @apply sm:col-span-4;
+        }
+
+        & > div {
+            @apply flex;
+            @apply flex-col;
+            @apply gap-1;
+        }
+    }
+}
+
+.server-filters-style2 {
+    @apply flex;
+    @apply flex-col;
+
+    & > div:first-child {
+        @apply rounded-t-md;
+        @apply bg-cyan-800/70;
+        @apply p-4;
+        @apply text-center;
+    }
+
+    & > div:last-child {
+        @apply bg-slate-800/70;
+
+        @apply flex;
+        @apply flex-col;
+        @apply gap-2;
+
+        @apply p-2;
+
+        & > div {
+            @apply flex;
+            @apply flex-col;
+            @apply gap-2;
+        }
+    }
+}
