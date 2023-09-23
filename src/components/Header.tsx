@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import ArrowIcon from "./icons/Arrow";
 import Link from "next/link";
 import IconAndText from "./helpers/IconAndText";
@@ -6,26 +6,10 @@ import HomeIcon from "./icons/header/Home";
 import ServersIcon from "./icons/header/Servers";
 import GamesIcon from "./icons/header/Games";
 import AboutIcon from "./icons/header/AboutIcon";
+import { ViewPortCtx } from "./Wrapper";
 
 export default function Header () {
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            const checkResize = () => {
-                if (window.innerWidth < 640)
-                    setIsMobile(true);
-                else
-                    setIsMobile(false);
-            }
-
-            // Check for mobile now.
-            checkResize();
-
-            // Add event listener for resize events.
-            window.addEventListener("resize", checkResize);
-        }
-    }, [])
+    const viewPort = useContext(ViewPortCtx);
 
     const [isSiteListOpen, setIsSiteListOpen] = useState(false);
     const [isSiteListClosing, setIsSiteListClosing] = useState(false);
