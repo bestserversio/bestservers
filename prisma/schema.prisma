@@ -35,6 +35,16 @@ enum ServerLinkType {
   TIKTOK
 }
 
+enum Region {
+  AF
+  AS
+  EU
+  NA
+  SA
+  OC
+  AN
+}
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -166,6 +176,7 @@ model Server {
   mapName  String?
   avgUsers Int     @default(0)
 
+  region      Region?
   locationLat Float?
   locationLon Float?
 
