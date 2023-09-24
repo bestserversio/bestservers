@@ -67,7 +67,7 @@ export default function FiltersMain ({
                                     defaultValue={filters.sortDir}
                                 >
                                     <option value="asc">Ascending</option>
-                                    <option value="desc">Desending</option>
+                                    <option value="desc">Descending</option>
                                 </select>
                             </div>
                         )}
