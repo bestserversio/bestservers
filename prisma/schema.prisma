@@ -228,15 +228,24 @@ model ServerReview {
 }
 
 model ServerUser {
+  id Int @id @default(autoincrement())
+
   serverId Int
   server   Server @relation(fields: [serverId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   role ServerRole @default(USER)
 
-  @@id([serverId, userId])
+  displayName String?
+  score       BigInt  @default(0)
+  playTime    Float   @default(0.0)
+
+  online      Boolean @default(false)
+  sessionTime Float   @default(0.0)
+
+  @@unique([serverId, userId])
 }
 
 model ServerClaimKey {
