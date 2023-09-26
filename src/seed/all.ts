@@ -210,7 +210,62 @@ async function seedServers() {
             avgUsers: 45,
 
             locationLat: 47.3232312321,
-            locationLon: 10.12321321351
+            locationLon: 10.12321321351,
+
+            stats: {
+                createMany: {
+                    data: [
+                        {
+                            curUsers: 32,
+                            maxUsers: 64,
+                            rank: 1,
+                            mapName: "ze_echo_boat_escapev3"
+                        },
+                        {
+                            date: new Date(Date.now() + 300),
+                            curUsers: 44,
+                            maxUsers: 64,
+                            rank: 1,
+                            mapName: "ze_echo_boat_escapev3"
+                        },
+                        {
+                            date: new Date(Date.now() + 600),
+                            curUsers: 50,
+                            maxUsers: 64,
+                            rank: 1,
+                            mapName: "ze_shaunofthedead"
+                        },
+                        {
+                            date: new Date(Date.now() + 900),
+                            curUsers: 60,
+                            maxUsers: 64,
+                            rank: 1,
+                            mapName: "ze_shaunofthedead"
+                        },
+                        {
+                            date: new Date(Date.now() + 1200),
+                            curUsers: 64,
+                            maxUsers: 64,
+                            rank: 1,
+                            mapName: "ze_shaunofthedead"
+                        },
+                        {
+                            date: new Date(Date.now() + 1500),
+                            curUsers: 63,
+                            maxUsers: 64,
+                            rank: 1,
+                            mapName: "ze_shaunofthedead"
+                        },
+                        {
+                            date: new Date(Date.now() + 1800),
+                            curUsers: 13,
+                            maxUsers: 64,
+                            rank: 1,
+                            mapName: "ze_icecapescapev3"
+                        }
+                    ]
+                }
+            }
         }
     });
 
