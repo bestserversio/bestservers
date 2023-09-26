@@ -18,6 +18,14 @@ export const ViewPortCtx = createContext({
     isMobile: false
 })
 
+
+type LocationT = {
+    lat: number
+    lon: number
+}
+
+export const LocationCtx = createContext<LocationT | undefined>(undefined)
+
 export default function Wrapper ({
     children
 } : {
@@ -80,39 +88,56 @@ export default function Wrapper ({
         return () => clearInterval(timerId);
     }, [curBg, isMobile, bgImages])
 
+    // Location.
+    const [curLocation, setCurLocation] = useState<LocationT | undefined>(undefined);
+
+    if (typeof navigator !== "undefined" && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((pos) => {
+            setCurLocation({
+                lat: pos.coords.latitude,
+                lon: pos.coords.longitude
+            })
+        }, (err) => {
+            console.error("Error retrieving current location.");
+            console.error(err);
+        })
+    }
+
     return (
         <ViewPortCtx.Provider value={{
             isMobile: isMobile
         }}>
-            <main className={isMobile ? "bg-gradient-to-b from-gray-900 to-gray-950" : undefined}>
-                <div
-                    id="bg"
-                    className={isMobile ? "hidden" : undefined}
-                    style={{
-                        backgroundImage: (!isMobile && curBg) ? `url('/images/background/${curBg}')` : undefined
-                    }}
-                />
-                <div
-                    id="bg-overlay"
-                    className={isMobile ? "hidden" : undefined}
-                />
+            <LocationCtx.Provider value={curLocation}>
+                <main className={isMobile ? "bg-gradient-to-b from-gray-900 to-gray-950" : undefined}>
+                    <div
+                        id="bg"
+                        className={isMobile ? "hidden" : undefined}
+                        style={{
+                            backgroundImage: (!isMobile && curBg) ? `url('/images/background/${curBg}')` : undefined
+                        }}
+                    />
+                    <div
+                        id="bg-overlay"
+                        className={isMobile ? "hidden" : undefined}
+                    />
 
-                <Header />
-                <GoogleAnalytics />
-                <div className="content">
-                    <ErrorBox
-                        title={errorCtx?.title}
-                        message={errorCtx?.msg}
-                    />
-                    <SuccessBox
-                        title={successCtx?.title}
-                        message={successCtx?.msg}
-                    />
-                    <GamePlayer>
-                        {children}
-                    </GamePlayer>
-                </div>
-            </main>
+                    <Header />
+                    <GoogleAnalytics />
+                    <div className="content">
+                        <ErrorBox
+                            title={errorCtx?.title}
+                            message={errorCtx?.msg}
+                        />
+                        <SuccessBox
+                            title={successCtx?.title}
+                            message={successCtx?.msg}
+                        />
+                        <GamePlayer>
+                            {children}
+                        </GamePlayer>
+                    </div>
+                </main>
+            </LocationCtx.Provider>
         </ViewPortCtx.Provider>
     );
 }
