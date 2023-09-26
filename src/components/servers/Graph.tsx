@@ -1,6 +1,7 @@
 import { api } from "@utils/api";
 import { useState } from "react";
 import { ServerPublic } from "~/types/Server";
+import { Server } from "@prisma/client";
 
 import d3 from "d3";
 

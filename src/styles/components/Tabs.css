@@ -1,0 +1,18 @@
+.tabs-menu {
+    @apply flex;
+    @apply flex-col;
+    @apply gap-2;
+
+    & > a {
+        @apply p-4;
+        @apply text-center;
+        @apply rounded;
+        @apply bg-gray-800;
+        @apply hover:bg-gray-700;
+
+        &:is(.tab-active) {
+            @apply font-bold;
+            @apply bg-gray-700;
+        }
+    }
+}
