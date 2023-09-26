@@ -29,4 +29,5 @@
     @import "components/Markdown.css";
     @import "components/GamePlayer.css";
     @import "components/Tabs.css";
+    @import "components/Switches.css";
 }

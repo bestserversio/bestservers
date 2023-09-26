@@ -1,0 +1,17 @@
+.switch {
+    @apply relative;
+    @apply inline-flex;
+    @apply items-center;
+    @apply cursor-pointer;
+
+    & > input {
+        @apply sr-only;
+    }
+
+
+    & > span {
+        @apply ml-3;
+        @apply font-bold;
+        @apply text-white;
+    }
+}

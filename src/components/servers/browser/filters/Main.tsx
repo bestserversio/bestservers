@@ -1,3 +1,4 @@
+import Switch from "@components/helpers/Switch";
 import { FiltersCtx } from "@components/servers/Browser";
 import { useContext } from "react";
 
@@ -98,9 +99,8 @@ export default function FiltersMain ({
                         {showOffline && (
                             <div>
                                 <label>Show Offline</label>
-                                <input
-                                    type="checkbox"
-                                    onClick={() => {
+                                <Switch
+                                    onChange={() => {
                                         filters.setFilterOffline(filters?.filterOffline ? !filters.filterOffline : true);
                                     }}
                                 />
@@ -109,9 +109,8 @@ export default function FiltersMain ({
                         {showHideEmpty && (
                             <div>
                                 <label>Hide Empty</label>
-                                <input
-                                    type="checkbox"
-                                    onClick={() => {
+                                <Switch
+                                    onChange={() => {
                                         filters.setFilterHideEmpty(filters?.filterHideEmpty ? !filters.filterHideEmpty : true);
                                     }}
                                 />
@@ -120,9 +119,8 @@ export default function FiltersMain ({
                         {showHideFull && (
                             <div>
                                 <label>Hide Full</label>
-                                <input
-                                    type="checkbox"
-                                    onChange={(e) => {
+                                <Switch
+                                    onChange={() => {
                                         filters.setFilterHideFull(filters?.filterHideFull ? !filters.filterHideFull : true);
                                     }}
                                 />
