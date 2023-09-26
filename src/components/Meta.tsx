@@ -21,13 +21,13 @@ export type MetaType = {
 };
 
 export default function Meta ({
-    title = "Deaconn",
+    title = "Best Servers",
     contentTitle,
-    description = "A software developer and community with the goal to bring together and empower as many software, security, and network engineers and developers as possible.",
+    description = "A global server browser with many features!",
     robots = "index, follow",
     image = "/images/banner.png",
     web_type = "website",
-    key_words = ["deaconn", "coding", "developer", "security", "network","tech", "cyber", "programming", "service", "tutorial"],
+    key_words = ["games", "servers", "browser", "counter-strike", "technology"],
     
     article_ptime,
     article_mtime,
