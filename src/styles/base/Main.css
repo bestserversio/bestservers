@@ -28,4 +28,24 @@ main {
     h3 {
         @apply text-lg;
     }
+
+}
+
+::-webkit-scrollbar {
+    @apply w-2;
+    @apply rounded;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-gray-950;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-teal-900;
+    
+    @apply rounded-lg;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-600/50;
 }
