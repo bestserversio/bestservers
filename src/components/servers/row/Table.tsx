@@ -7,6 +7,8 @@ import ServerLink from "../Link";
 import Image from "next/image";
 import PlayerCount from "../PlayerCount";
 import { GetRegionFlag } from "../../../utils/region";
+import JoinButton from "@components/buttons/Join";
+import GamePlayerButton from "@components/buttons/GamePlayer";
 
 export default function ServerRowTable ({
     server
@@ -35,6 +37,11 @@ export default function ServerRowTable ({
     
     return (
         <tr className="server-row-table">
+            <td>
+                {server.rating && (
+                    <span className="text-lg text-bold">{server.rating.toString()}</span>
+                )}
+            </td>
             <td>
                 {platIcon && (
                     <Image
@@ -66,29 +73,8 @@ export default function ServerRowTable ({
                 <PlayerCount server={server} />
             </td>
             <td>
-                {(server.platform?.jsInternal || server.platform?.jsExternal) && (
-                    <button
-                        onClick={() => {
-                            if (!gameplayerCtx)
-                                return;
-
-                            gameplayerCtx.setVisible(true);
-
-                            if (server.platform?.jsInternal)
-                                gameplayerCtx.setInternal(server.platform.jsInternal);
-                            else if (server.platform?.jsExternal)
-                                gameplayerCtx.setExternal(server.platform.jsExternal);
-                        }}
-                    >Play</button>
-                )}
-
-                {joinUrl && (
-                    <Link
-                        href={joinUrl}
-                        className="button"
-                    >Join</Link>
-                )}
-
+                <GamePlayerButton server={server} />
+                <JoinButton server={server} />
                 <ServerLink
                     server={server}
                     className="button"
