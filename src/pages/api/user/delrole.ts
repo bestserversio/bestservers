@@ -19,7 +19,7 @@ export default async function Handler (
 
     // Check if our root API key is set.
     if (!apiKey) {
-        console.error("API /api/user/addrole called without root API set.");
+        console.error("API /api/user/delrole called without root API set.");
 
         return res.status(401).json({
             message: "Unauthorized"
