@@ -1,0 +1,22 @@
+.server-graph {
+    @apply p-4;
+
+    & > div:first-child {
+        & > ul {
+            @apply flex;
+            @apply flex-wrap;
+            @apply gap-2;
+            & > li {
+                @apply cursor-pointer;
+                @apply p-2;
+                @apply bg-cyan-800/70;
+                @apply rounded;
+                @apply font-bold;
+
+                &:is(.active) {
+                    @apply bg-cyan-700/70;
+                }
+            }
+        }
+    }
+}
