@@ -35,13 +35,13 @@
     & td {
         @apply p-1;
 
-        &:first-child {
+        &:nto-child(2) {
             & img {
                 @apply mx-auto;
             }
         }
 
-        &:nth-child(2) {
+        &:nth-child(3) {
             & img {
                 @apply mx-auto;
             }
