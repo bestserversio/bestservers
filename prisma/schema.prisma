@@ -93,6 +93,8 @@ model User {
   serverReviews ServerReview[]
   serverUsers   ServerUser[]
   serverKeys    ServerClaimKey[]
+
+  apiKeys ApiKey[]
 }
 
 model VerificationToken {
@@ -188,8 +190,10 @@ model Server {
   keys    ServerClaimKey[]
   links   ServerLink[]
   ranks   ServerRank[]
+  tags    ServerTag[]
 
   @@unique([ip, port])
+  @@unique([ip6, port])
 }
 
 model ServerStat {
@@ -198,10 +202,10 @@ model ServerStat {
 
   date DateTime @default(now())
 
-  online   Boolean @default(false)
   curUsers Int     @default(0)
   maxUsers Int     @default(0)
   rank     Int     @default(0)
+  mapName  String?
 
   @@id([serverId, date])
 }
@@ -279,5 +283,46 @@ model ServerRank {
   serverId Int
   server   Server @relation(fields: [serverId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
+  rank Int @default(0)
+
   @@id([platformId, serverId])
+}
+
+model ServerTag {
+  serverId Int
+  server   Server @relation(fields: [serverId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  tag String
+
+  @@id([serverId, tag])
+}
+
+model ApiKey {
+  id Int @id @default(autoincrement())
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  host        String?
+  endpoint    String?
+  writeAccess Boolean @default(false)
+
+  key String @unique
+
+  limit Int @default(3000)
+
+  hits ApiKeyHits[]
+}
+
+model ApiKeyHits {
+  keyId Int
+  key   ApiKey @relation(fields: [keyId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  host     String
+  endpoint String
+  write    Boolean @default(false)
+
+  time DateTime @default(now())
+
+  @@id([keyId, host, endpoint, time])
 }
