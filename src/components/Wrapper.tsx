@@ -91,17 +91,20 @@ export default function Wrapper ({
     // Location.
     const [curLocation, setCurLocation] = useState<LocationT | undefined>(undefined);
 
-    if (typeof navigator !== "undefined" && navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((pos) => {
-            setCurLocation({
-                lat: pos.coords.latitude,
-                lon: pos.coords.longitude
+    useEffect(() => {
+        if (typeof navigator !== "undefined" && navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((pos) => {
+                setCurLocation({
+                    lat: pos.coords.latitude,
+                    lon: pos.coords.longitude
+                })
+            }, (err) => {
+                console.error("Error retrieving current location.");
+                console.error(err);
             })
-        }, (err) => {
-            console.error("Error retrieving current location.");
-            console.error(err);
-        })
-    }
+        }
+    }, [])
+
 
     return (
         <ViewPortCtx.Provider value={{
