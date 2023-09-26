@@ -18,6 +18,8 @@
     transition: transform 0.3s ease-in-out;
     transform: translateY(0);
 
+    @apply max-w-[32rem];
+
     & > div {
         @apply flex;
         @apply flex-col;
