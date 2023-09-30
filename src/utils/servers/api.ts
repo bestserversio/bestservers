@@ -79,13 +79,13 @@ export type ServerWhereT = {
     port?: string | number
 }
 
-export async function FindServer(where: ServerWhereT): Promise<Server | null> {
+export async function FindServer (where: ServerWhereT): Promise<Server | null> {
     const { id, url, ip, ip6, port } = where;
 
     if (!id && !url && ((!ip && !ip6) || port))
         return null; 
 
-    const server = await prisma.server.findFirst({
+    return await prisma.server.findFirst({
         where: {
             OR: [
                 {
@@ -121,8 +121,6 @@ export async function FindServer(where: ServerWhereT): Promise<Server | null> {
             ]
         }
     });
-
-    return server;
 }
 
 export async function UpdateServer (id: number, data: ServerDataT): Promise<Server | null> {
@@ -134,13 +132,13 @@ export async function UpdateServer (id: number, data: ServerDataT): Promise<Serv
     })
 }
 
-export async function AddServer(data: ServerDataT): Promise<Server | null> {
+export async function AddServer (data: ServerDataT): Promise<Server | null> {
     return await prisma.server.create({
         data: data
     })
 }
 
-export async function DeleteServer(where: ServerWhereT): Promise<Server | null> {
+export async function DeleteServer (where: ServerWhereT): Promise<Server | null> {
     const server = await FindServer(where);
 
     const serverId = server?.id;
@@ -148,7 +146,7 @@ export async function DeleteServer(where: ServerWhereT): Promise<Server | null> 
     if (!serverId)
         return null;
 
-    return prisma.server.delete({
+    return await prisma.server.delete({
         where: {
             id: serverId
         }
