@@ -4,7 +4,7 @@ import { ServerPublic } from "~/types/Server";
 
 export default function JoinButton ({
     server,
-    className = "button"
+    className = "button button-primary"
 } : {
     server: ServerPublic | Server
     className?: string
