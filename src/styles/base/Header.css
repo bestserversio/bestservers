@@ -1,3 +1,5 @@
+@import "https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap";
+
 @keyframes logo-slide-down {
     0% {
         transform: translateY(-100%);
@@ -17,22 +19,30 @@
 }
 
 header {
-    @apply p-4;
+    @apply p-2;
     @apply bg-slate-900/60;
     @apply z-10;
+    @apply w-full;
+    
+
+    &:is(.fixed):hover {
+        @apply duration-500;
+        @apply bg-slate-900;
+    }
 
     & nav {
-        @apply grid;
-        @apply grid-cols-6;
-        @apply gap-4;
+        @apply flex;
+        @apply flex-wrap;
+        @apply gap-6;
         @apply items-center;
 
         & .logo {
             @apply relative;
-            @apply col-span-2;
+            @apply w-80;
     
-            & h1 {
-                @apply text-5xl;
+            & h2 {
+                font-family: "Black Ops One", sans-serif;
+                @apply text-3xl;
             }
     
             & ul {
@@ -49,9 +59,16 @@ header {
         }
 
         & > a {
+            @apply text-lg;
             @apply duration-150;
             @apply opacity-80;
             @apply hover:opacity-100;
+            @apply font-bold;
+            @apply font-gruppo;
+
+            &:is(.nav-active) {
+                @apply opacity-100;
+            }
         }
     }
 
