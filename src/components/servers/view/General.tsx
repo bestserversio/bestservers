@@ -392,11 +392,11 @@ export default function ServerViewGeneral ({
             <div className="flex flex-wrap justify-center gap-4">
                 <GamePlayerButton
                     server={server}
-                    className="button w-72"
+                    className="button button-primary w-72"
                 />
                 <JoinButton
                     server={server}
-                    className="button w-72"
+                    className="button button-primary w-72"
                 />
             </div>
         </>
