@@ -29,13 +29,18 @@
     @apply border-separate;
     @apply rounded-lg;
 
+    &:first-child {
+        @apply border-t-2;
+    }
+
     @apply border-b-2;
     @apply border-cyan-950/70;
 
     & td {
+        @apply text-sm;
         @apply p-1;
 
-        &:nto-child(2) {
+        &:nth-child(2) {
             & img {
                 @apply mx-auto;
             }
@@ -48,9 +53,13 @@
         }
 
         &:last-child {
-            @apply flex;
-            @apply gap-4;
-            @apply justify-center;
+            & > div {
+                @apply flex;
+                @apply flex-wrap;
+                @apply gap-2;
+                @apply justify-center;
+                @apply items-center;
+            }
         }
     }
 
