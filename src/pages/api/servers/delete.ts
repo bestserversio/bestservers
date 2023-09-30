@@ -2,11 +2,21 @@ import { Server } from "@prisma/client";
 import { prisma } from "@server/db";
 import { CheckApiAccess } from "@utils/apihelpers";
 import { ProcessPrismaError } from "@utils/error";
-import { FindServer } from "@utils/servers/api";
+import { FindServer, ServerBodyT, ServerWhereT } from "@utils/servers/api";
 import { NextApiRequest, NextApiResponse } from "next";
 
+type ServerBodyWithWhereT = ServerBodyT & {
+    where: ServerWhereT
+}
+
+interface ExtendedRequest extends NextApiRequest {
+    body: {
+        servers: ServerBodyWithWhereT[]
+    }
+}
+
 export default async function Handler (
-    req: NextApiRequest,
+    req: ExtendedRequest,
     res: NextApiResponse
 ) {
     const { method } = req;
@@ -34,67 +44,110 @@ export default async function Handler (
         });
     }
 
-    // Retrieve where.
+    // See if we should abort on error.
+    const errors: string[] = [];
+
+    let abortOnError = false;
+
     const { query } = req;
 
-    const whereId = query.id?.toString() || undefined;
-    const whereUrl = query.url?.toString() || undefined;
+    const abortOnErrorStr = query.abortOnError?.toString();
 
-    const whereIp = query.ip?.toString() || undefined;
-    const whereIp6 = query.ip6?.toString() || undefined;
-    const wherePort = query.port?.toString() || undefined;
+    if (abortOnErrorStr && Boolean(abortOnErrorStr))
+        abortOnError = true;
 
-    // Make sure we have at least one where clause combination.
-    if (!whereId && ((!whereIp && !whereIp6) || !wherePort)) {
-        return res.status(404).json({
-            message: "Both where ID and IP/port is not specified. Aborting..."
-        });
-    }
+    const servers: Server[] = [];
 
-    try {
-        const serverFind = await FindServer({
-            id: whereId,
-            url: whereUrl,
-            ip: whereIp,
-            ip6: whereIp6,
-            port: wherePort
-        });
+    const promises = req.body.servers.map(async (serverBody) => {
+        const { where: whereParams } = serverBody;
 
-        if (!serverFind?.id)  {
-            return res.status(404).json({
-                message: `Server not found. ID => ${whereId}. URL => ${whereUrl}. IP => ${whereIp}. IPv6 => ${whereIp6}. Port => ${wherePort}`
-            });
+        // Make sure we have at least one where clause combination.
+        if (!whereParams.id && ((!whereParams.ip && !whereParams.ip6) || !whereParams.port)) {
+            if (abortOnError) {
+                return res.status(404).json({
+                    message: "Both where ID and IP/port is not specified. Aborting..."
+                });
+            } else {
+                errors.push(`Server missing both where ID and IP/port clauses."`);
+
+                return;
+            }
         }
 
-        let server: Server | null = null;
-
         try {
-            server = await prisma.server.delete({
-                where: {
-                    id: serverFind.id
+            const serverFind = await FindServer({
+                id: whereParams.id,
+                url: whereParams.url,
+                ip: whereParams.ip,
+                ip6: whereParams.ip6,
+                port: whereParams.port
+            });
+    
+            if (!serverFind?.id)  {
+                const fullErrMsg = `Server not found. ID => ${whereParams.id}. URL => ${whereParams.url}. IP => ${whereParams.ip}. IPv6 => ${whereParams.ip6}. Port => ${whereParams.port?.toString()}`;
+
+                if (abortOnError) {
+                    return res.status(404).json({
+                        message: fullErrMsg
+                    });
+                } else {
+                    errors.push(fullErrMsg);
+
+                    return;
                 }
-            })
+            }
+    
+            let server: Server | null = null;
+    
+            try {
+                server = await prisma.server.delete({
+                    where: {
+                        id: serverFind.id
+                    }
+                })
+            } catch (err) {
+                console.error(err);
+        
+                const [errMsg, errCode] = ProcessPrismaError(err);
+
+                const fullErrMsg = `Error deleting server.${errMsg ? ` Error => ${errMsg}${errCode ? ` (${errCode})` : ``}` : ``}.`;
+        
+                if (abortOnError) {
+                    return res.status(400).json({
+                        message: fullErrMsg
+                    });
+                } else {
+                    errors.push(fullErrMsg);
+
+                    return;
+                }
+            }
         } catch (err) {
             console.error(err);
     
             const [errMsg, errCode] = ProcessPrismaError(err);
+
+            const fullErrMsg = `Error finding server.${errMsg ? ` Error => ${errMsg}${errCode ? ` (${errCode})` : ``}` : ``}.`;
     
-            return res.status(400).json({
-                message: `Error deleting server.${errMsg ? ` Error => ${errMsg}${errCode ? ` (${errCode})` : ``}` : ``}.`
-            });
+            if (abortOnError) {
+                return res.status(400).json({
+                    message: fullErrMsg
+                });
+            } else {
+                errors.push(fullErrMsg);
+
+                return;
+            }
         }
+    })
 
-        return res.status(200).json({
-            server: server,
-            message: `Successfully deleted server!`
-        });
-    } catch (err) {
-        console.error(err);
+    await Promise.all(promises);
 
-        const [errMsg, errCode] = ProcessPrismaError(err);
-
-        return res.status(400).json({
-            message: `Error finding server.${errMsg ? ` Error => ${errMsg}${errCode ? ` (${errCode})` : ``}` : ``}.`
-        });
-    }
+    return res.status(200).json({
+        serverCount: servers.length,
+        servers: servers,
+        errorCount: errors.length,
+        errors: errors,
+        message: `Deleted ${servers.length.toString()} servers!`
+    });
 }

@@ -3,11 +3,17 @@ import { prisma } from "@server/db";
 import { CheckApiAccess } from "@utils/apihelpers";
 import { ProcessPrismaError } from "@utils/error";
 import { GetRegionFromString } from "@utils/region";
-import { FindServer, ServerBodyT } from "@utils/servers/api";
+import { FindServer, ServerBodyT, ServerWhereT } from "@utils/servers/api";
 import { NextApiRequest, NextApiResponse } from "next";
 
+type ServerBodyWithWhereT = ServerBodyT & {
+    where: ServerWhereT
+}
+
 interface ExtendedRequest extends NextApiRequest {
-    body: ServerBodyT
+    body: {
+        servers: ServerBodyWithWhereT[]
+    }
 }
 
 export default async function Handler (
@@ -39,70 +45,108 @@ export default async function Handler (
         });
     }
 
-    // Retrieve where.
+    // See if we should abort on error.
+    const errors: string[] = [];
+
+    let abortOnError = false;
+
     const { query } = req;
 
-    const whereId = query.id?.toString() || undefined;
-    const whereUrl = query.url?.toString() || undefined;
+    const abortOnErrorStr = query.abortOnError?.toString();
 
-    const whereIp = query.ip?.toString() || undefined;
-    const whereIp6 = query.ip6?.toString() || undefined;
-    const wherePort = query.port?.toString() || undefined;
+    if (abortOnErrorStr && Boolean(abortOnErrorStr))
+        abortOnError = true;
 
-    try {
-        const serverFind = await FindServer({
-            id: whereId,
-            url: whereUrl,
-            ip: whereIp,
-            ip6: whereIp6,
-            port: wherePort
-        });
+    const servers: Server[] = [];
 
-        if (!serverFind?.id) {
-            return res.status(404).json({
-                message: `Server not found. ID => ${whereId}. URL => ${whereUrl}. IP => ${whereIp}. IPv6 => ${whereIp6}. Port => ${wherePort}`
-            });
-        }
-
-        // Retrieve region and last queried since we parse these differently.
-        const { region, lastQueried } = req.body;
-
-        let server: Server | null = null;
+    const promises = req.body.servers.map(async (serverBody) => {
+        const { where: whereParams } = serverBody;
 
         try {
-            server = await prisma.server.update({
-                data: {
-                    ...req.body,
-                    region: GetRegionFromString(region),
-                    lastQueried: lastQueried ? new Date(lastQueried) : undefined
-                },
-                where: {
-                    id: serverFind.id
+            const serverFind = await FindServer({
+                id: whereParams.id,
+                url: whereParams.url,
+                ip: whereParams.ip,
+                ip6: whereParams.ip6,
+                port: whereParams.port
+            });
+    
+            if (!serverFind?.id) {
+                const fullErrMsg = `Server not found. ID => ${whereParams.id}. URL => ${whereParams.url}. IP => ${whereParams.ip}. IPv6 => ${whereParams.ip6}. Port => ${whereParams.port?.toString()}`;
+
+                if (abortOnError) {
+                    return res.status(404).json({
+                        message: fullErrMsg
+                    });
+                } else {
+                    errors.push(fullErrMsg);
+
+                    return;
                 }
-            })
+            }
+    
+            // Retrieve region and last queried since we parse these differently.
+            const { region, lastQueried } = serverBody;
+    
+            let server: Server | null = null;
+    
+            try {
+                server = await prisma.server.update({
+                    data: {
+                        ...serverBody,
+                        region: GetRegionFromString(region),
+                        lastQueried: lastQueried ? new Date(lastQueried) : undefined
+                    },
+                    where: {
+                        id: serverFind.id
+                    }
+                })
+
+                if (server)
+                    servers.push(server);
+            } catch (err) {
+                console.error(err);
+        
+                const [errMsg, errCode] = ProcessPrismaError(err);
+
+                const fullErrMsg = `Error updating server.${errMsg ? ` Error => ${errMsg}${errCode ? ` (${errCode})` : ``}` : ``}.`;
+
+                if (abortOnError) {
+                    return res.status(400).json({
+                        message: fullErrMsg
+                    });
+                } else {
+                    errors.push(fullErrMsg);
+
+                    return;
+                }
+            }
         } catch (err) {
             console.error(err);
     
             const [errMsg, errCode] = ProcessPrismaError(err);
-    
-            return res.status(400).json({
-                message: `Error updating server.${errMsg ? ` Error => ${errMsg}${errCode ? ` (${errCode})` : ``}` : ``}.`
-            });
+
+            const fullErrMsg = `Error finding server.${errMsg ? ` Error => ${errMsg}${errCode ? ` (${errCode})` : ``}` : ``}.`;
+
+            if (abortOnError) {
+                return res.status(400).json({
+                    message: fullErrMsg
+                });
+            } else {
+                errors.push(fullErrMsg);
+
+                return;
+            }
         }
+    })
 
-        return res.status(200).json({
-            server: server,
-            message: `Successfully added server!`
-        });
-    } catch (err) {
-        console.error(err);
+    await Promise.all(promises);
 
-        const [errMsg, errCode] = ProcessPrismaError(err);
-
-        return res.status(400).json({
-            message: `Error finding server.${errMsg ? ` Error => ${errMsg}${errCode ? ` (${errCode})` : ``}` : ``}.`
-        });
-    }
-    
-
+    return res.status(200).json({
+        serverCount: servers.length,
+        servers: servers,
+        errorCount: errors.length,
+        errors: errors,
+        message: `Updated ${servers.length.toString()} servers!`
+    });
 }

@@ -6,7 +6,9 @@ import { AddServer, ServerBodyT } from "@utils/servers/api";
 import { NextApiRequest, NextApiResponse } from "next";
 
 interface ExtendedRequest extends NextApiRequest {
-    body: ServerBodyT
+    body: {
+        servers: ServerBodyT[]
+    }
 }
 
 export default async function Handler (
@@ -36,30 +38,63 @@ export default async function Handler (
         });
     }
 
-    // Retrieve region and last queried parameters since we need to parse them differently.
-    const { region, lastQueried } = req.body;
+    // See if we should abort on error.
+    const errors: string[] = [];
 
-    // Add server.
-    let server: Server | null = null;
+    let abortOnError = false;
 
-    try {
-        server = await AddServer({
-            ...req.body,
-            region: GetRegionFromString(region),
-            lastQueried: lastQueried ? new Date(lastQueried) : undefined
-        })
-    } catch (err) {
-        console.error(err);
+    const { query } = req;
 
-        const [errMsg, errCode] = ProcessPrismaError(err);
+    const abortOnErrorStr = query.abortOnError?.toString();
 
-        return res.status(400).json({
-            message: `Error adding server.${errMsg ? ` Error => ${errMsg}${errCode ? ` (${errCode})` : ``}` : ``}.`
-        });
-    }
+    if (abortOnErrorStr && Boolean(abortOnErrorStr))
+        abortOnError = true;
+
+    let servers: Server[] = [];
+
+    // Loop through each server.
+    const promises = req.body.servers.map(async (serverBody) => {
+        // Retrieve region and last queried parameters since we need to parse them differently.
+        const { region, lastQueried } = serverBody;
+
+        // Add server.
+        let server: Server | null = null;
+
+        try {
+            server = await AddServer({
+                ...serverBody,
+                region: GetRegionFromString(region),
+                lastQueried: lastQueried ? new Date(lastQueried) : undefined
+            })
+
+            if (server)
+                servers.push(server);
+        } catch (err) {
+            console.error(err);
+
+            const [errMsg, errCode] = ProcessPrismaError(err);
+
+            const fullErrMsg = `Error adding server.${errMsg ? ` Error => ${errMsg}${errCode ? ` (${errCode})` : ``}` : ``}.`;
+
+            if (abortOnError) {
+                return res.status(400).json({
+                    message: fullErrMsg
+                });
+            } else {
+                errors.push(fullErrMsg);
+
+                return;
+            }
+        }
+    })
+
+    await Promise.all(promises);
 
     return res.status(200).json({
-        server: server,
-        message: `Successfully added server!`
+        serverCount: servers.length,
+        servers: servers,
+        errorCount: errors.length,
+        errors: errors,
+        message: `Added ${servers.length.toString()} servers!`
     });
 }

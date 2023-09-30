@@ -105,6 +105,6 @@ export default async function Handler (
     return res.status(200).json({
         count: servers?.length ?? 0,
         servers: servers,
-        message: `Successfully retrieved ${servers?.length?.toString() ?? "0"} servers!`
+        message: `Retrieved ${servers?.length?.toString() ?? "0"} servers!`
     });
 }
