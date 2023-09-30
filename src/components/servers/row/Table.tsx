@@ -73,12 +73,14 @@ export default function ServerRowTable ({
                 <PlayerCount server={server} />
             </td>
             <td>
-                <GamePlayerButton server={server} />
-                <JoinButton server={server} />
-                <ServerLink
-                    server={server}
-                    className="button"
-                >More Info</ServerLink>
+                <div>
+                    <GamePlayerButton server={server} />
+                    <JoinButton server={server} />
+                    <ServerLink
+                        server={server}
+                        className="button button-secondary"
+                    >More Info</ServerLink>
+                </div>
             </td>
         </tr>
     )
