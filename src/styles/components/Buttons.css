@@ -1,11 +1,9 @@
 .button {
-    @apply !p-4;
+    @apply !p-2;
     @apply !text-center;
     @apply !font-bold;
 
     @apply !text-white;
-    @apply bg-teal-800;
-    @apply hover:bg-teal-700;
     @apply duration-150;
     @apply rounded-lg;
 
@@ -18,8 +16,8 @@
 }
 
 .button-secondary {
-    @apply !bg-teal-700;
-    @apply hover:!bg-teal-600;
+    @apply !bg-cyan-800;
+    @apply hover:!bg-cyan-700;
 }
 
 .button-success {
