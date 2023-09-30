@@ -1,5 +1,6 @@
 import { prisma } from "@server/db";
 import { ProcessPrismaError } from "./error";
+import { NextApiResponse } from "next";
 
 type checkApiAccessT = {
     code: number
@@ -113,5 +114,21 @@ export async function CheckApiAccess({
             code: 401,
             message: `Unauthorized.${errMsg ? ` Error => ${errMsg}${errCode ? ` (${errCode})` : ``}` : ``}`
         };
+    }
+}
+
+export function HandleError(
+    res: NextApiResponse,
+    errMsg: string,
+    errCode: number,
+    errors?: string[],
+    abortOnError?: boolean
+): void {
+    if (abortOnError) {
+        res.status(errCode).json({
+            message: errMsg
+        })
+    } else if (errors) {
+        errors.push(errMsg);
     }
 }
