@@ -1,4 +1,21 @@
+@import "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Exo&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Sora&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Raleway&family=Roboto+Mono&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Ubuntu&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Nunito&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Mulish&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Heebo&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Dosis&display=swap";
+
+@import "https://fonts.googleapis.com/css2?family=Cairo&display=swap";
+
 main {
+    font-family: 'Cairo', sans-serif;
+
     @apply min-h-screen;
 
     @apply text-gray-200;
@@ -41,11 +58,11 @@ main {
 }
 
 ::-webkit-scrollbar-thumb {
-    @apply bg-teal-900;
+    @apply bg-cyan-700;
     
     @apply rounded-lg;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-600/50;
+    @apply bg-cyan-600;
 }
