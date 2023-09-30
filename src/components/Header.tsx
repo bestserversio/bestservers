@@ -5,11 +5,35 @@ import IconAndText from "./helpers/IconAndText";
 import HomeIcon from "./icons/header/Home";
 import ServersIcon from "./icons/header/Servers";
 import GamesIcon from "./icons/header/Games";
-import AboutIcon from "./icons/header/AboutIcon";
+import AboutIcon from "./icons/header/About";
 import { ViewPortCtx } from "./Wrapper";
+import { useSession } from "next-auth/react";
+import LoginIcon from "./icons/header/Login";
+import AccountIcon from "./icons/header/Account";
+import { useRouter } from "next/router";
 
 export default function Header () {
+    const router = useRouter();
+    const path = router.asPath;
+
     const viewPort = useContext(ViewPortCtx);
+
+    const [navFixed, setNavFixed] = useState(false);
+
+    const headerHeight = 56;
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            window.addEventListener("scroll", () => {
+                const scrollY = window.scrollY;
+
+                if (scrollY > headerHeight && !navFixed)
+                    setNavFixed(true);
+                else if (scrollY <= headerHeight && navFixed)
+                    setNavFixed(false);
+            })
+        }
+    }, [navFixed])
 
     const [isSiteListOpen, setIsSiteListOpen] = useState(false);
     const [isSiteListClosing, setIsSiteListClosing] = useState(false);
@@ -29,16 +53,18 @@ export default function Header () {
         });
     }
 
+    const { data: session } = useSession();
+
     return (
-        <header>
+        <header className={navFixed ? "fixed" : undefined}>
             <div className="content">
                 <nav>
                     <div className="logo">
                         <div className="flex flex-wrap gap-2 items-center">
                             <Link href="/">
-                                <h1>
-                                    <span className="text-green-500">B</span>est <span className="text-green-500">S</span>ervers
-                                </h1>
+                                <h2>
+                                    <span className="text-sky-600 text-4xl">B</span>est <span className="text-sky-600 text-4xl">S</span>ervers
+                                </h2>
                             </Link>
                             <button
                                 onClick={() => {
@@ -50,52 +76,89 @@ export default function Header () {
                             >
                                 {isSiteListOpen ? (
                                     <ArrowIcon
-                                        className="fill-gray-200 w-8 h-8 rotate-180"
+                                        className="fill-gray-200 w-4 h-4 rotate-180"
                                     />
                                 ) : (
                                     <ArrowIcon
-                                        className="fill-gray-200 w-8 h-8"
+                                        className="fill-gray-200 w-4 h-4"
                                     />
                                 )}
                             </button>
                         </div>
                     </div>
-                    <Link href="/">
+                    <Link
+                        href="/"
+                        className={path == "/" ? "nav-active" : undefined}
+                    >
                         <IconAndText
                             icon={<>
-                                <HomeIcon className="w-12 h-12 fill-white" />
+                                <HomeIcon className="w-6 h-6 stroke-white" />
                             </>}
                             text={<>Home</>}
                             inline={true}
                         />
                     </Link>
-                    <Link href="/platforms">
+                    <Link
+                        href="/platforms"
+                        className={path.startsWith("/platforms") ? "nav-active" : undefined}
+                    >
                         <IconAndText
                             icon={<>
-                                <GamesIcon className="w-12 h-12 fill-white" />
+                                <GamesIcon className="w-6 h-6 fill-white" />
                             </>}
                             text={<>Platforms</>}
                             inline={true}
                         />
                     </Link>
-                    <Link href="/servers">
+                    <Link
+                        href="/servers"
+                        className={path.startsWith("/servers") ? "nav-active" : undefined}
+                    >
                         <IconAndText
                             icon={<>
-                                <ServersIcon className="w-12 h-12 fill-white" />
+                                <ServersIcon className="w-6 h-6 stroke-white" />
                             </>}
                             text={<>Servers</>}
                             inline={true}
                         />
                     </Link>
-                    <Link href="/about">
+                    <Link
+                        href="/about"
+                        className={path == "/about" ? "nav-active" : undefined}
+                    >
                         <IconAndText
                             icon={<>
-                                <AboutIcon className="w-12 h-12 fill-white" />
+                                <AboutIcon className="w-6 h-6 stroke-white" />
                             </>}
                             text={<>About Us</>}
                             inline={true}
                         />
                     </Link>
+                    <div className="grow"></div>
+                    {session?.user ? (
+                        <Link
+                            href="/account"
+                            className={path.startsWith("/account") ? "nav-active" : undefined}
+                        >
+                            <IconAndText
+                                icon={
+                                    <AccountIcon className="w-6 h-6 stroke-white" />
+                                }
+                                text={<>My Account</>}
+                                inline={true}
+                            />
+                        </Link>
+                    ) : (
+                        <Link href="/login">
+                            <IconAndText
+                                icon={
+                                    <LoginIcon className="w-6 h-6 stroke-white" />
+                                }
+                                text={<>Login</>}
+                                inline={true}
+                            />
+                        </Link>
+                    )}
                 </nav>
                 <ul
                     className={isSiteListOpen ? `flex animate-logo-slide-down` : `animate-logo-slide-up ${!isSiteListClosing ? `hidden` : ``}`}
