@@ -52,14 +52,14 @@ export const categoriesRouter = createTRPCRouter({
         .input(z.object({
             id: z.number().optional(),
 
-            parent: z.number().optional(),
+            parent: z.number().nullable().optional(),
 
             banner: z.string().optional(),
             icon: z.string().optional(),
         
             url: z.string(),
             name: z.string(),
-            description: z.string().optional(),
+            description: z.string().nullable().optional(),
 
             bannerRemove: z.boolean().default(false),
             iconRemove: z.boolean().default(false)
