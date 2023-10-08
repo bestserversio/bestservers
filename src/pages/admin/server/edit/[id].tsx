@@ -10,6 +10,9 @@ import { isAdmin } from "@utils/auth";
 import { type ServerWithRelations } from "~/types/Server";
 import { prisma } from "@server/db";
 import { UserPublicSelect } from "~/types/User";
+import NotFound from "@components/statements/NotFound";
+import ServerForm from "@components/servers/forms/Main";
+import Meta from "@components/Meta";
 
 export default function({
     server
@@ -20,13 +23,25 @@ export default function({
 
     return (
         <>
-            {isAdmin(session) ? (
-                <Wrapper>
-
-                </Wrapper>
-            ) : (
-                <NoPermissions />
-            )}
+            <Meta
+            
+            />
+            <Wrapper>
+                {isAdmin(session) ? (
+                    <>
+                        {server ? (
+                            <>
+                                <h1>Edit Server {server.name}</h1>
+                                <ServerForm server={server} />
+                            </>
+                        ) : (
+                            <NotFound item="server" />
+                        )}
+                    </>
+                ) : (
+                    <NoPermissions />
+                )}
+            </Wrapper>
         </>
     );
 }
@@ -46,7 +61,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
                     select: UserPublicSelect
                 },
                 platform: true,
-                category: true
+                category: {
+                    include: {
+                        parent: true
+                    }
+                }
             },
             where: {
                 id: Number(id)

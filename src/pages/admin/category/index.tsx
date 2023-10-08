@@ -7,19 +7,25 @@ import Wrapper from "@components/Wrapper";
 import NoPermissions from "@components/statements/NoPermissions";
 
 import { isAdmin } from "@utils/auth";
+import Meta from "@components/Meta";
 
 export default function() {
     const { data: session } = useSession();
 
     return (
         <>
-            {isAdmin(session) ? (
-                <Wrapper>
+            <Meta
 
-                </Wrapper>
-            ) : (
-                <NoPermissions />
-            )}
+            />
+            <Wrapper>
+                {isAdmin(session) ? (
+                    <>
+
+                    </>
+                ) : (
+                    <NoPermissions />
+                )}
+            </Wrapper>
         </>
     );
 }

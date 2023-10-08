@@ -13,13 +13,15 @@ export default function() {
 
     return (
         <>
-            {isAdmin(session) ? (
-                <Wrapper>
+            <Wrapper>
+                {isAdmin(session) ? (
+                    <>
 
-                </Wrapper>
-            ) : (
-                <NoPermissions />
-            )}
+                    </>
+                ) : (
+                    <NoPermissions />
+                )}
+            </Wrapper>
         </>
     );
 }

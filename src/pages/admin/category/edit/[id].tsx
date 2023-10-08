@@ -9,6 +9,9 @@ import NoPermissions from "@components/statements/NoPermissions";
 
 import { isAdmin } from "@utils/auth";
 import { type CategoryWithChildrenAndParent } from "~/types/Category";
+import CategoryForm from "@components/categories/forms/Main";
+import NotFound from "@components/statements/NotFound";
+import Meta from "@components/Meta";
 
 export default function({
     category
@@ -19,13 +22,25 @@ export default function({
 
     return (
         <>
-            {isAdmin(session) ? (
-                <Wrapper>
+            <Meta
 
-                </Wrapper>
-            ) : (
-                <NoPermissions />
-            )}
+            />
+            <Wrapper>
+                {isAdmin(session) ? (
+                    <>
+                        {category ? (
+                            <>
+                                <h1>Edit Category {category.name}</h1>
+                                <CategoryForm category={category} />
+                            </>
+                        ) : (
+                            <NotFound item="category" />
+                        )}
+                    </>
+                ) : (
+                    <NoPermissions />
+                )}
+            </Wrapper>
         </>
     );
 }

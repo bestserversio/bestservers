@@ -9,6 +9,9 @@ import NoPermissions from "@components/statements/NoPermissions";
 import { isAdmin } from "@utils/auth";
 import { Platform } from "@prisma/client";
 import { prisma } from "@server/db";
+import PlatformForm from "@components/platforms/forms/Main";
+import NotFound from "@components/statements/NotFound";
+import Meta from "@components/Meta";
 
 export default function({
     platform
@@ -19,13 +22,25 @@ export default function({
 
     return (
         <>
-            {isAdmin(session) ? (
-                <Wrapper>
+            <Meta
 
-                </Wrapper>
-            ) : (
-                <NoPermissions />
-            )}
+            />
+            <Wrapper>
+                {isAdmin(session) ? (
+                    <>
+                        {platform ? (
+                            <>
+                                <h1>Edit Platform {platform.name}</h1>
+                                <PlatformForm platform={platform} />
+                            </>
+                        ) : (
+                            <NotFound item="platform" />
+                        )}
+                    </>
+                ) : (
+                    <NoPermissions />
+                )}
+            </Wrapper>
         </>
     );
 }
