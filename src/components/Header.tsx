@@ -20,16 +20,14 @@ export default function Header () {
 
     const [navFixed, setNavFixed] = useState(false);
 
-    const headerHeight = 56;
-
     useEffect(() => {
         if (typeof window !== "undefined") {
             window.addEventListener("scroll", () => {
                 const scrollY = window.scrollY;
 
-                if (scrollY > headerHeight && !navFixed)
+                if (scrollY > 0 && !navFixed)
                     setNavFixed(true);
-                else if (scrollY <= headerHeight && navFixed)
+                else if (scrollY <= 0 && navFixed)
                     setNavFixed(false);
             })
         }
@@ -56,7 +54,7 @@ export default function Header () {
     const { data: session } = useSession();
 
     return (
-        <header className={navFixed ? "fixed" : undefined}>
+        <header className={`sticky top-0 ${navFixed ? "bg-slate-900" : "bg-slate-900/60"}`}>
             <div className="content">
                 <nav>
                     <div className="logo">

@@ -18,7 +18,6 @@ export const ViewPortCtx = createContext({
     isMobile: false
 })
 
-
 type LocationT = {
     lat: number
     lon: number
