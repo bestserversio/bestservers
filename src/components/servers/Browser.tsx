@@ -1,9 +1,16 @@
 import { api } from "@utils/api"
-import { createContext, useEffect, useState, Dispatch, SetStateAction } from "react"
+import { createContext, useEffect, useState, Dispatch, SetStateAction, useContext } from "react"
 import { type ServerPublic } from "~/types/Server"
 import { Region } from "@prisma/client"
 import ServerBrowserCol from "./browser/Col"
 import ServerBrowserTable from "./browser/Table"
+import FiltersMain from "./browser/filters/Main"
+import FiltersPlatforms from "./browser/filters/Platforms"
+import FiltersCategories from "./browser/filters/Categories"
+import FiltersRegions from "./browser/filters/Regions"
+import Loader from "@components/Loader"
+import InfiniteScroll from "react-infinite-scroller"
+import { ViewPortCtx } from "@components/Wrapper"
 
 export type FiltersType = {
     filterCategories: number[]
@@ -68,6 +75,8 @@ export default function ServerBrowser ({
     preSort?: string
     preSortDir?: string
 }) {
+    const viewPort = useContext(ViewPortCtx);
+    
     // Filters and sorting.
     const [filterCategories, setFilterCategories] = useState<number[]>(preFilterCategories);
     const [filterPlatforms, setFilterPlatforms] = useState<number[]>(preFilterPlatforms);
@@ -157,21 +166,76 @@ export default function ServerBrowser ({
             sortDir: sortDir,
             setSortDir: setSortDir
         }}>
-            {table ? (
-                <ServerBrowserTable
-                    servers={servers}
-                    loadMore={loadMore}
-                    needMoreServers={needMoreServers}
-                    serversOrLoading={serversOrLoading}
+            <div className="flex flex-col gap-4">
+                <FiltersMain
+                    className="server-filters-style1"
+                    showSort={true}
+                    showSortDir={true}
+                    showSearch={true}
                 />
-            ) : (
-                <ServerBrowserCol
-                    servers={servers}
-                    loadMore={loadMore}
-                    needMoreServers={needMoreServers}
-                    serversOrLoading={serversOrLoading}
-                />
-            )}
+                {viewPort.isMobile && (
+                <>
+                        <FiltersPlatforms />
+                        <FiltersCategories />
+                        <FiltersRegions />
+                        <FiltersMain
+                            showMapName={true}
+                            showOffline={true}
+                            showHideEmpty={true}
+                            showHideFull={true}
+                            showMinCurUsers={true}
+                            showMaxCurUsers={true}
+                        /> 
+                </>
+                )}
+
+                <div className="grid grid-cols-8 gap-2">
+                    {!viewPort.isMobile && (
+                        <div className="flex flex-col gap-2 col-span-1">
+                            <FiltersPlatforms
+                                className="server-filters-platforms-style1"
+                            />
+                            <FiltersCategories
+                                className="server-filters-categoriess-style1"
+                            />            
+                        </div>
+                    )}
+                    {serversOrLoading ? (
+                        <InfiniteScroll
+                            pageStart={0}
+                            loadMore={loadMore}
+                            loader={<Loader key="loader" />}
+                            hasMore={needMoreServers}
+                            className="col-span-1 sm:col-span-6"
+                        >
+                            {table ? (
+                                <ServerBrowserTable servers={servers} />
+                            ) : (
+                                <ServerBrowserCol servers={servers} />
+                            )}
+                        </InfiniteScroll>
+                    ) : (
+                        <div className="mx-auto">
+                            <p className="text-4xl text-red-400">No Servers Found!</p>
+                        </div>
+                    )}
+                    {!viewPort.isMobile && (
+                        <div className="flex flex-col gap-2 col-span-1">
+                            <FiltersMain
+                                className="server-filters-style2"
+                                showHeader={true}
+                                showMapName={true}
+                                showOffline={true}
+                                showHideEmpty={true}
+                                showHideFull={true}
+                                showMinCurUsers={true}
+                                showMaxCurUsers={true}
+                            />
+                            <FiltersRegions />
+                        </div>
+                    )}
+                </div>
+            </div>
         </FiltersCtx.Provider>
     );
 }

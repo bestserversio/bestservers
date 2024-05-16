@@ -30,8 +30,8 @@ export default function GamePlayer({
             setVisible: setVisible
         }}>
             {visible && (
-                <div className="gameplayer">
-                    <div>
+                <div className="m-auto absolute z-10 p-6 rounded animate-gameplayer-slide-in">
+                    <div className="flex justify-between bg-slate-800">
                             <h2>Game Player</h2>
                             <div
                                 onClick={() => {
@@ -41,9 +41,12 @@ export default function GamePlayer({
                                 X
                             </div>
                     </div>
-                    <div>
+                    <div className="p-6 bg-slate-700">
                             {internal && (
-                                <canvas ref={canvas}>
+                                <canvas
+                                    ref={canvas}
+                                    className="w-full"
+                                >
                                 </canvas>
                             )}
                             {external && (
@@ -51,6 +54,7 @@ export default function GamePlayer({
                                     src={external}
                                     allowFullScreen={true}
                                     ref={iframe}
+                                    className="w-full h-3/4"
                                 />
                             )}
                             <div className="mx-auto">

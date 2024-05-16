@@ -1,5 +1,5 @@
 import { api } from "@utils/api";
-import { useState } from "react";
+import { ReactNode, SetStateAction, useState } from "react";
 import { ServerPublic } from "~/types/Server";
 import { Server } from "@prisma/client";
 
@@ -24,39 +24,34 @@ export default function ServerGraph({
     return (
         <>
             {stats && stats.length > 0 && (
-                <div className={className}>
+                <div className={`${className ? className : ""} p-4`}>
                     <div>
-                        <ul>
-                            <li
-                                onClick={() => {
-                                    setTimeframe(0);
-                                }}
-                                className={timeframe == 0 ? "active" : undefined}
-                            >Daily</li>
-                            <li
-                                onClick={() => {
-                                    setTimeframe(1);
-                                }}
-                                className={timeframe == 1 ? "active" : undefined}
-                            >Weekly</li>
-                            <li
-                                onClick={() => {
-                                    setTimeframe(2);
-                                }}
-                                className={timeframe == 2 ? "active" : undefined}
-                            >Monthly</li>
-                            <li
-                                onClick={() => {
-                                    setTimeframe(3);
-                                }}
-                                className={timeframe == 3 ? "active" : undefined}
-                            >Yearly</li>
-                            <li
-                                onClick={() => {
-                                    setTimeframe(undefined);
-                                }}
-                                className={timeframe == undefined ? "active" : undefined}
-                            >All Time</li>
+                        <ul className="flex flex-wrap gap-2">
+                            <DateItem
+                                timeframe={timeframe}
+                                setTimeFrame={setTimeframe}
+                                value={0}
+                            >Daily</DateItem>
+                            <DateItem
+                                timeframe={timeframe}
+                                setTimeFrame={setTimeframe}
+                                value={1}
+                            >Weekly</DateItem>
+                            <DateItem
+                                timeframe={timeframe}
+                                setTimeFrame={setTimeframe}
+                                value={2}
+                            >Monthly</DateItem>
+                            <DateItem
+                                timeframe={timeframe}
+                                setTimeFrame={setTimeframe}
+                                value={3}
+                            >Yearly</DateItem>
+                            <DateItem
+                                timeframe={timeframe}
+                                setTimeFrame={setTimeframe}
+                                value={undefined}
+                            >All Time</DateItem>
                         </ul>
                     </div>
                     <div>
@@ -67,4 +62,27 @@ export default function ServerGraph({
 
         </>
     );
+}
+
+function DateItem({
+    timeframe,
+    value,
+    setTimeFrame,
+    children
+} : {
+    timeframe?: number
+    value?: number
+    setTimeFrame: (value: SetStateAction<number | undefined>) => void
+    children: ReactNode
+}) {
+    return (
+        <li
+            onClick={() => {
+                setTimeFrame(value);
+            }}
+            className={`${timeframe === value ? "bg-cyan-700/70" : "bg-cyan-800/70"} cursor-pointer p-2  rounded font-bold`}
+        >
+            {children}
+        </li>
+    )
 }

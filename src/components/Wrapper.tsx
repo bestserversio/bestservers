@@ -112,15 +112,14 @@ export default function Wrapper ({
             <LocationCtx.Provider value={curLocation}>
                 <main className={isMobile ? "bg-gradient-to-b from-gray-900 to-gray-950" : undefined}>
                     <div
-                        id="bg"
-                        className={isMobile ? "hidden" : undefined}
+                        className={`${isMobile ? "hidden" : ""} fixed top-0 left-0 -z-20 w-full h-full bg-cover`}
                         style={{
-                            backgroundImage: (!isMobile && curBg) ? `url('/images/background/${curBg}')` : undefined
+                            backgroundImage: (!isMobile && curBg) ? `url('/images/background/${curBg}')` : undefined,
+                            transition: "background-image ease-in-out 2s"
                         }}
                     />
                     <div
-                        id="bg-overlay"
-                        className={isMobile ? "hidden" : undefined}
+                        className={`${isMobile ? "hidden" : ""} fixed top-0 left-0 -z-10 w-full h-full bg-black/90`}
                     />
 
                     <Header />
