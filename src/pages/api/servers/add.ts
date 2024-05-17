@@ -1,13 +1,18 @@
 import { Server } from "@prisma/client";
+import { prisma } from "@server/db";
 import { CheckApiAccess } from "@utils/apihelpers";
 import { ProcessPrismaError } from "@utils/error";
 import { GetRegionFromString } from "@utils/region";
-import { AddServer, ServerBodyT } from "@utils/servers/api";
+import { AddServer, ServerBodyT, ServerWhereT, UpdateServer } from "@utils/servers/api";
 import { NextApiRequest, NextApiResponse } from "next";
+
+type ServerBodyWithWhereT = ServerBodyT & {
+    where?: ServerWhereT
+}
 
 interface ExtendedRequest extends NextApiRequest {
     body: {
-        servers: ServerBodyT[]
+        servers: ServerBodyWithWhereT[]
     }
 }
 
@@ -47,22 +52,64 @@ export default async function Handler (
     if (abortOnErrorStr && Boolean(abortOnErrorStr))
         abortOnError = true;
 
+    // Check for update only.
+    let updateOnly = false;
+
+    const updateOnlyStr = query.updateonly?.toString();
+
+    if (updateOnlyStr && Boolean(updateOnlyStr))
+        updateOnly = true;
+
+    // Check for add only.
+    let addOnly = false;
+    
+    const addOnlyStr = query.addonly?.toString();
+
+    if (addOnlyStr && Boolean(addOnlyStr))
+        addOnly = true;
+
     let servers: Server[] = [];
 
     // Loop through each server.
     const promises = req.body.servers.map(async (serverBody) => {
         // Retrieve region and last queried parameters since we need to parse them differently.
-        const { region, lastQueried } = serverBody;
-
-        // Add server.
-        let server: Server | null = null;
+        const { region, lastQueried, where } = serverBody;
 
         try {
-            server = await AddServer({
-                ...serverBody,
-                region: GetRegionFromString(region),
-                lastQueried: lastQueried ? new Date(lastQueried) : undefined
-            })
+            // First, try to retrieve server.
+            let server = await prisma.server.findFirst({
+                where: {
+                    id: Number(where?.id ?? 0)
+                }
+            });
+
+            // Check for update only.
+            if (updateOnly && !server) {
+                return res.status(400).json({
+                    message: `Failed to update server. Server doesn't exist with ID '${where?.id ?? "N/A"}' with update only set.`
+                })
+            }
+
+            // Check for add only.
+            if (addOnly && server) {
+                return res.status(400).json({
+                    message: `Failed to add server. Server exists with ID '${server.id.toString()}' with add only set.`
+                })
+            }
+            
+            if (server) {
+                await UpdateServer(server.id, {
+                    ...serverBody,
+                    region: GetRegionFromString(region),
+                    lastQueried: lastQueried ? new Date(lastQueried) : undefined
+                })
+            } else {
+                server = await AddServer({
+                    ...serverBody,
+                    region: GetRegionFromString(region),
+                    lastQueried: lastQueried ? new Date(lastQueried) : undefined
+                })
+            }
 
             if (server)
                 servers.push(server);
@@ -71,7 +118,7 @@ export default async function Handler (
 
             const [errMsg, errCode] = ProcessPrismaError(err);
 
-            const fullErrMsg = `Error adding server.${errMsg ? ` Error => ${errMsg}${errCode ? ` (${errCode})` : ``}` : ``}.`;
+            const fullErrMsg = `Error adding/updating server.${errMsg ? ` Error => ${errMsg}${errCode ? ` (${errCode})` : ``}` : ``}.`;
 
             if (abortOnError) {
                 return res.status(400).json({
