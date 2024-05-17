@@ -19,12 +19,12 @@ export default function FiltersPlatforms ({
     return (
         <>
             {filters && (
-                <div className={`server-filters-platforms ${className ? className : ""}`}>
-                    <div>
+                <div className={`${className ? className : ""} overflow-y-auto max-h-[50%]`}>
+                    <div className="rounded-t-md bg-cyan-800/70 p-4 text-center">
                         <h4>Platforms</h4>
                     </div>
-                    <div>
-                        <ul>
+                    <div className="bg-slate-800/70">
+                        <ul className="list-none">
                             {platforms?.map((plat, index) => {
                                 let icon = process.env.NEXT_PUBLIC_DEFAULT_PLATFORM_ICON;
 
@@ -46,7 +46,7 @@ export default function FiltersPlatforms ({
                                             filters.setFilterPlatforms(newPlatforms);
                                         }}
                                         key={`platform-${index.toString()}`}
-                                        className={(filters.filterPlatforms.length < 1 || filters.filterPlatforms.includes(plat.id)) ? "opacity-100" : "opacity-75"}
+                                        className={`${(filters.filterPlatforms.length < 1 || filters.filterPlatforms.includes(plat.id)) ? "opacity-100" : "opacity-75"} cursor-pointer p-6`}
                                     >
                                         <IconAndText
                                             icon={

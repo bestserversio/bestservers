@@ -192,12 +192,8 @@ export default function ServerBrowser ({
                 <div className="grid grid-cols-8 gap-2">
                     {!viewPort.isMobile && (
                         <div className="flex flex-col gap-2 col-span-1">
-                            <FiltersPlatforms
-                                className="server-filters-platforms-style1"
-                            />
-                            <FiltersCategories
-                                className="server-filters-categoriess-style1"
-                            />            
+                            <FiltersPlatforms />
+                            <FiltersCategories />            
                         </div>
                     )}
                     {serversOrLoading ? (

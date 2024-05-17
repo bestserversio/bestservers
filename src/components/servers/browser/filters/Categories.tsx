@@ -18,15 +18,18 @@ export default function FiltersCategories ({
     return (
         <>
             {filters && (
-                <div className={`server-filters-categories ${className ? className : ""}`}>
-                   <div>
+                <div className={`${className ? className : ""} overflow-y-auto max-h-[50%]`}>
+                   <div className="rounded-t-md bg-cyan-800/70 p-4 text-center">
                        <h4>Categories</h4>
                    </div>
-                   <div>
-                       <ul>
+                   <div className="bg-slate-800/70">
+                       <ul className="list-none">
                            {categories?.map((cat, index) => {
                                return (
-                                   <li key={`catPar-${index.toString()}`}>
+                                   <li
+                                        key={`catPar-${index.toString()}`}
+                                        className="p-6 cursor-pointer"
+                                    >
                                        <span
                                            onClick={() => {
                                                const newCategories = [...filters.filterCategories];
@@ -64,7 +67,7 @@ export default function FiltersCategories ({
                                                                 filters.setFilterCategories(newCategories);
                                                            }}
                                                            key={`catChi-${index.toString()}`}
-                                                           className={(filters.filterCategories.length < 1 || filters.filterCategories.includes(child.id)) ? "opacity-100" : "opacity-75"}
+                                                           className={`${(filters.filterCategories.length < 1 || filters.filterCategories.includes(child.id)) ? "opacity-100" : "opacity-75"} pl-4`}
                                                        >
                                                            {child.name}
                                                        </li>

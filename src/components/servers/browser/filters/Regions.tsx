@@ -51,18 +51,18 @@ export default function FiltersRegions ({
     return (
         <>
             {filters && (
-                <div className={`server-filters-regions ${className ? className : ""}`}>
-                    <div>
+                <div className={`${className ? className : ""} overflow-y-auto max-h-[50%]`}>
+                    <div className="rounded-t-md bg-cyan-800/70 p-4 text-center">
                         <h2>Regions</h2>
                     </div>
-                    <div>
-                        <ul>
+                    <div className="bg-slate-800/70">
+                        <ul className="list-none">
                             {regions.map((region, index) => {
                                 const icon = GetRegionFlag(region.region);
                                 return (
                                     <li
                                         key={`region-${index.toString()}`}
-                                        className={(filters.filterRegions.length < 1 || filters.filterRegions.includes(region.region)) ? "opacity-100" : "opacity-75"}
+                                        className={`${(filters.filterRegions.length < 1 || filters.filterRegions.includes(region.region)) ? "opacity-100" : "opacity-75"} p-6 cursor-pointer`}
                                         onClick={() => {
                                             const newRegions = [...filters.filterRegions];
 
