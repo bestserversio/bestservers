@@ -1,6 +1,6 @@
 import { prisma } from "@server/db";
 import { ProcessPrismaError } from "./error";
-import { NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 
 type checkApiAccessT = {
     code: number
@@ -8,13 +8,13 @@ type checkApiAccessT = {
 }
 
 export async function CheckApiAccess({
+    req,
     authKey,
-    host,
     endpoint,
     writeAccess
 } : {
+    req: NextApiRequest
     authKey?: string
-    host?: string
     endpoint: string
     writeAccess?: boolean
 }): Promise<checkApiAccessT> {
@@ -26,8 +26,10 @@ export async function CheckApiAccess({
         };
     }
 
+    const ipAddr = req.headers?.["cf-connecting-ip"]?.toString() ?? req.socket.remoteAddress;
+
     // If host is undefined, we should return since it should never be undefined.
-    if (!host) {
+    if (!ipAddr) {
         return {
             code: 400,
             message: "IP address is undefined. This should not happen!"
@@ -59,7 +61,7 @@ export async function CheckApiAccess({
                                 host: null
                             },
                             {
-                                host: host
+                                host: ipAddr
                             }
                         ]
                     },
@@ -95,7 +97,7 @@ export async function CheckApiAccess({
         await prisma.apiKeyHits.create({
             data: {
                 keyId: res.id,
-                host: host,
+                host: ipAddr,
                 endpoint: endpoint,
                 write: writeAccess
             }

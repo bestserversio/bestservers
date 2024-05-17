@@ -23,13 +23,10 @@ export default async function Handler (
         });
     }
 
-    // Retrieve our client's IP address.
-    const host = req.socket.remoteAddress;
-
     // Check if we have access.
     const check = await CheckApiAccess({
+        req: req,
         authKey: req.headers.authorization,
-        host: host,
         endpoint: "/api/servers/delete",
         writeAccess: true
     });
