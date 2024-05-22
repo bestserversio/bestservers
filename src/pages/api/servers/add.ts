@@ -2,6 +2,7 @@ import { Server } from "@prisma/client";
 import { prisma } from "@server/db";
 import { CheckApiAccess } from "@utils/apihelpers";
 import { ProcessPrismaError } from "@utils/error";
+import { GetOsFromString } from "@utils/os";
 import { GetRegionFromString } from "@utils/region";
 import { AddServer, ServerBodyT, ServerWhereT, UpdateServer } from "@utils/servers/api";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -73,7 +74,7 @@ export default async function Handler (
     // Loop through each server.
     const promises = req.body.servers.map(async (serverBody) => {
         // Retrieve region and last queried parameters since we need to parse them differently.
-        const { region, lastQueried, where } = serverBody;
+        const { region, lastQueried, where, os } = serverBody;
 
         try {
             // First, try to retrieve server.
@@ -100,12 +101,15 @@ export default async function Handler (
             if (server) {
                 await UpdateServer(server.id, {
                     ...serverBody,
+                    os: GetOsFromString(os),
                     region: GetRegionFromString(region),
+
                     lastQueried: lastQueried ? new Date(lastQueried) : undefined
                 })
             } else {
                 server = await AddServer({
                     ...serverBody,
+                    os: GetOsFromString(os),
                     region: GetRegionFromString(region),
                     lastQueried: lastQueried ? new Date(lastQueried) : undefined
                 })

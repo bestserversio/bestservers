@@ -27,6 +27,10 @@ export type ServerBodyT = {
     maxUsers?: number
     bots?: number
     mapName?: string
+    password?: boolean
+    os?: string
+    secure?: boolean
+    dedicated?: boolean
     avgUsers?: number
 
     region?: string
