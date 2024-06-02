@@ -78,9 +78,7 @@ export default async function Handler (
                 ...(categoryId && {
                     categoryId: Number(categoryId)
                 }),
-                ...(region && {
-                    region: region
-                }),
+                region: region,
                 ip: ip,
                 ip6: ip6,
                 ...(port && {
