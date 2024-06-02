@@ -1,4 +1,4 @@
-import { Region, Server } from "@prisma/client"
+import { Region, Server, ServerOs } from "@prisma/client"
 import { prisma } from "@server/db"
 
 export type ServerBodyT = {
@@ -66,6 +66,10 @@ export type ServerDataT = {
     maxUsers?: number
     bots?: number
     mapName?: string
+    password?: boolean
+    os?: ServerOs
+    secure?: boolean
+    dedicated?: boolean
     avgUsers?: number
 
     region?: Region
