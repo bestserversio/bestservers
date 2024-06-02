@@ -35,6 +35,12 @@ enum ServerLinkType {
   TIKTOK
 }
 
+enum ServerOs {
+  WINDOWS
+  LINUX
+  MAC
+}
+
 enum Region {
   AF
   AS
@@ -171,12 +177,16 @@ model Server {
   features         String? @db.Text
   rules            String? @db.Text
 
-  online   Boolean @default(false)
-  curUsers Int     @default(0)
-  maxUsers Int     @default(0)
-  bots     Int     @default(0)
-  mapName  String?
-  avgUsers Int     @default(0)
+  online    Boolean   @default(false)
+  curUsers  Int       @default(0)
+  maxUsers  Int       @default(0)
+  bots      Int       @default(0)
+  mapName   String?
+  password  Boolean   @default(false)
+  Os        ServerOs?
+  Secure    Boolean   @default(true)
+  Dedicated Boolean   @default(true)
+  avgUsers  Int       @default(0)
 
   region      Region?
   locationLat Float?
