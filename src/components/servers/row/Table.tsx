@@ -64,7 +64,7 @@ export default function ServerRowTable ({
                 )}
             </td>
             <td>
-                {server.name}
+                {server.name ?? server.hostName}
             </td>
             <td>
                 {server.mapName}
