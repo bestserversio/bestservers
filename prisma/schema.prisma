@@ -183,9 +183,9 @@ model Server {
   bots      Int       @default(0)
   mapName   String?
   password  Boolean   @default(false)
-  Os        ServerOs?
-  Secure    Boolean   @default(true)
-  Dedicated Boolean   @default(true)
+  os        ServerOs?
+  secure    Boolean   @default(true)
+  dedicated Boolean   @default(true)
   avgUsers  Int       @default(0)
 
   region      Region?
