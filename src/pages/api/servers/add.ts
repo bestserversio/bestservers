@@ -21,7 +21,7 @@ export default async function Handler (
     req: ExtendedRequest,
     res: NextApiResponse
 ) {
-    if (req.method !== "GET") {
+    if (req.method !== "POST" && req.method !== "PUT" && req.method !== "PATCH") {
         return res.status(405).json({
             message: "Method not allowed."
         });
@@ -80,7 +80,11 @@ export default async function Handler (
             // First, try to retrieve server.
             let server = await prisma.server.findFirst({
                 where: {
-                    id: Number(where?.id ?? 0)
+                    id: where?.id ? Number(where.id.toString()) : undefined,
+                    ip: where?.ip,
+                    ip6: where?.ip6,
+                    url: where?.url,
+                    port: where?.port ? Number(where.port.toString()) : undefined
                 }
             });
 
