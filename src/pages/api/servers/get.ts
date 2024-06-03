@@ -36,7 +36,7 @@ export default async function Handler (
     // Limit and sorting.
     const limit = query.limit?.toString() || "10";
     const sort = query.sort?.toString() || "lastQueried";
-    const sortDir = query.sort?.toString() || "desc";
+    const sortDir = query.sort?.toString() || "asc";
 
     // Filtering
     const platformId = query.platformId?.toString();
