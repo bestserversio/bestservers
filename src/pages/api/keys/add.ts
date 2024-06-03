@@ -34,7 +34,7 @@ export default async function Handler (
     } : {
         host?: string
         endpoint?: string
-        writeAccess?: string
+        writeAccess?: boolean
         limit?: string
     } = req.body;
 
@@ -44,7 +44,7 @@ export default async function Handler (
                 host: host,
                 endpoint: endpoint,
                 limit: limit ? Number(limit) : undefined,
-                writeAccess: writeAccess ? Boolean(writeAccess) : undefined,
+                writeAccess: writeAccess,
                 key: key
             }
         })
