@@ -16,8 +16,6 @@ export default function Header () {
     const router = useRouter();
     const path = router.asPath;
 
-    const viewPort = useContext(ViewPortCtx);
-
     const [navFixed, setNavFixed] = useState(false);
 
     useEffect(() => {
@@ -64,24 +62,6 @@ export default function Header () {
                                     <span className="text-sky-600 text-4xl">B</span>est <span className="text-sky-600 text-4xl">S</span>ervers
                                 </h2>
                             </Link>
-                            <button
-                                onClick={() => {
-                                    if (isSiteListOpen)
-                                        setIsSiteListClosing(true);
-
-                                    setIsSiteListOpen(!isSiteListOpen);
-                                }}
-                            >
-                                {isSiteListOpen ? (
-                                    <ArrowIcon
-                                        className="fill-gray-200 w-4 h-4 rotate-180"
-                                    />
-                                ) : (
-                                    <ArrowIcon
-                                        className="fill-gray-200 w-4 h-4"
-                                    />
-                                )}
-                            </button>
                         </div>
                     </div>
                     <Link
