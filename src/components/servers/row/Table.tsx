@@ -1,7 +1,7 @@
 import { GameplayerCtx } from "@components/GamePlayer";
 import { PlatformFlag } from "@prisma/client";
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ServerPublic } from "~/types/Server";
 import ServerLink from "../Link";
 import Image from "next/image";
@@ -34,7 +34,30 @@ export default function ServerRowTable ({
 
     if (server.region)
         regionFlag = GetRegionFlag(server.region);
-    
+
+    const [lastQueried, setLastQueried] = useState<number | undefined>(undefined);
+
+    const getLastUpdateTime = () => {
+        const last = server.lastQueried;
+
+        if (last) {
+            const now = new Date();
+
+            const nowTs = now.getTime();
+            const lastTs = last.getTime();
+
+            setLastQueried(Math.floor((nowTs - lastTs) / 1000))
+        }
+    }
+
+    useEffect(() => {
+        setInterval(() => {
+            getLastUpdateTime()
+        }, 1000)
+
+        getLastUpdateTime()
+    }, [])
+
     return (
         <tr className="server-row-table">
             <td>
@@ -71,6 +94,9 @@ export default function ServerRowTable ({
             </td>
             <td>
                 <PlayerCount server={server} />
+            </td>
+            <td>
+                {lastQueried?.toString() ?? "N/A"} Secs
             </td>
             <td>
                 <div>

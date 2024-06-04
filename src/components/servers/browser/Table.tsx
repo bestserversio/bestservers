@@ -8,6 +8,17 @@ export default function ServerBrowserTable ({
 }) {
     return (
         <table className="table-auto w-full">
+            <thead>
+                <tr className="text-left">
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Map</th>
+                    <th>Players</th>
+                    <th>Last Queried</th>
+                </tr>
+            </thead>
             <tbody>
                 {servers.map((server, index) => {
                     return (

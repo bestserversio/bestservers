@@ -41,7 +41,9 @@ export const ServerPublicSelect = {
     avgUsers: true,
 
     locationLat: true,
-    locationLon: true
+    locationLon: true,
+
+    lastQueried: true
 }
 
 export type ServerPublic = Prisma.ServerGetPayload<{
