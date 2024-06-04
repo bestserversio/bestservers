@@ -156,9 +156,19 @@ export const serversRouter = createTRPCRouter({
                         }
                     })
                 },
-                orderBy: {
-                    [input.sort]: input.sortDir
-                }
+                orderBy: [
+                    { [input.sort]: input.sortDir },
+                    ...(input.sort === "name" ? [
+                        {
+                            hostName: input.sortDir
+                        }
+                    ] : []),
+                    ...(input.sort === "hostName" ? [
+                        {
+                            name: input.sortDir
+                        }
+                    ] : [])
+                  ]
             });
 
             let nextServer: typeof input.cursor | undefined = undefined;
