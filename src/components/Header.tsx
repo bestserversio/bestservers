@@ -7,7 +7,7 @@ import ServersIcon from "./icons/header/Servers";
 import GamesIcon from "./icons/header/Games";
 import AboutIcon from "./icons/header/About";
 import { ViewPortCtx } from "./Wrapper";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import LoginIcon from "./icons/header/Login";
 import AccountIcon from "./icons/header/Account";
 import { useRouter } from "next/router";
@@ -147,7 +147,14 @@ export default function Header () {
                             />
                         </Link>
                     ) : (
-                        <Link href="/login">
+                        <Link
+                            href="/login"
+                            onClick={(e) => {
+                                e.preventDefault();
+
+                                signIn();
+                            }}
+                        >
                             <IconAndText
                                 icon={
                                     <LoginIcon className="w-6 h-6 stroke-white" />
