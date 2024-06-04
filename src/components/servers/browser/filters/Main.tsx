@@ -32,13 +32,13 @@ export default function FiltersMain ({
     return (
         <>
             {filters && (
-                <div className={`server-filters-main ${className ? className : ""}`}>
+                <div>
                     {showHeader && (
                         <div>
                             <h2>Filters</h2>
                         </div>
                     )}
-                    <div className="form">
+                    <div className="form flex flex-col gap-4">
                         {showSort && (
                             <div>
                                 <label>Sort</label>
@@ -97,7 +97,7 @@ export default function FiltersMain ({
                             </div>
                         )}
                         {showOffline && (
-                            <div>
+                            <div className="flex gap-2 items-center">
                                 <label>Show Offline</label>
                                 <Switch
                                     onChange={() => {
@@ -107,7 +107,7 @@ export default function FiltersMain ({
                             </div>
                         )}
                         {showHideEmpty && (
-                            <div>
+                            <div className="flex gap-2 items-center">
                                 <label>Hide Empty</label>
                                 <Switch
                                     onChange={() => {
@@ -117,7 +117,7 @@ export default function FiltersMain ({
                             </div>
                         )}
                         {showHideFull && (
-                            <div>
+                            <div className="flex gap-2 items-center">
                                 <label>Hide Full</label>
                                 <Switch
                                     onChange={() => {

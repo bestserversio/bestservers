@@ -51,12 +51,14 @@ export default function ServerRowTable ({
     }
 
     useEffect(() => {
-        setInterval(() => {
+        const t = setInterval(() => {
             getLastUpdateTime()
         }, 1000)
 
         getLastUpdateTime()
-    }, [])
+
+        return () => clearInterval(t)
+    }, [server.lastQueried])
 
     return (
         <tr className="server-row-table">

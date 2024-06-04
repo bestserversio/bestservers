@@ -138,6 +138,8 @@ export default function ServerBrowser ({
 
     const serversOrLoading = !data || servers.length > 0;
 
+    const [showFilters, setShowFilters] = useState(false);
+
     return (
         <FiltersCtx.Provider value={{
             filterCategories: filterCategories,
@@ -166,36 +168,48 @@ export default function ServerBrowser ({
             sortDir: sortDir,
             setSortDir: setSortDir
         }}>
-            <div className="flex flex-col gap-4">
-                <FiltersMain
-                    className="server-filters-style1"
-                    showSort={true}
-                    showSortDir={true}
-                    showSearch={true}
-                />
-                {viewPort.isMobile && (
-                <>
-                        <FiltersPlatforms />
-                        <FiltersCategories />
-                        <FiltersRegions />
-                        <FiltersMain
-                            showMapName={true}
-                            showOffline={true}
-                            showHideEmpty={true}
-                            showHideFull={true}
-                            showMinCurUsers={true}
-                            showMaxCurUsers={true}
-                        /> 
-                </>
-                )}
-
-                <div className="grid grid-cols-8 gap-2">
-                    {!viewPort.isMobile && (
-                        <div className="flex flex-col gap-2 col-span-1">
-                            <FiltersPlatforms />
-                            <FiltersCategories />            
+            <div className="flex gap-2 py-4">
+                <div>
+                    {showFilters ? (
+                        <div className="mt-7 bg-cyan-900/90 py-6 px-12 min-h-screen overflow-y-auto">
+                            <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-2">
+                                    <h2>General</h2>
+                                    <div>
+                                        <FiltersMain
+                                            showSearch={true}
+                                            showMapName={true}
+                                            showOffline={true}
+                                            showHideEmpty={true}
+                                            showHideFull={true}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <h2>Platforms</h2>
+                                    <div className="h-96 overflow-y-auto">
+                                        <FiltersPlatforms />
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <h2>Categories</h2>
+                                    <div className="h-96 overflow-y-auto">
+                                        <FiltersCategories />
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <h2>Regions</h2>
+                                    <div className="h-96 overflow-y-auto">
+                                        <FiltersRegions />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    ) : (
+                        <span onClick={() => setShowFilters(!showFilters)}>Show Filters</span>
                     )}
+                </div>
+                <div className="w-full">
                     {serversOrLoading ? (
                         <InfiniteScroll
                             pageStart={0}
@@ -213,21 +227,6 @@ export default function ServerBrowser ({
                     ) : (
                         <div className="mx-auto">
                             <p className="text-4xl text-red-400">No Servers Found!</p>
-                        </div>
-                    )}
-                    {!viewPort.isMobile && (
-                        <div className="flex flex-col gap-2 col-span-1">
-                            <FiltersMain
-                                className="server-filters-style2"
-                                showHeader={true}
-                                showMapName={true}
-                                showOffline={true}
-                                showHideEmpty={true}
-                                showHideFull={true}
-                                showMinCurUsers={true}
-                                showMaxCurUsers={true}
-                            />
-                            <FiltersRegions />
                         </div>
                     )}
                 </div>
