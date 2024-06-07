@@ -17,6 +17,7 @@ export type ServerBodyT = {
     categoryId?: number
 
     name?: string
+    autoName?: boolean
     descriptionShort?: string
     description?: string
     features?: string
@@ -56,6 +57,7 @@ export type ServerDataT = {
     categoryId?: number
 
     name?: string
+    autoName?: boolean
     descriptionShort?: string
     description?: string
     features?: string
