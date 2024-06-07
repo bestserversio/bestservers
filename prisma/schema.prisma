@@ -172,6 +172,7 @@ model Server {
   category   Category? @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: SetNull)
 
   name             String?
+  autoName         Boolean @default(true)
   descriptionShort String?
   description      String? @db.Text
   features         String? @db.Text
