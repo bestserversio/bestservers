@@ -117,6 +117,10 @@ export default async function Handler (
                     lastQueried: lastQueried ? new Date(lastQueried) : undefined
                 })
             } else {
+                // If we have an invisible server and we're adding, ignore and skip.
+                if (serverBody.visible !== undefined && !serverBody.visible)
+                    return;
+
                 server = await AddServer({
                     ...rest,
                     os: GetOsFromString(os),
