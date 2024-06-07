@@ -30,6 +30,9 @@ export const SERVER_LINK_NAME_MAX = 128;
 export const serversRouter = createTRPCRouter({
     all: publicProcedure
         .input(z.object({
+            visible: z.boolean()
+                .optional().default(true),
+                
             categories: z.array(z.number())
                 .optional(),
             platforms: z.array(z.number())
@@ -69,6 +72,9 @@ export const serversRouter = createTRPCRouter({
                 select: ServerPublicSelect,
 
                 where: {
+                    ...(input.visible && {
+                        visible: input.visible
+                    }),
                     ...(input.search && {
                         OR: [
                             {
