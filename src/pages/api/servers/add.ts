@@ -90,16 +90,33 @@ export default async function Handler (
 
             // Check for update only.
             if (updateOnly && !server) {
-                return res.status(400).json({
-                    message: `Failed to update server. Server doesn't exist with ID '${where?.id ?? "N/A"}' with update only set.`
-                })
+                const fullErrMsg = `Failed to update server. Server doesn't exist with ID '${where?.id ?? "N/A"}' with update only set.`;
+                
+                if (abortOnError) {
+                    return res.status(400).json({
+                        message: fullErrMsg
+                    });
+                } else {
+                    errors.push(fullErrMsg);
+    
+                    return;
+                }
             }
 
             // Check for add only.
             if (addOnly && server) {
-                return res.status(400).json({
-                    message: `Failed to add server. Server exists with ID '${server.id.toString()}' with add only set.`
-                })
+                const fullErrMsg = `Failed to add server. Server exists with ID '${server.id.toString()}' with add only set.`;
+
+                
+                if (abortOnError) {
+                    return res.status(400).json({
+                        message: fullErrMsg
+                    });
+                } else {
+                    errors.push(fullErrMsg);
+    
+                    return;
+                }
             }
             
             if (server) {
