@@ -62,12 +62,12 @@ export default function ServerRowTable ({
 
     return (
         <tr className="server-row-table">
-            <td>
+            <td className={!server.rating ? "w-0" : "w-auto"}>
                 {server.rating && (
                     <span className="text-lg text-bold">{server.rating.toString()}</span>
                 )}
             </td>
-            <td>
+            <td className="max-w-[1rem]">
                 {platIcon && (
                     <Image
                         src={platIcon}
@@ -78,7 +78,7 @@ export default function ServerRowTable ({
                     />
                 )}
             </td>
-            <td>
+            <td className="max-w-[1rem]">
                 {regionFlag && (
                     <Image
                         src={regionFlag}
@@ -89,7 +89,7 @@ export default function ServerRowTable ({
                 )}
             </td>
             <td>
-                {server.name ?? server.hostName}
+                {server.name}
             </td>
             <td>
                 {server.mapName}

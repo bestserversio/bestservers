@@ -11,6 +11,7 @@ import FiltersRegions from "./browser/filters/Regions"
 import Loader from "@components/Loader"
 import InfiniteScroll from "react-infinite-scroller"
 import { ViewPortCtx } from "@components/Wrapper"
+import AnglesRightIcon from "@components/icons/AnglesRight"
 
 export type FiltersType = {
     filterCategories: number[]
@@ -172,6 +173,14 @@ export default function ServerBrowser ({
                 <div>
                     {showFilters ? (
                         <div className="mt-7 bg-cyan-900/90 py-6 px-12 min-h-screen overflow-y-auto">
+                            <div className="flex justify-end">
+                                <div
+                                    className="cursor-pointer"
+                                    onClick={() => setShowFilters(!showFilters)}
+                                >
+                                    <AnglesRightIcon className="w-4 h-4 fill-white transform rotate-180" />
+                                </div>
+                            </div>
                             <div className="flex flex-col gap-2">
                                 <div className="flex flex-col gap-2">
                                     <h2>General</h2>
@@ -206,7 +215,12 @@ export default function ServerBrowser ({
                             </div>
                         </div>
                     ) : (
-                        <span onClick={() => setShowFilters(!showFilters)}>Show Filters</span>
+                        <div
+                            className="cursor-pointer"
+                            onClick={() => setShowFilters(!showFilters)}
+                        >
+                            <AnglesRightIcon className="w-4 h-4 fill-white" />
+                        </div>
                     )}
                 </div>
                 <div className="w-full">
