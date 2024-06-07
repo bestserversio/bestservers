@@ -74,7 +74,7 @@ export default async function Handler (
     // Loop through each server.
     const promises = req.body.servers.map(async (serverBody) => {
         // Retrieve region and last queried parameters since we need to parse them differently.
-        const { where } = serverBody;
+        const { where, os, region, lastQueried, ...rest } = serverBody;
 
         try {
             // First, try to retrieve server.
@@ -103,22 +103,20 @@ export default async function Handler (
             }
             
             if (server) {
+                const upRest = { ...rest };
+
                 // If auto name is false, make sure to make name undefined when updating.
                 if (!server.autoName)
-                    serverBody.name = undefined;
-
-                const { os, region, lastQueried, ...rest } = serverBody;
+                    upRest.name = undefined;
 
                 await UpdateServer(server.id, {
-                    ...rest,
+                    ...upRest,
                     os: GetOsFromString(os),
                     region: GetRegionFromString(region),
 
                     lastQueried: lastQueried ? new Date(lastQueried) : undefined
                 })
             } else {
-                const { os, region, lastQueried, ...rest } = serverBody;
-
                 server = await AddServer({
                     ...rest,
                     os: GetOsFromString(os),
