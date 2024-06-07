@@ -32,7 +32,7 @@ export const serversRouter = createTRPCRouter({
         .input(z.object({
             visible: z.boolean()
                 .optional().default(true),
-                
+
             categories: z.array(z.number())
                 .optional(),
             platforms: z.array(z.number())
@@ -72,7 +72,7 @@ export const serversRouter = createTRPCRouter({
                 select: ServerPublicSelect,
 
                 where: {
-                    ...(input.visible && {
+                    ...(input.visible !== undefined && {
                         visible: input.visible
                     }),
                     ...(input.search && {
