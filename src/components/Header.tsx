@@ -76,6 +76,7 @@ export default function Header () {
                             inline={true}
                         />
                     </Link>
+                    {/*
                     <Link
                         href="/platforms"
                         className={path.startsWith("/platforms") ? "nav-active" : undefined}
@@ -100,6 +101,7 @@ export default function Header () {
                             inline={true}
                         />
                     </Link>
+                    */}
                     <Link
                         href="/about"
                         className={path == "/about" ? "nav-active" : undefined}
