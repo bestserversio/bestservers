@@ -1,16 +1,15 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import ArrowIcon from "./icons/Arrow";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import IconAndText from "./helpers/IconAndText";
 import HomeIcon from "./icons/header/Home";
-import ServersIcon from "./icons/header/Servers";
-import GamesIcon from "./icons/header/Games";
+//import ServersIcon from "./icons/header/Servers";
+//import GamesIcon from "./icons/header/Games";
 import AboutIcon from "./icons/header/About";
-import { ViewPortCtx } from "./Wrapper";
 import { signIn, useSession } from "next-auth/react";
 import LoginIcon from "./icons/header/Login";
 import AccountIcon from "./icons/header/Account";
 import { useRouter } from "next/router";
+import { FBlackOps } from "./Fonts";
 
 export default function Header () {
     const router = useRouter();
@@ -58,7 +57,7 @@ export default function Header () {
                     <div className="logo">
                         <div className="flex flex-wrap gap-2 items-center">
                             <Link href="/">
-                                <h2>
+                                <h2 className={FBlackOps.className}>
                                     <span className="text-sky-600 text-4xl">B</span>est <span className="text-sky-600 text-4xl">S</span>ervers
                                 </h2>
                             </Link>
