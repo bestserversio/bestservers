@@ -172,7 +172,7 @@ export default function ServerBrowser ({
             <div className="flex gap-2 py-4">
                 <div>
                     {showFilters ? (
-                        <div className="mt-7 bg-cyan-900/90 py-6 px-12 min-h-screen overflow-y-auto">
+                        <div className="bg-shade-2/90 py-6 px-12 min-h-screen overflow-y-auto rounded-lg">
                             <div className="flex justify-end">
                                 <div
                                     className="cursor-pointer"
@@ -196,19 +196,19 @@ export default function ServerBrowser ({
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <h2>Platforms</h2>
-                                    <div className="h-96 overflow-y-auto">
+                                    <div className="h-96 overflow-y-auto bg-shade-1 px-2 rounded-md">
                                         <FiltersPlatforms />
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <h2>Categories</h2>
-                                    <div className="h-96 overflow-y-auto">
+                                    <div className="h-96 overflow-y-auto bg-shade-1 px-2 rounded-md">
                                         <FiltersCategories />
                                     </div>
                                 </div>
-                                <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-2 rounded-md">
                                     <h2>Regions</h2>
-                                    <div className="h-96 overflow-y-auto">
+                                    <div className="h-96 overflow-y-auto bg-shade-1 px-2">
                                         <FiltersRegions />
                                     </div>
                                 </div>
