@@ -37,15 +37,15 @@ main {
 }
 
 ::-webkit-scrollbar-track {
-    @apply bg-gray-950;
+    @apply bg-shade-1;
 }
 
 ::-webkit-scrollbar-thumb {
-    @apply bg-cyan-700;
+    @apply bg-shade-4;
     
     @apply rounded-lg;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    @apply bg-cyan-600;
+    @apply bg-shade-5;
 }
