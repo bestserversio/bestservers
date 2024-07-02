@@ -61,7 +61,7 @@ export default function ServerRowTable ({
     }, [server.lastQueried])
 
     return (
-        <tr className="server-row-table">
+        <tr className="server-row-table bg-gradient-to-b from-shade-2/70 to-shade-3/70 hover:duration-150 hover:from-shade-4/70 hover:to-shade-5/70 border-separate border-spacing-4 rounded-lg">
             <td className={!server.rating ? "w-0" : "w-auto"}>
                 {server.rating && (
                     <span className="text-lg text-bold">{server.rating.toString()}</span>
