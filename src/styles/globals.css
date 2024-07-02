@@ -2,17 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Fonts */
-@font-face {
-    font-family: "lilitaone";
-    src: url("./fonts/LilitaOne-Regular.ttf");
-}
-
-@font-face {
-    font-family: "gruppo";
-    src: url("./fonts/Gruppo-Regular.ttf");
-}
-
 @layer base {
     @import "base/Main.css";
 
