@@ -7,12 +7,12 @@
         @apply p-4;
         @apply text-center;
         @apply rounded;
-        @apply bg-gray-800;
-        @apply hover:bg-gray-700;
+        @apply bg-shade-3;
+        @apply hover:bg-shade-4;
 
         &:is(.tab-active) {
             @apply font-bold;
-            @apply bg-gray-700;
+            @apply bg-shade-4;
         }
     }
 }

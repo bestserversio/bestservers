@@ -46,7 +46,7 @@ export default function ServerView ({
 
                     </ul>
                 </div>
-                <div className="grow bg-slate-800/70 rounded-md p-4">
+                <div className="grow bg-shade-2/70 rounded-md p-4">
                     {view == "general" && (
                         <ServerViewGeneral server={server} />
                     )}
