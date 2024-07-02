@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { MouseEventHandler, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import IconAndText from "./helpers/IconAndText";
 import HomeIcon from "./icons/header/Home";
@@ -97,9 +97,14 @@ export default function Header () {
                     
                     <div className="grow"></div>
                     {session?.user ? (
-                        <Link
-                            href="/account"
-                            className={path.startsWith("/account") ? "nav-active" : undefined}
+                        <NavItem
+                            url="/account"
+                            onClick={(e) => {
+                                e.preventDefault();
+
+                                signIn();
+                            }}
+                            active={path.includes("/account")}
                         >
                             <IconAndText
                                 icon={
@@ -108,10 +113,10 @@ export default function Header () {
                                 text={<>My Account</>}
                                 inline={true}
                             />
-                        </Link>
+                        </NavItem>
                     ) : (
-                        <Link
-                            href="/login"
+                        <NavItem
+                            url="/login"
                             onClick={(e) => {
                                 e.preventDefault();
 
@@ -125,7 +130,7 @@ export default function Header () {
                                 text={<>Login</>}
                                 inline={true}
                             />
-                        </Link>
+                        </NavItem>
                     )}
                 </nav>
             </div>
@@ -136,19 +141,22 @@ export default function Header () {
 function NavItem({
     active,
     url,
-    new_tab,
+    newTab,
+    onClick,
     children
 } : {
     active?: boolean
     url: string
-    new_tab?: boolean
+    onClick?: MouseEventHandler<HTMLAnchorElement>
+    newTab?: boolean
     children: ReactNode
 }) {
     return (
         <Link
             href={url}
+            onClick={onClick}
             className={`${FCabin.className} text-lg duration-150 font-bold ${active ? "opacity-100": "opacity-80"} hover:opacity-100`}
-            target={new_tab ? "_blank" : undefined}
+            target={newTab ? "_blank" : undefined}
         >
             {children}
         </Link>
