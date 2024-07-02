@@ -98,8 +98,8 @@ export default function FiltersMain ({
                         )}
                         {showOffline && (
                             <div className="flex gap-2 items-center">
-                                <label>Show Offline</label>
                                 <Switch
+                                    label={<>Show Offline</>}
                                     onChange={() => {
                                         filters.setFilterOffline(filters?.filterOffline ? !filters.filterOffline : true);
                                     }}
@@ -108,8 +108,8 @@ export default function FiltersMain ({
                         )}
                         {showHideEmpty && (
                             <div className="flex gap-2 items-center">
-                                <label>Hide Empty</label>
                                 <Switch
+                                    label={<>Hide Empty</>}
                                     onChange={() => {
                                         filters.setFilterHideEmpty(filters?.filterHideEmpty ? !filters.filterHideEmpty : true);
                                     }}
@@ -118,8 +118,8 @@ export default function FiltersMain ({
                         )}
                         {showHideFull && (
                             <div className="flex gap-2 items-center">
-                                <label>Hide Full</label>
                                 <Switch
+                                    label={<>Hide Full</>}
                                     onChange={() => {
                                         filters.setFilterHideFull(filters?.filterHideFull ? !filters.filterHideFull : true);
                                     }}
