@@ -15,13 +15,13 @@ form {
             @apply w-full;
             @apply p-2;
             
-            @apply bg-slate-900/70;
+            @apply bg-shade-0/70;
             @apply rounded;
 
             @apply ring-4;
-            @apply ring-cyan-950/70;
-            @apply focus:ring-cyan-700/70;
-            @apply hover:ring-cyan-800/70;
+            @apply ring-shade-1/70;
+            @apply focus:ring-shade-1/70;
+            @apply hover:ring-shade-1/70;
         }
     }
 
@@ -41,12 +41,12 @@ form {
         @apply w-full;
         @apply p-2;
         
-        @apply bg-slate-900/70;
+        @apply bg-shade-0/70;
         @apply rounded;
 
         @apply ring-4;
-        @apply ring-cyan-950/70;
-        @apply focus:ring-cyan-700/70;
-        @apply hover:ring-cyan-800/70;
+        @apply ring-shade-1/70;
+        @apply focus:ring-shade-1/70;
+        @apply hover:ring-shade-1/70;
     }
 }

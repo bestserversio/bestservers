@@ -11,13 +11,13 @@
 }
 
 .button-primary {
-    @apply !bg-cyan-700;
-    @apply hover:!bg-cyan-600;
+    @apply !bg-shade-8;
+    @apply hover:!bg-shade-9;
 }
 
 .button-secondary {
-    @apply !bg-cyan-800;
-    @apply hover:!bg-cyan-700;
+    @apply !bg-shade-6;
+    @apply hover:!bg-shade-7;
 }
 
 .button-success {
