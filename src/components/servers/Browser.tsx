@@ -139,7 +139,7 @@ export default function ServerBrowser ({
 
     const serversOrLoading = !data || servers.length > 0;
 
-    const [showFilters, setShowFilters] = useState(false);
+    const [showFilters, setShowFilters] = useState(true);
 
     return (
         <FiltersCtx.Provider value={{
