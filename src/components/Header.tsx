@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import IconAndText from "./helpers/IconAndText";
 import HomeIcon from "./icons/header/Home";
@@ -9,7 +9,14 @@ import { signIn, useSession } from "next-auth/react";
 import LoginIcon from "./icons/header/Login";
 import AccountIcon from "./icons/header/Account";
 import { useRouter } from "next/router";
-import { FBlackOps } from "./Fonts";
+import { FBlackOps, FKanit, FPermanentMarker } from "./Fonts";
+
+import { ReactNode } from "react";
+import { Cabin, Roboto_Mono, Source_Code_Pro } from "next/font/google";
+
+const FRobotoMono = Roboto_Mono({ subsets: ["cyrillic"], weight: "400" })
+const FCabin = Cabin({ subsets: ["latin"], weight: "700" })
+const FSourceCode = Source_Code_Pro({ subsets: ["cyrillic"], weight: "900" })
 
 export default function Header () {
     const router = useRouter();
@@ -51,21 +58,21 @@ export default function Header () {
     const { data: session } = useSession();
 
     return (
-        <header className={`sticky top-0 ${navFixed ? "bg-slate-900" : "bg-slate-900/60"}`}>
+        <header className={`sticky top-0 p-2 z-10 w-full ${navFixed ? "bg-shade-1" : "bg-shade-1/60"}`}>
             <div className="content">
-                <nav>
-                    <div className="logo">
+                <nav className="flex flex-wrap gap-6 items-center">
+                    <div className="relative w-80">
                         <div className="flex flex-wrap gap-2 items-center">
                             <Link href="/">
-                                <h2 className={FBlackOps.className}>
+                                <h2 className={`text-3xl ${FSourceCode.className}`}>
                                     <span className="text-sky-600 text-4xl">B</span>est <span className="text-sky-600 text-4xl">S</span>ervers
                                 </h2>
                             </Link>
                         </div>
                     </div>
-                    <Link
-                        href="/"
-                        className={path == "/" ? "nav-active" : undefined}
+                    <NavItem
+                        url="/"
+                        active={path == "/"}
                     >
                         <IconAndText
                             icon={<>
@@ -74,36 +81,10 @@ export default function Header () {
                             text={<>Home</>}
                             inline={true}
                         />
-                    </Link>
-                    {/*
-                    <Link
-                        href="/platforms"
-                        className={path.startsWith("/platforms") ? "nav-active" : undefined}
-                    >
-                        <IconAndText
-                            icon={<>
-                                <GamesIcon className="w-6 h-6 fill-white" />
-                            </>}
-                            text={<>Platforms</>}
-                            inline={true}
-                        />
-                    </Link>
-                    <Link
-                        href="/servers"
-                        className={path.startsWith("/servers") ? "nav-active" : undefined}
-                    >
-                        <IconAndText
-                            icon={<>
-                                <ServersIcon className="w-6 h-6 stroke-white" />
-                            </>}
-                            text={<>Servers</>}
-                            inline={true}
-                        />
-                    </Link>
-                    */}
-                    <Link
-                        href="/about"
-                        className={path == "/about" ? "nav-active" : undefined}
+                    </NavItem>
+                    <NavItem
+                        url="/about"
+                        active={path == "/about"}
                     >
                         <IconAndText
                             icon={<>
@@ -112,7 +93,8 @@ export default function Header () {
                             text={<>About Us</>}
                             inline={true}
                         />
-                    </Link>
+                    </NavItem>
+                    
                     <div className="grow"></div>
                     {session?.user ? (
                         <Link
@@ -146,24 +128,29 @@ export default function Header () {
                         </Link>
                     )}
                 </nav>
-                <ul
-                    className={isSiteListOpen ? `flex animate-logo-slide-down` : `animate-logo-slide-up ${!isSiteListClosing ? `hidden` : ``}`}
-                    ref={logoMenu}
-                >
-                    <li>
-                        <Link href="https://bestmods.io">
-                            <h1>
-                                <span className="text-sky-500">B</span>est <span className="text-sky-500">Mods</span>
-                            </h1>
-                        </Link>
-                        <Link href="https://gamecom.io">
-                            <h1>
-                                <span className="text-red-500">G</span>ame<span className="text-red-500">C</span>om
-                            </h1>
-                        </Link>
-                    </li>
-                </ul>
             </div>
         </header>
     );
+}
+
+function NavItem({
+    active,
+    url,
+    new_tab,
+    children
+} : {
+    active?: boolean
+    url: string
+    new_tab?: boolean
+    children: ReactNode
+}) {
+    return (
+        <Link
+            href={url}
+            className={`${FCabin.className} text-lg duration-150 font-bold ${active ? "opacity-100": "opacity-80"} hover:opacity-100`}
+            target={new_tab ? "_blank" : undefined}
+        >
+            {children}
+        </Link>
+    )
 }
