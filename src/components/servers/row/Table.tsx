@@ -9,6 +9,7 @@ import PlayerCount from "../PlayerCount";
 import { GetRegionFlag } from "../../../utils/region";
 import JoinButton from "@components/buttons/Join";
 import GamePlayerButton from "@components/buttons/GamePlayer";
+import LastQueried from "../LastQueried";
 
 export default function ServerRowTable ({
     server
@@ -98,7 +99,7 @@ export default function ServerRowTable ({
                 <PlayerCount server={server} />
             </td>
             <td>
-                {lastQueried?.toString() ?? "N/A"} Secs
+                <LastQueried total={lastQueried} />
             </td>
             <td>
                 <div>
