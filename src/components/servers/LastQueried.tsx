@@ -11,32 +11,17 @@ export default function LastQueried({
         if (!total)
             return;
 
-        let mins_single = true;
-        let secs_single = true;
+        const days = Math.floor(total / 86400);
+        const hours = Math.floor((total % 86400) / 3600);
+        const mins = Math.floor((total % 3600) / 60);
+        const secs = total % 60;
 
-        const mins = Math.floor(total / 60);
-        const secs = Math.floor(total % 60);
+        const days_str = days > 0 ? `${days} Day${days > 1 ? "s" : ""}` : "";
+        const hours_str = hours > 0 ? `${hours} Hour${hours > 1 ? "s" : ""}` : "";
+        const mins_str = mins > 0 ? `${mins} Min${mins > 1 ? "s" : ""}` : "";
+        const secs_str = secs > 0 ? `${secs} Sec${secs > 1 ? "s" : ""}` : "";
 
-        let mins_str: string | undefined = undefined;
-        let secs_str: string | undefined = undefined;
-        
-        if (mins > 0) {
-            if (mins > 1)
-                mins_single = false;
-
-            mins_str = `${mins.toString()} ${mins_single ? "Min" : "Mins"}`;
-        }
-
-        if (secs > 0) {
-            if (secs > 1)
-                secs_single = false;
-
-            secs_str = `${secs.toString()} ${secs_single ? "Sec" : "Secs"} `;
-        }
-
-        
-
-        setText(`${mins_str ? `${mins_str} ` : ``}${secs_str ? `${secs_str} ` : ``}`);
+        setText([days_str, hours_str, mins_str, secs_str].filter(Boolean).join(" "));
     }, [total])
     
     return (
