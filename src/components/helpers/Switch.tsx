@@ -3,13 +3,15 @@ import { MouseEventHandler, useState } from "react";
 export default function Switch ({
     onChange,
     className,
-    label
+    label,
+    value = false
 } : {
     onChange?: (checked?: boolean) => void
     className?: string
     label?: JSX.Element
+    value?: boolean
 }) {
-    const [isChecked, setIsChecked] = useState(false);
+    const [isChecked, setIsChecked] = useState(value);
 
     const handleToggle = () => {
         setIsChecked(!isChecked);
