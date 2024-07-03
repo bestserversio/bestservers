@@ -6,6 +6,7 @@ import SuccessBox from "./statements/Success";
 import ErrorBox from "./statements/Error";
 import GamePlayer from "./GamePlayer";
 import { useCookies } from "react-cookie";
+import Settings from "./wrapper/Settings";
 
 const bgImages = [
     "csgo.jpg",
@@ -137,6 +138,10 @@ export default function Wrapper ({
                     />
 
                     <Header />
+                    <Settings
+                        showBg={showBg}
+                        setShowBg={setShowBg}
+                    />
                     <GoogleAnalytics />
                     <div className="content">
                         <ErrorBox
