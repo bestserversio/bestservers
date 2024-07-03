@@ -183,7 +183,7 @@ export default function ServerBrowser ({
             <div className="flex gap-2 py-4">
                 <div>
                     {showFilters ? (
-                        <div className="bg-shade-2/70 py-6 px-12 min-h-screen overflow-y-auto rounded-lg">
+                        <div className="sticky top-[3.8rem] bg-shade-2/70 py-6 px-12 h-[90vh] overflow-auto rounded-lg">
                             <div className="flex justify-end">
                                 <div
                                     className="cursor-pointer"
