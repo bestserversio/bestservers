@@ -68,7 +68,7 @@ export default function ServerRowTable ({
                     <span className="text-lg text-bold">{server.rating.toString()}</span>
                 )}
             </td>
-            <td className="max-w-[1rem]">
+            <td className="max-w-[32px]">
                 {platIcon && (
                     <Image
                         src={platIcon}
@@ -79,7 +79,7 @@ export default function ServerRowTable ({
                     />
                 )}
             </td>
-            <td className="max-w-[1rem]">
+            <td className="max-w-[48px]">
                 {regionFlag && (
                     <Image
                         src={regionFlag}
