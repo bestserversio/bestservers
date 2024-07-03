@@ -100,7 +100,7 @@ export default function ServerBrowser ({
         setNeedMoreServers(true); // Reset to true when filters or sorting change
     }, [filterPlatforms, filterCategories, filterSearch, filterMapName, filterOffline, filterHideEmpty, filterHideFull, filterRegions, filterMinCurUsers, filterMaxCurUsers, sort, sortDir]);
 
-    const { data, fetchNextPage } = api.servers.all.useInfiniteQuery({
+    const { data, fetchNextPage, refetch } = api.servers.all.useInfiniteQuery({
         limit: limit,
 
         categories: filterCategories,
@@ -121,6 +121,17 @@ export default function ServerBrowser ({
     }, {
         getNextPageParam: (lastPage) => lastPage.nextServer
     });
+
+    const [refresh, setRefresh] = useState(false);
+
+    useEffect(() => {
+        if (refresh) {
+            refetch();
+            
+            setRefresh(false);
+        }
+
+    }, [refresh]);
 
     const loadMore = async () => {
         await fetchNextPage();
@@ -172,7 +183,7 @@ export default function ServerBrowser ({
             <div className="flex gap-2 py-4">
                 <div>
                     {showFilters ? (
-                        <div className="bg-shade-2/90 py-6 px-12 min-h-screen overflow-y-auto rounded-lg">
+                        <div className="bg-shade-2/70 py-6 px-12 min-h-screen overflow-y-auto rounded-lg">
                             <div className="flex justify-end">
                                 <div
                                     className="cursor-pointer"
@@ -233,7 +244,10 @@ export default function ServerBrowser ({
                             className="col-span-1 sm:col-span-6"
                         >
                             {table ? (
-                                <ServerBrowserTable servers={servers} />
+                                <ServerBrowserTable
+                                    servers={servers}
+                                    setRefresh={setRefresh}
+                                />
                             ) : (
                                 <ServerBrowserCol servers={servers} />
                             )}

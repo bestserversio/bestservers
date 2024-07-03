@@ -1,13 +1,16 @@
 import { ServerPublic } from "~/types/Server";
 import ServerRow from "../Row";
-import { useContext, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { FiltersCtx } from "../Browser";
 import SortIcon from "@components/icons/Sort";
+import RefreshIcon from "@components/icons/Refresh";
 
 export default function ServerBrowserTable ({
-    servers
+    servers,
+    setRefresh
 } : {
     servers: ServerPublic[]
+    setRefresh: Dispatch<SetStateAction<boolean>>
 }) {
     const filtersCtx = useContext(FiltersCtx);
 
@@ -121,7 +124,7 @@ export default function ServerBrowserTable ({
                         </div>
                     </th>
                     <th>
-                    <div className="flex gap-2 items-center">
+                        <div className="flex gap-2 items-center">
                             Last Queried
                             <div className="flex items-center">
                                 <div
@@ -151,6 +154,18 @@ export default function ServerBrowserTable ({
                                 >
                                     <SortIcon className="cursor-pointer fill-white w-4 h-4" />
                                 </div>
+                            </div>
+                        </div>
+                    </th>
+                    <th>
+                        <div className="flex justify-end">
+                            <div
+                                className="cursor-pointer opacity-80 hover:opacity-100"
+                                onClick={() => {
+                                    setRefresh(true);
+                                }}
+                            >
+                                <RefreshIcon className="w-4 h-4 fill-white" />
                             </div>
                         </div>
                     </th>
