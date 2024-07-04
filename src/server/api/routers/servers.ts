@@ -65,7 +65,7 @@ export const serversRouter = createTRPCRouter({
                 .default(10)
         }))
         .query(async ({ ctx, input }) => {
-            const servers = await ctx.prisma.server.findMany({
+            let servers = await ctx.prisma.server.findMany({
                 take: input.limit + 1,
                 cursor: input.cursor ? { id: input.cursor } : undefined,
 
@@ -184,6 +184,9 @@ export const serversRouter = createTRPCRouter({
                 nextServer = next?.id;
             }
 
+            if (input.hideFull)
+                servers = servers.filter(s => s.curUsers < s.maxUsers);
+
             return {
                 servers,
                 nextServer
@@ -201,10 +204,6 @@ export const serversRouter = createTRPCRouter({
             regions: z.array(z.nativeEnum(Region))
                 .optional(),
 
-            sort: z.string()
-                .default("curUsers"),
-            sortDir: z.string()
-                .default("desc"),
             search: z.string()
                 .optional(),
             mapName: z.string()
