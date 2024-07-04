@@ -198,46 +198,52 @@ export default function ServerBrowser ({
             setSortDir: setSortDir
         }}>
             <div className="flex gap-2 py-4">
-                <div>
+                <div className="flex flex-col">
+
                     {showFilters ? (
-                        <div className="sticky top-[3.8rem] bg-shade-2/70 py-6 px-12 h-[90vh] overflow-auto rounded-lg">
-                            <div className="flex justify-end">
-                                <div
-                                    className="cursor-pointer"
-                                    onClick={() => setShowFilters(!showFilters)}
-                                >
-                                    <AnglesRightIcon className="w-4 h-4 fill-white transform rotate-180" />
-                                </div>
+                        <div className="flex flex-col sticky top-[3.8rem]">
+                            <div className="text-center font-bold">
+                                <span>Showing {servers.length.toString()}/{totalServers.toString()}</span>
                             </div>
-                            <div className="flex flex-col gap-2">
-                                <div className="flex flex-col gap-2">
-                                    <h2>General</h2>
-                                    <div>
-                                        <FiltersMain
-                                            showSearch={true}
-                                            showMapName={true}
-                                            showOffline={true}
-                                            showHideEmpty={true}
-                                            showHideFull={true}
-                                        />
+                            <div className=" bg-shade-2/70 py-6 px-12 h-[90vh] overflow-auto rounded-lg">
+                                <div className="flex justify-end">
+                                    <div
+                                        className="cursor-pointer"
+                                        onClick={() => setShowFilters(!showFilters)}
+                                    >
+                                        <AnglesRightIcon className="w-4 h-4 fill-white transform rotate-180" />
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-2">
-                                    <h2>Platforms</h2>
-                                    <div className="h-96 overflow-y-auto bg-shade-1 px-2 rounded-md">
-                                        <FiltersPlatforms />
+                                    <div className="flex flex-col gap-2">
+                                        <h2>General</h2>
+                                        <div>
+                                            <FiltersMain
+                                                showSearch={true}
+                                                showMapName={true}
+                                                showOffline={true}
+                                                showHideEmpty={true}
+                                                showHideFull={true}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <h2>Categories</h2>
-                                    <div className="h-96 overflow-y-auto bg-shade-1 px-2 rounded-md">
-                                        <FiltersCategories />
+                                    <div className="flex flex-col gap-2">
+                                        <h2>Platforms</h2>
+                                        <div className="h-96 overflow-y-auto bg-shade-1 px-2 rounded-md">
+                                            <FiltersPlatforms />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="flex flex-col gap-2 rounded-md">
-                                    <h2>Regions</h2>
-                                    <div className="h-96 overflow-y-auto bg-shade-1 px-2">
-                                        <FiltersRegions />
+                                    <div className="flex flex-col gap-2">
+                                        <h2>Categories</h2>
+                                        <div className="h-96 overflow-y-auto bg-shade-1 px-2 rounded-md">
+                                            <FiltersCategories />
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-col gap-2 rounded-md">
+                                        <h2>Regions</h2>
+                                        <div className="h-96 overflow-y-auto bg-shade-1 px-2">
+                                            <FiltersRegions />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -264,7 +270,6 @@ export default function ServerBrowser ({
                                 <ServerBrowserTable
                                     servers={servers}
                                     setRefresh={setRefresh}
-                                    totalServers={totalServers}
                                 />
                             ) : (
                                 <ServerBrowserCol servers={servers} />
