@@ -122,6 +122,23 @@ export default function ServerBrowser ({
         getNextPageParam: (lastPage) => lastPage.nextServer
     });
 
+    const countQ = api.servers.count.useQuery({
+        categories: filterCategories,
+        platforms: filterPlatforms,
+        regions: filterRegions,
+
+        search: filterSearch || undefined,
+        mapName: filterMapName || undefined,
+
+        showOffline: filterOffline,
+        hideEmpty: filterHideEmpty,
+        hideFull: filterHideFull,
+        minCurUsers: filterMinCurUsers,
+        maxCurUsers: filterMaxCurUsers,
+    });
+
+    const totalServers = countQ.data ?? 0;
+
     const [refresh, setRefresh] = useState(false);
 
     useEffect(() => {
@@ -247,6 +264,7 @@ export default function ServerBrowser ({
                                 <ServerBrowserTable
                                     servers={servers}
                                     setRefresh={setRefresh}
+                                    totalServers={totalServers}
                                 />
                             ) : (
                                 <ServerBrowserCol servers={servers} />

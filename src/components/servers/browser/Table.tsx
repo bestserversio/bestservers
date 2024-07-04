@@ -7,10 +7,12 @@ import RefreshIcon from "@components/icons/Refresh";
 
 export default function ServerBrowserTable ({
     servers,
-    setRefresh
+    setRefresh,
+    totalServers = 0
 } : {
     servers: ServerPublic[]
     setRefresh: Dispatch<SetStateAction<boolean>>
+    totalServers?: number
 }) {
     const filtersCtx = useContext(FiltersCtx);
 
@@ -158,14 +160,19 @@ export default function ServerBrowserTable ({
                         </div>
                     </th>
                     <th>
-                        <div className="flex justify-end">
-                            <div
-                                className="cursor-pointer opacity-80 hover:opacity-100"
-                                onClick={() => {
-                                    setRefresh(true);
-                                }}
-                            >
-                                <RefreshIcon className="w-4 h-4 fill-white" />
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <span className="text-xs">Showing {servers.length.toString()}/{totalServers.toString()}</span>
+                            </div>
+                            <div>
+                                <div
+                                    className="cursor-pointer opacity-80 hover:opacity-100"
+                                    onClick={() => {
+                                        setRefresh(true);
+                                    }}
+                                >
+                                    <RefreshIcon className="w-4 h-4 fill-white" />
+                                </div>
                             </div>
                         </div>
                     </th>
