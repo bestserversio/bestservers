@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, canEditServerProcedure, protectedProcedure, publicProcedure } from "../trpc";
 
-import { Region, ServerLinkType } from "@prisma/client";
+import { Prisma, Region, ServerLinkType } from "@prisma/client";
 
 import z from "zod";
 
@@ -84,7 +84,7 @@ export const serversRouter = createTRPCRouter({
                                 }
                             },
                             {
-
+    
                                 description: {
                                     contains: input.search,
                                     mode: "insensitive"
@@ -188,6 +188,132 @@ export const serversRouter = createTRPCRouter({
                 servers,
                 nextServer
             };
+        }),
+    count: publicProcedure
+        .input(z.object({
+            visible: z.boolean()
+                .optional().default(true),
+
+            categories: z.array(z.number())
+                .optional(),
+            platforms: z.array(z.number())
+                .optional(),
+            regions: z.array(z.nativeEnum(Region))
+                .optional(),
+
+            sort: z.string()
+                .default("curUsers"),
+            sortDir: z.string()
+                .default("desc"),
+            search: z.string()
+                .optional(),
+            mapName: z.string()
+                .optional(),
+            showOffline: z.boolean()
+                .optional(),
+            hideEmpty: z.boolean()
+                .default(false),
+            hideFull: z.boolean()
+                .default(false),
+            minCurUsers: z.number()
+                .optional(),
+            maxCurUsers: z.number()
+                .optional(),
+        }))
+        .query(async ({ ctx, input }) => {
+            return ctx.prisma.server.count({
+                where: {
+                    ...(input.visible !== undefined && {
+                        visible: input.visible
+                    }),
+                    ...(input.search && {
+                        OR: [
+                            {
+                                name: {
+                                    contains: input.search,
+                                    mode: "insensitive"
+                                }
+                            },
+                            {
+    
+                                description: {
+                                    contains: input.search,
+                                    mode: "insensitive"
+                                }
+                            },
+                            {
+                                mapName: {
+                                    contains: input.search,
+                                    mode: "insensitive"
+                                }
+                            },
+                            {
+                                platform: {
+                                    name: {
+                                        contains: input.search,
+                                        mode: "insensitive"
+                                    }
+                                }
+                            },
+                            {
+                                platform: {
+                                    nameShort: {
+                                        contains: input.search,
+                                        mode: "insensitive"
+                                    }
+                                }
+                            },
+                            {
+                                category: {
+                                    name: {
+                                        contains: input.search,
+                                        mode: "insensitive"
+                                    }
+                                }
+                            }
+                        ]
+                    }),
+                    ...(input.mapName && {
+                        mapName: {
+                            contains: input.mapName,
+                            mode: "insensitive"
+                        }
+                    }),
+                    ...(!input.showOffline && {
+                        online: true
+                    }),
+                    ...(input.categories && input.categories.length > 0 && {
+                        categoryId: {
+                            in: input.categories
+                        }
+                    }),
+                    ...(input.platforms && input.platforms.length > 0 && {
+                        platformId: {
+                            in: input.platforms
+                        }
+                    }),
+                    ...(input.regions && input.regions.length > 0 && {
+                        region: {
+                            in: input.regions
+                        }
+                    }),
+                    ...(input.hideEmpty && {
+                        curUsers: {
+                            gt: 0
+                        }
+                    }),
+                    ...(input.minCurUsers && {
+                        curPlayers: {
+                            gte: input.minCurUsers
+                        }
+                    }),
+                    ...(input.maxCurUsers && {
+                        curPlayers: {
+                            lte: input.maxCurUsers
+                        }
+                    })
+                }
+            })
         }),
     addGameServer: protectedProcedure
         .input(z.object({
