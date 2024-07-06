@@ -134,7 +134,7 @@ export default function Wrapper ({
                         }}
                     />
                     <div
-                        className={`${do_static_bg ? "hidden" : ""} fixed top-0 left-0 -z-10 w-full h-full bg-black/90`}
+                        className={`${do_static_bg ? "hidden" : ""} fixed top-0 left-0 -z-10 w-full h-full bg-shade-0/90`}
                     />
 
                     <Header />
