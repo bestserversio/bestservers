@@ -1,8 +1,8 @@
-import { Category } from "@prisma/client";
+import { type Category } from "@prisma/client";
 import { CheckApiAccess } from "@utils/apihelpers";
-import { AddCategory, CategoryBodyT } from "@utils/categories/api";
+import { AddCategory, type CategoryBodyT } from "@utils/categories/api";
 import { ProcessPrismaError } from "@utils/error";
-import { NextApiRequest, NextApiResponse } from "next";
+import { type NextApiRequest, type NextApiResponse } from "next";
 
 interface ExtendedRequest extends NextApiRequest {
     body: {
@@ -46,7 +46,7 @@ export default async function Handler (
     if (abortOnErrorStr && Boolean(abortOnErrorStr))
         abortOnError = true;
 
-    let categories: Category[] = [];
+    const categories: Category[] = [];
 
     // Loop through each category.
     const promises = req.body.categories.map(async (categoryBody) => {

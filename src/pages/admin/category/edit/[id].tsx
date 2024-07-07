@@ -13,7 +13,7 @@ import CategoryForm from "@components/categories/forms/Main";
 import NotFound from "@components/statements/NotFound";
 import Meta from "@components/Meta";
 
-export default function({
+export default function Page ({
     category
 } : {
     category?: CategoryWithChildrenAndParent

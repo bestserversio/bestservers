@@ -1,7 +1,7 @@
 import { GameplayerCtx } from "@components/GamePlayer";
-import { Server } from "@prisma/client";
+import { type Server } from "@prisma/client";
 import { useContext } from "react";
-import { ServerPublic } from "~/types/Server";
+import { type ServerPublic } from "~/types/Server";
 
 export default function GamePlayerButton ({
     server,
@@ -14,7 +14,7 @@ export default function GamePlayerButton ({
 
     return (
         <>
-            {"platform" in server && (server.platform?.jsInternal || server.platform?.jsExternal) && (
+            {("platform" in server && (server.platform?.jsInternal ?? server.platform?.jsExternal)) && (
                 <button
                     onClick={() => {
                         if (!gameplayerCtx)

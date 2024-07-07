@@ -42,7 +42,7 @@ const regions: ListRegion[] = [
 ]
 
 export default function FiltersRegions ({
-    className
+    
 } : {
     className?: string
 }) {

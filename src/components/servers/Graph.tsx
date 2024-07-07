@@ -1,9 +1,6 @@
 import { api } from "@utils/api";
-import { ReactNode, SetStateAction, useState } from "react";
-import { ServerPublic } from "~/types/Server";
-import { Server } from "@prisma/client";
-
-import d3 from "d3";
+import { type ReactNode, type SetStateAction, useState } from "react";
+import { type ServerPublic } from "~/types/Server";
 
 export default function ServerGraph({
     server,

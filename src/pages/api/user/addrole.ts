@@ -1,7 +1,7 @@
 import { UserRole } from "@prisma/client";
 import { prisma } from "@server/db";
 import { ProcessPrismaError } from "@utils/error";
-import { NextApiRequest, NextApiResponse } from "next";
+import { type NextApiRequest, type NextApiResponse } from "next";
 
 interface ExtendedApiRequest extends NextApiRequest {
     body: {
@@ -15,7 +15,7 @@ export default async function Handler (
     res: NextApiResponse
 ) {
     // Retrieve root API  token.
-    const apiKey = process.env.ROOT_API || undefined;
+    const apiKey = process.env.ROOT_API ?? undefined;
 
     // Check if our root API key is set.
     if (!apiKey) {
@@ -27,7 +27,7 @@ export default async function Handler (
     }
 
     // Retrieve our authorization header.
-    const authKey = req.headers.authorization || undefined;
+    const authKey = req.headers.authorization ?? undefined;
 
     // Check if authorization header is set.
     if (!authKey) {
@@ -43,7 +43,7 @@ export default async function Handler (
         });
     }
 
-    const userId = req.body.userId || undefined;
+    const userId = req.body.userId ?? undefined;
 
     if (!userId) {
         return res.status(400).json({
@@ -51,7 +51,7 @@ export default async function Handler (
         });
     }
 
-    const roleStr = req.body.role || undefined;
+    const roleStr = req.body.role ?? undefined;
 
     if (!roleStr) {
         return res.status(400).json(({

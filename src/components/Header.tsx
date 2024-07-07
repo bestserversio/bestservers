@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useEffect, useRef, useState } from "react";
+import React, { type MouseEventHandler, useEffect, useState } from "react";
 import Link from "next/link";
 import IconAndText from "./helpers/IconAndText";
 import HomeIcon from "./icons/header/Home";
@@ -9,12 +9,10 @@ import { signIn, useSession } from "next-auth/react";
 import LoginIcon from "./icons/header/Login";
 import AccountIcon from "./icons/header/Account";
 import { useRouter } from "next/router";
-import { FBlackOps, FKanit, FPermanentMarker } from "./Fonts";
 
-import { ReactNode } from "react";
-import { Cabin, Roboto_Mono, Source_Code_Pro } from "next/font/google";
+import { type ReactNode } from "react";
+import { Cabin, Source_Code_Pro } from "next/font/google";
 
-const FRobotoMono = Roboto_Mono({ subsets: ["cyrillic"], weight: "400" })
 const FCabin = Cabin({ subsets: ["latin"], weight: "700" })
 const FSourceCode = Source_Code_Pro({ subsets: ["cyrillic"], weight: "900" })
 
@@ -36,24 +34,6 @@ export default function Header () {
             })
         }
     }, [navFixed])
-
-    const [isSiteListOpen, setIsSiteListOpen] = useState(false);
-    const [isSiteListClosing, setIsSiteListClosing] = useState(false);
-
-    const logoMenu = useRef<HTMLUListElement | null>(null);
-
-    const animateEnd = (e: AnimationEvent) => {
-        if (e.animationName == "logo-slide-up")
-            setIsSiteListClosing(false);
-    }
-
-    if (logoMenu.current) {
-        const ref = logoMenu.current;
-
-        ref.addEventListener("animationend", animateEnd, {
-            once: true
-        });
-    }
 
     const { data: session } = useSession();
 
@@ -102,7 +82,7 @@ export default function Header () {
                             onClick={(e) => {
                                 e.preventDefault();
 
-                                signIn();
+                                void signIn();
                             }}
                             active={path.includes("/account")}
                         >
@@ -120,7 +100,7 @@ export default function Header () {
                             onClick={(e) => {
                                 e.preventDefault();
 
-                                signIn();
+                                void signIn();
                             }}
                         >
                             <IconAndText

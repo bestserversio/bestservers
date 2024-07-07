@@ -10,7 +10,7 @@ export default function Page() {
             />
             
             <Wrapper>
-                
+                <span>Placeholder.</span>
             </Wrapper>
         </>
     );

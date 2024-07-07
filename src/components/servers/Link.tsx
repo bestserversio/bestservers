@@ -1,7 +1,6 @@
-import { Server } from "@prisma/client";
 import Link from "next/link";
-import { ReactNode } from "react";
-import { ServerPublic } from "~/types/Server";
+import { type ReactNode } from "react";
+import { type ServerPublic } from "~/types/Server";
 
 export default function ServerLink({
     server,

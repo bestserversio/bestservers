@@ -1,4 +1,4 @@
-import { MouseEventHandler, useState } from "react";
+import { useState } from "react";
 
 export default function Switch ({
     onChange,
@@ -21,7 +21,7 @@ export default function Switch ({
     }
 
     return (
-        <label className="relative inline-flex items-center cursor-pointer">
+        <label className={`${className ? className : ""} relative inline-flex items-center cursor-pointer`}>
             <input
                 type="checkbox"
                 value=""

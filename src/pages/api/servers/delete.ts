@@ -1,9 +1,9 @@
-import { Server } from "@prisma/client";
+import { type Server } from "@prisma/client";
 import { prisma } from "@server/db";
 import { CheckApiAccess } from "@utils/apihelpers";
 import { ProcessPrismaError } from "@utils/error";
-import { FindServer, ServerBodyT, ServerWhereT } from "@utils/servers/api";
-import { NextApiRequest, NextApiResponse } from "next";
+import { FindServer, type ServerBodyT, type ServerWhereT } from "@utils/servers/api";
+import { type NextApiRequest, type NextApiResponse } from "next";
 
 type ServerBodyWithWhereT = ServerBodyT & {
     where: ServerWhereT
@@ -102,6 +102,16 @@ export default async function Handler (
                         id: serverFind.id
                     }
                 })
+
+                if (server) {
+                    await prisma.server.delete({
+                        where: {
+                            id: server.id
+                        }
+                    })
+
+                    servers.push(server);
+                }
             } catch (err) {
                 console.error(err);
         

@@ -14,7 +14,7 @@ import NotFound from "@components/statements/NotFound";
 import ServerForm from "@components/servers/forms/Main";
 import Meta from "@components/Meta";
 
-export default function({
+export default function Page ({
     server
 } : {
     server?: ServerWithRelations

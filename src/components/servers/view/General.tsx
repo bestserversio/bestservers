@@ -3,7 +3,7 @@ import { RetrieveUserCountClasses, RetrieveUserFullClasses } from "@utils/UserCo
 import { GetRegionFlag, GetRegionFullName } from "@utils/region";
 import Image from "next/image";
 import Link from "next/link";
-import { ServerPublic } from "~/types/Server";
+import { type ServerPublic } from "~/types/Server";
 import ServerMaps from "../Maps";
 import ServerBanners from "../Banners";
 import GamePlayerButton from "@components/buttons/GamePlayer";
@@ -64,16 +64,18 @@ export default function ServerViewGeneral ({
     }
 
     // Location information.
-    let locStreet: string | undefined = undefined;
-    let locCity: string | undefined = undefined;
-    let locState: string | undefined = undefined;
-    let locCountry: string | undefined = undefined;
-    let locZip: string | undefined = undefined;
-    let milesAway: number | undefined = undefined;
+    const locStreet: string | null = null;
+    const locCity: string | null = null;
+    const locState: string | null = null;
+    const locCountry: string | null = null;
+    const locZip: string | null = null;
+    const milesAway: number | null = null;
 
+    /*
     if (server.locationLat && server.locationLon) {
         // To Do: Do location stuff.
     }
+    */
 
     return (
         <>
@@ -312,7 +314,7 @@ export default function ServerViewGeneral ({
                             </table>
                         </div>
                     </div>
-                    {milesAway || locStreet || locCity || locState || locCountry || locZip && (
+                    {(milesAway ?? locStreet ?? locCity ?? locState ?? locCountry ?? locZip) && (
                         <div>
                             <div>
                                 <h2>Location Information</h2>
@@ -326,7 +328,7 @@ export default function ServerViewGeneral ({
                                                     <span className="font-bold">Miles Away</span>
                                                 </td>
                                                 <td>
-                                                    <span>{milesAway.toString()}</span>
+                                                    <span>{milesAway}</span>
                                                 </td>
                                             </tr>
                                         )}

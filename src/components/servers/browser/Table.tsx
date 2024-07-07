@@ -1,6 +1,6 @@
-import { ServerPublic } from "~/types/Server";
+import { type ServerPublic } from "~/types/Server";
 import ServerRow from "../Row";
-import { Dispatch, SetStateAction, useContext, useState } from "react";
+import { type Dispatch, type SetStateAction, useContext, useState } from "react";
 import { FiltersCtx } from "../Browser";
 import SortIcon from "@components/icons/Sort";
 import RefreshIcon from "@components/icons/Refresh";

@@ -1,7 +1,6 @@
 import Meta from "@components/Meta";
 import Wrapper from "@components/Wrapper";
 import { type Server } from "@prisma/client";
-import { GetServerSidePropsContext } from "next";
 
 export default function Page({
     server
@@ -14,15 +13,13 @@ export default function Page({
             
             />
             <Wrapper>
-
+                <span>Placeholder. {server?.name ?? ""}</span>
             </Wrapper>
         </>
     );
 }
 
-export async function getServerSideProps (ctx: GetServerSidePropsContext) {
-    const { params } = ctx;
-    
+export function getServerSideProps () {
     return {
         props: {
 

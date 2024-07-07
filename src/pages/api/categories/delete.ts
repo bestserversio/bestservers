@@ -1,9 +1,9 @@
-import { Category } from "@prisma/client";
+import { type Category } from "@prisma/client";
 import { prisma } from "@server/db";
 import { CheckApiAccess } from "@utils/apihelpers";
-import { CategoryWhereT, FindCategory } from "@utils/categories/api";
+import { type CategoryWhereT, FindCategory } from "@utils/categories/api";
 import { ProcessPrismaError } from "@utils/error";
-import { NextApiRequest, NextApiResponse } from "next";
+import { type NextApiRequest, type NextApiResponse } from "next";
 
 interface ExtendedRequest extends NextApiRequest {
     body: {

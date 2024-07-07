@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { adminProcedure, createTRPCRouter, publicProcedure } from "../trpc";
-import { Platform, PlatformFlag } from "@prisma/client";
+import { type Platform, PlatformFlag } from "@prisma/client";
 import { ProcessPrismaError } from "@utils/error";
 import { TRPCError } from "@trpc/server";
 import { UploadFile } from "@utils/file";

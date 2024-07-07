@@ -1,8 +1,5 @@
-import { GameplayerCtx } from "@components/GamePlayer";
-import { PlatformFlag } from "@prisma/client";
-import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
-import { ServerPublic } from "~/types/Server";
+import { useEffect, useState } from "react";
+import { type ServerPublic } from "~/types/Server";
 import ServerLink from "../Link";
 import Image from "next/image";
 import PlayerCount from "../PlayerCount";
@@ -19,12 +16,14 @@ export default function ServerRowTable ({
     const uploadsUrl = process.env.NEXT_PUBLIC_UPLOADS_URL;
     //const gameplayerCtx = useContext(GameplayerCtx);
     
+    /*
     let joinUrl: string | undefined = undefined;
 
     if (server.platform?.flags.includes(PlatformFlag.A2S))
         joinUrl = `steam://connect/${server.ip}:${server.port?.toString()}`
     else if (server.platform?.flags.includes(PlatformFlag.DISCORD) && server.hostName)
         joinUrl = server.hostName;
+    */
 
     let platIcon: string | undefined = undefined;
 
@@ -38,20 +37,20 @@ export default function ServerRowTable ({
 
     const [lastQueried, setLastQueried] = useState<number | undefined>(undefined);
 
-    const getLastUpdateTime = () => {
-        const last = server.lastQueried;
-
-        if (last) {
-            const now = new Date();
-
-            const nowTs = now.getTime();
-            const lastTs = last.getTime();
-
-            setLastQueried(Math.floor((nowTs - lastTs) / 1000))
-        }
-    }
-
     useEffect(() => {
+        const getLastUpdateTime = () => {
+            const last = server.lastQueried;
+    
+            if (last) {
+                const now = new Date();
+    
+                const nowTs = now.getTime();
+                const lastTs = last.getTime();
+    
+                setLastQueried(Math.floor((nowTs - lastTs) / 1000))
+            }
+        }
+
         const t = setInterval(() => {
             getLastUpdateTime()
         }, 1000)

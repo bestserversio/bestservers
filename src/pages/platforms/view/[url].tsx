@@ -1,11 +1,11 @@
 import Meta from "@components/Meta";
 import Wrapper from "@components/Wrapper";
 import NotFound from "@components/statements/NotFound";
-import { Platform } from "@prisma/client";
+import { type Platform } from "@prisma/client";
 import { prisma } from "@server/db";
-import { GetServerSidePropsContext } from "next";
+import { type GetServerSidePropsContext } from "next";
 
-export default function ({
+export default function Page ({
     platform
 } : {
     platform?: Platform

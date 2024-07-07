@@ -1,6 +1,6 @@
 import { prisma } from "@server/db";
 import { ProcessPrismaError } from "./error";
-import { NextApiRequest, NextApiResponse } from "next";
+import { type NextApiRequest, type NextApiResponse } from "next";
 
 type checkApiAccessT = {
     code: number

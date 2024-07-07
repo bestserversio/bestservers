@@ -7,7 +7,7 @@ export default function CategoryView ({
 }) {
     return (
         <div>
-
+            <span>{category.name}</span>
         </div>
     );
 }

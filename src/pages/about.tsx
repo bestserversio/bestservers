@@ -9,7 +9,7 @@ export default function Page() {
                 contentTitle="About Us"
             />
             <Wrapper>
-                
+                <span>Placeholder.</span>
             </Wrapper>
         </>
     );

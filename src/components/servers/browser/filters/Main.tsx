@@ -3,7 +3,6 @@ import { FiltersCtx } from "@components/servers/Browser";
 import { useContext } from "react";
 
 export default function FiltersMain ({
-    className,
     showSort,
     showSortDir,
     showSearch,
@@ -11,8 +10,6 @@ export default function FiltersMain ({
     showOffline,
     showHideEmpty,
     showHideFull,
-    showMinCurUsers,
-    showMaxCurUsers,
     showHeader
 } : {
     className?: string

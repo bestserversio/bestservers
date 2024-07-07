@@ -2,8 +2,8 @@ import { prisma } from "@server/db";
 import { CheckApiAccess } from "@utils/apihelpers";
 import { ProcessPrismaError } from "@utils/error";
 import { GetRegionFromString } from "@utils/region";
-import { NextApiRequest, NextApiResponse } from "next";
-import { ServerWithRelations } from "~/types/Server";
+import { type NextApiRequest, type NextApiResponse } from "next";
+import { type ServerWithRelations } from "~/types/Server";
 import { UserPublicSelect } from "~/types/User";
 
 export default async function Handler (
@@ -34,9 +34,9 @@ export default async function Handler (
     const { query } = req;
 
     // Limit and sorting.
-    const limit = query.limit?.toString() || "10";
-    const sort = query.sort?.toString() || "lastQueried";
-    const sortDir = query.sort?.toString() || "asc";
+    const limit = query.limit?.toString() ?? "10";
+    const sort = query.sort?.toString() ?? "lastQueried";
+    const sortDir = query.sort?.toString() ?? "asc";
 
     // Filtering
     const platformId = query.platformId?.toString();

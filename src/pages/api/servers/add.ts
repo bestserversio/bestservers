@@ -1,11 +1,11 @@
-import { Server } from "@prisma/client";
+import { type Server } from "@prisma/client";
 import { prisma } from "@server/db";
 import { CheckApiAccess } from "@utils/apihelpers";
 import { ProcessPrismaError } from "@utils/error";
 import { GetOsFromString } from "@utils/os";
 import { GetRegionFromString } from "@utils/region";
-import { AddServer, ServerBodyT, ServerWhereT, UpdateServer } from "@utils/servers/api";
-import { NextApiRequest, NextApiResponse } from "next";
+import { AddServer, type ServerBodyT, type ServerWhereT, UpdateServer } from "@utils/servers/api";
+import { type NextApiRequest, type NextApiResponse } from "next";
 
 type ServerBodyWithWhereT = ServerBodyT & {
     where?: ServerWhereT
@@ -69,7 +69,7 @@ export default async function Handler (
     if (addOnlyStr && Boolean(addOnlyStr))
         addOnly = true;
 
-    let servers: Server[] = [];
+    const servers: Server[] = [];
 
     // Loop through each server.
     const promises = req.body.servers.map(async (serverBody) => {

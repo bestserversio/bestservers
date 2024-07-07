@@ -1,8 +1,8 @@
-import { Platform } from "@prisma/client";
+import { type Platform } from "@prisma/client";
 import { prisma } from "@server/db";
 import { CheckApiAccess } from "@utils/apihelpers";
 import { ProcessPrismaError } from "@utils/error";
-import { NextApiRequest, NextApiResponse } from "next";
+import { type NextApiRequest, type NextApiResponse } from "next";
 
 export default async function Handler (
     req: NextApiRequest,

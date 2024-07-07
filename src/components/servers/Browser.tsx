@@ -1,16 +1,14 @@
 import { api } from "@utils/api"
-import { createContext, useEffect, useState, Dispatch, SetStateAction, useContext } from "react"
+import { createContext, useEffect, useState, type Dispatch, type SetStateAction } from "react"
 import { type ServerPublic } from "~/types/Server"
-import { Region } from "@prisma/client"
+import { type Region } from "@prisma/client"
 import ServerBrowserCol from "./browser/Col"
 import ServerBrowserTable from "./browser/Table"
 import FiltersMain from "./browser/filters/Main"
 import FiltersPlatforms from "./browser/filters/Platforms"
-import FiltersCategories from "./browser/filters/Categories"
 import FiltersRegions from "./browser/filters/Regions"
 import Loader from "@components/Loader"
 import InfiniteScroll from "react-infinite-scroller"
-import { ViewPortCtx } from "@components/Wrapper"
 import AnglesRightIcon from "@components/icons/AnglesRight"
 
 export type FiltersType = {
@@ -105,8 +103,8 @@ export default function ServerBrowser ({
         platforms: filterPlatforms,
         regions: filterRegions,
 
-        search: filterSearch || undefined,
-        mapName: filterMapName || undefined,
+        search: filterSearch ?? undefined,
+        mapName: filterMapName ?? undefined,
 
         showOffline: filterOffline,
         hideEmpty: filterHideEmpty,
@@ -125,8 +123,8 @@ export default function ServerBrowser ({
         platforms: filterPlatforms,
         regions: filterRegions,
 
-        search: filterSearch || undefined,
-        mapName: filterMapName || undefined,
+        search: filterSearch ?? undefined,
+        mapName: filterMapName ?? undefined,
 
         showOffline: filterOffline,
         hideEmpty: filterHideEmpty,
@@ -141,15 +139,23 @@ export default function ServerBrowser ({
 
     useEffect(() => {
         if (refresh) {
-            refetch();
-            
+            void (async () => {
+                try {
+                    await refetch();
+                } catch (err) {
+                    console.error(err);
+                }
+            })();
+
             setRefresh(false);
         }
 
-    }, [refresh]);
+    }, [refresh, refetch]);
 
-    const loadMore = async () => {
-        await fetchNextPage();
+    const loadMore = () => {
+        void (async () => {
+            await fetchNextPage();
+        })()
     }
 
     const servers: ServerPublic[] = [];

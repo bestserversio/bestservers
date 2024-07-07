@@ -1,7 +1,6 @@
 import { type ServerPublic } from "~/types/Server";
 import ServerRowTable from "./row/Table";
 import ServerRowCol from "./row/Col";
-import { Server } from "@prisma/client";
 
 export default function ServerRow ({
     server,

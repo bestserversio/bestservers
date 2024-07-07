@@ -6,7 +6,7 @@ import { TRPCError } from "@trpc/server";
 
 export const apiRouter = createTRPCRouter({
     all: adminProcedure
-        .query(({ ctx, input }) => {
+        .query(({ ctx }) => {
             return ctx.prisma.apiKey.findMany()
         }),
     add: adminProcedure

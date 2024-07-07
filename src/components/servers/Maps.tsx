@@ -1,5 +1,5 @@
-import { Server } from "@prisma/client";
-import { ServerPublic } from "~/types/Server";
+import { type Server } from "@prisma/client";
+import { type ServerPublic } from "~/types/Server";
 
 export default function ServerMaps({
     server,
@@ -10,7 +10,7 @@ export default function ServerMaps({
 }) {
     return (
         <div className={`server-maps${className ? ` ${className}` : ``}`}>
-
+            <span>{server.name ?? "N/A"}</span>
         </div>
     );
 }

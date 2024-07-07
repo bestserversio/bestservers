@@ -1,6 +1,6 @@
-import { Server } from "@prisma/client";
+import { type Server } from "@prisma/client";
 import { RetrieveUserCountClasses, RetrieveUserFullClasses } from "@utils/UserCountClasses";
-import { ServerPublic } from "~/types/Server";
+import { type ServerPublic } from "~/types/Server";
 
 export default function PlayerCount ({
     server    

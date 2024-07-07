@@ -1,7 +1,7 @@
 import Meta from "@components/Meta"
 import Wrapper from "@components/Wrapper"
 import ServerBrowser from "@components/servers/Browser"
-import { GetServerSidePropsContext } from "next"
+import { type GetServerSidePropsContext } from "next"
 
 export default function Page ({
     mapName
@@ -24,7 +24,7 @@ export default function Page ({
     )
 }
 
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+export function getServerSideProps(ctx: GetServerSidePropsContext) {
     const { params } = ctx;
 
     const mapName = params?.map?.toString();

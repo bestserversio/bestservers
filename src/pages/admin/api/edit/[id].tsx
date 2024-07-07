@@ -1,11 +1,11 @@
 import Wrapper from "@components/Wrapper";
 import NoPermissions from "@components/statements/NoPermissions";
 import NotFound from "@components/statements/NotFound";
-import { ApiKey } from "@prisma/client";
+import { type ApiKey } from "@prisma/client";
 import { getServerAuthSession } from "@server/auth";
 import { prisma } from "@server/db";
 import { isAdmin } from "@utils/auth";
-import { GetServerSidePropsContext } from "next";
+import { type GetServerSidePropsContext } from "next";
 import { useSession } from "next-auth/react";
 
 export default function Page({
@@ -49,5 +49,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
                 id: Number(id)
             }
         })
+    }
+
+    return {
+        props: {
+            apikey: apiKey
+        }
     }
 }

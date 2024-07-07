@@ -1,5 +1,5 @@
 import { UserRole } from "@prisma/client";
-import { Session } from "next-auth";
+import { type Session } from "next-auth";
 
 export function isMod (
     session?: Session | null

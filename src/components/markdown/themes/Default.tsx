@@ -1,4 +1,4 @@
-const DefaultTheme: { [key: string]: React.CSSProperties } = {
+const DefaultTheme: Record<string, React.CSSProperties> = {
     "code[class*=\"language-\"]": {
         "color": "#d6deeb",
         "fontFamily": "Consolas, Monaco, \"Andale Mono\", \"Ubuntu Mono\", monospace",

@@ -1,4 +1,4 @@
-import { Field, Form, Formik, isObject } from "formik";
+import { Field, Form, Formik } from "formik";
 
 import { type Category } from "@prisma/client";
 import { api } from "@utils/api";
@@ -15,8 +15,8 @@ export default function CategoryForm({
 
     // Mutations.
     const addOrUpdate = api.categories.addOrUpdate.useMutation({
-        onError: (opts) => {
-            const { message, data } = opts;
+        onError: () => {
+            //const { message, data } = opts;
 
             if (errorCtx) {
                 errorCtx.setTitle(`Failed To ${category ? "Save" : "Add"} Category`)

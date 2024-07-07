@@ -7,13 +7,13 @@ import Wrapper from "@components/Wrapper";
 import NoPermissions from "@components/statements/NoPermissions";
 
 import { isAdmin } from "@utils/auth";
-import { Platform } from "@prisma/client";
+import { type Platform } from "@prisma/client";
 import { prisma } from "@server/db";
 import PlatformForm from "@components/platforms/forms/Main";
 import NotFound from "@components/statements/NotFound";
 import Meta from "@components/Meta";
 
-export default function({
+export default function Page ({
     platform
 } : {
     platform?: Platform

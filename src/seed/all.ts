@@ -843,7 +843,7 @@ async function seedServers() {
         }
     });
 
-    console.log({ server1, server2, server3, server4, server5, server6, server7, server8, server9, server10, server11, server12, server13, server14, server15, server16 });
+    console.log({ server1, server2, server3, server4, server5, server6, server7, server8, server9, server10, server11, server12, server13, server14, server15, server16, server17, server18, server19, server20, server21 });
 }
 
 async function main() {

@@ -1,6 +1,5 @@
 import { type ServerPublic } from "~/types/Server";
 import ServerViewGeneral from "./view/General";
-import Link from "next/link";
 import ServerLink from "./Link";
 import ServerViewFeatures from "./view/Features";
 import ServerViewRules from "./view/Rules";

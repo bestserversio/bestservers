@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useContext } from "react";
 
 export default function FiltersPlatforms ({
-    className
+    
 } : {
     className?: string
 }) {
@@ -58,7 +58,7 @@ export default function FiltersPlatforms ({
                                                 )}
                                             </>
                                         }
-                                        text={<>{plat.nameShort || plat.name}</>}
+                                        text={<>{plat.nameShort ?? plat.name}</>}
                                         inline={true}
                                     />
                                 </div>

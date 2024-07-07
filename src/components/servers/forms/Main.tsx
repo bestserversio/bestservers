@@ -20,7 +20,7 @@ export default function ServerForm ({
 
     const updateMut = api.servers.update.useMutation({
         onError: (opts) => {
-            const { message, data } = opts;
+            const { message } = opts;
 
             console.error(message);
 

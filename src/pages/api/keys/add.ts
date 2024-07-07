@@ -1,11 +1,19 @@
 import { prisma } from "@server/db";
 import { ProcessPrismaError } from "@utils/error";
 import { randomBytes } from "crypto";
-import { NextApiRequest, NextApiResponse } from "next";
+import { type NextApiRequest, type NextApiResponse } from "next";
 
+interface NextApiRequestCustom extends NextApiRequest {
+    body: {
+        host?: string
+        endpoint?: string
+        writeAccess?: boolean
+        limit?: string
+    }
+}
 
 export default async function Handler (
-    req: NextApiRequest,
+    req: NextApiRequestCustom,
     res: NextApiResponse
 ) {
     if (req.method !== "POST") {
@@ -31,11 +39,6 @@ export default async function Handler (
         endpoint,
         writeAccess,
         limit
-    } : {
-        host?: string
-        endpoint?: string
-        writeAccess?: boolean
-        limit?: string
     } = req.body;
 
     try {

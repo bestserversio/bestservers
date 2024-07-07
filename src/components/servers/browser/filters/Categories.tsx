@@ -4,7 +4,7 @@ import { api } from "@utils/api";
 import { useContext } from "react";
 
 export default function FiltersCategories ({
-    className
+    
 } : {
     className?: string
 }) {

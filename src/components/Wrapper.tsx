@@ -61,8 +61,8 @@ export default function Wrapper ({
     const [showBg, setShowBg] = useState(false);
 
     useEffect(() => {
-        if (cookies["bs_showbg"] !== undefined)
-            setShowBg(Boolean(cookies["bs_showbg"]));
+        if (typeof cookies.bs_showbg !== "undefined")
+            setShowBg(Boolean(cookies.bs_showbg));
     }, [cookies])
 
     const [curBg, setCurBg] = useState<string | undefined>(undefined);
@@ -99,11 +99,12 @@ export default function Wrapper ({
             switchBg();
 
         return () => clearInterval(timerId);
-    }, [curBg, isMobile, bgImages, showBg])
+    }, [curBg, isMobile, showBg, bgSpeed])
 
     // Location.
-    const [curLocation, setCurLocation] = useState<LocationT | undefined>(undefined);
+    //const [curLocation, setCurLocation] = useState<LocationT | undefined>(undefined);
 
+    /*
     useEffect(() => {
         if (typeof navigator !== "undefined" && navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((pos) => {
@@ -117,6 +118,7 @@ export default function Wrapper ({
             })
         }
     }, [])
+    */
 
     const do_static_bg = isMobile || !showBg;
 
@@ -124,7 +126,7 @@ export default function Wrapper ({
         <ViewPortCtx.Provider value={{
             isMobile: isMobile
         }}>
-            <LocationCtx.Provider value={curLocation}>
+            <LocationCtx.Provider value={undefined}>
                 <main className={do_static_bg ? "bg-gradient-to-b from-gray-900 to-gray-950" : undefined}>
                     <div
                         className={`${do_static_bg ? "hidden" : ""} fixed top-0 left-0 -z-20 w-full h-full bg-cover`}

@@ -7,7 +7,7 @@ export default function ErrorBox({
 }) {
     return (
         <>
-            {title || message && (
+            {(title ?? message) && (
                 <div className="error-box">
                     <div>
                         <h2>{title ?? "Error!"}</h2>

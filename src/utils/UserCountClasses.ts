@@ -1,4 +1,4 @@
-const classes: {[key: number]: string} = {
+const classes: Record<number, string> = {
     100: "text-red-400",
     80: "text-green-300",
     65: "text-orange-300"

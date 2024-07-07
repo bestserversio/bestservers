@@ -1,5 +1,5 @@
 import { prisma } from "@server/db";
-import { NextApiRequest, NextApiResponse } from "next";
+import { type NextApiRequest, type NextApiResponse } from "next";
 
 export default async function Handler (
     req: NextApiRequest,

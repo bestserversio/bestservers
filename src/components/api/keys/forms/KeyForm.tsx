@@ -1,33 +1,34 @@
 import Switch from "@components/helpers/Switch";
-import { ErrorCtx, SuccessCtx } from "@pages/_app";
-import { ApiKey } from "@prisma/client";
+import { type ApiKey } from "@prisma/client";
 import { api } from "@utils/api";
 import { randomBytes } from "crypto";
 import { Field, Form, Formik } from "formik";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ApiKeyForm({
     apiKey
 } : {
     apiKey?: ApiKey
 }) {
-    const errorCtx = useContext(ErrorCtx)
-    const successCtx = useContext(SuccessCtx)
+    //const errorCtx = useContext(ErrorCtx)
+    //const successCtx = useContext(SuccessCtx)
 
+    /*
     const errHandler = (opts: unknown) => {
 
     }
     const sucHandler = () => {
 
     }
+    */
 
     const add = api.api.add.useMutation({
-        onError: errHandler,
-        onSuccess: sucHandler
+        //onError: errHandler,
+        //onSuccess: sucHandler
     })
     const update = api.api.update.useMutation({
-        onError: errHandler,
-        onSuccess: sucHandler
+        //onError: errHandler,
+        //onSuccess: sucHandler
     })
 
     const [writeAccess, setWriteAccess] = useState(false);

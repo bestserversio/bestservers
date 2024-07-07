@@ -1,7 +1,7 @@
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
 import { type Platform } from "@prisma/client";
 import { api } from "@utils/api";
-import { GetContents } from "@utils/file";
+import { GetContents } from "@utils/file_cl";
 import { Field, Form, Formik } from "formik";
 import { useContext, useState } from "react";
 
@@ -15,7 +15,7 @@ export default function PlatformForm ({
 
     const addOrUpdateMut = api.platforms.addOrUpdate.useMutation({
         onError: (opts) => {
-            const { message, data } = opts;
+            const { message } = opts;
 
             console.error(message);
 
@@ -73,13 +73,18 @@ export default function PlatformForm ({
                     <input
                         type="file"
                         name="banner"
-                        onChange={async (e) => {
+                        onChange={(e) => {
                             const file = e.target.files?.[0];
 
                             if (file) {
-                                const contents = await GetContents(file);
-
-                                setBanner(contents);
+                                void (async () => {
+                                    try {
+                                        const contents = await GetContents(file);
+                                        setBanner(contents);
+                                    } catch (err) {
+                                        console.error(err);
+                                    }
+                                })();
                             }
                         }}
                     />
@@ -89,13 +94,18 @@ export default function PlatformForm ({
                     <input
                         type="file"
                         name="icon"
-                        onChange={async (e) => {
+                        onChange={(e) => {
                             const file = e.target.files?.[0];
 
                             if (file) {
-                                const contents = await GetContents(file);
-
-                                setIcon(contents);
+                                void (async () => {
+                                    try {
+                                        const contents = await GetContents(file);
+                                        setIcon(contents);
+                                    } catch (err) {
+                                        console.error(err);
+                                    }
+                                })();
                             }
                         }}
                     />
@@ -121,13 +131,18 @@ export default function PlatformForm ({
                     <input
                         type="file"
                         name="jsInternal"
-                        onChange={async (e) => {
+                        onChange={(e) => {
                             const file = e.target.files?.[0];
 
                             if (file) {
-                                const contents = await GetContents(file);
-
-                                setJsInternal(contents);
+                                void (async () => {
+                                    try {
+                                        const contents = await GetContents(file);
+                                        setJsInternal(contents);
+                                    } catch (err) {
+                                        console.error(err);
+                                    }
+                                })();
                             }
                         }}
                     />

@@ -7,7 +7,7 @@ export default function SuccessBox({
 }) {
     return (
         <>
-            {title || message && (
+            {(title ?? message) && (
                 <div className="success-box">
                     <div>
                         <h2>{title ?? "Success!"}</h2>

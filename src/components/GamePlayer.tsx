@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useRef, useState } from "react";
+import { type ReactNode, createContext, useRef, useState } from "react";
 
 type GameplayerType = {
     setInternal: React.Dispatch<React.SetStateAction<string | undefined>>
@@ -59,16 +59,16 @@ export default function GamePlayer({
                             )}
                             <div className="mx-auto">
                                 <button
-                                    onClick={async () => {
+                                    onClick={() => {
                                         const c = canvas.current;
                                         const i = iframe.current;
                                         
                                         if (c)
-                                            await c.requestFullscreen();
+                                            void c.requestFullscreen();
                                         else if (i)
-                                            await i.requestFullscreen();
+                                            void i.requestFullscreen();
 
-                                        setFullScreen(true);
+                                        setFullScreen(!fullScreen);
                                     }}
                                     className="button"
                                 >Full Screen</button>

@@ -3,8 +3,8 @@ import Wrapper from "@components/Wrapper";
 import ServerView from "@components/servers/View";
 import NotFound from "@components/statements/NotFound";
 import { prisma } from "@server/db";
-import { GetServerSidePropsContext } from "next";
-import { ServerPublic, ServerPublicSelect } from "~/types/Server";
+import { type GetServerSidePropsContext } from "next";
+import { type ServerPublic, ServerPublicSelect } from "~/types/Server";
 
 export default function Page({
     server
@@ -49,7 +49,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     
     return {
         props: {
-            server: JSON.parse(JSON.stringify(server))
+            server: JSON.parse(JSON.stringify(server)) as ServerPublic
         }
     }
 }

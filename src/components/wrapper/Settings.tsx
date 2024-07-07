@@ -1,7 +1,7 @@
 import Switch from "@components/helpers/Switch";
 import CloseIcon from "@components/icons/Close";
 import SettingsIcon from "@components/icons/Settings";
-import { Dispatch, SetStateAction, useState } from "react"
+import { type Dispatch, type SetStateAction, useState } from "react"
 import { useCookies } from "react-cookie";
 
 export default function Settings ({
@@ -11,7 +11,7 @@ export default function Settings ({
     showBg: boolean
     setShowBg: Dispatch<SetStateAction<boolean>>
 }) {
-    const [_, setCookie] = useCookies(["bs_showbg"]);
+    const [, setCookie] = useCookies(["bs_showbg"]);
 
     const [showMenu, setShowMenu] = useState(false);
 

@@ -1,4 +1,4 @@
-import { Black_Ops_One, Dosis, Exo, Heebo, Josefin_Sans, Kanit, Mulish, Nunito, Oswald, Permanent_Marker, Plus_Jakarta_Sans, Raleway, Roboto_Mono, Roboto_Slab, Sora, Ubuntu } from "next/font/google";
+import { Black_Ops_One, Dosis, Exo, Heebo, Josefin_Sans, Kanit, Mulish, Nunito, Permanent_Marker, Plus_Jakarta_Sans, Raleway, Roboto_Mono, Roboto_Slab, Sora, Ubuntu } from "next/font/google";
 
 export const FBlackOps = Black_Ops_One({ subsets: ["latin"], weight: "400" });
 export const FJakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });

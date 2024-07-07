@@ -9,7 +9,7 @@ import NoPermissions from "@components/statements/NoPermissions";
 import { isAdmin } from "@utils/auth";
 import Meta from "@components/Meta";
 
-export default function() {
+export default function Page () {
     const { data: session } = useSession();
 
     return (
@@ -33,14 +33,11 @@ export default function() {
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const session = await getServerAuthSession(ctx);
 
-    let authed = false;
-
-    if (isAdmin(session))
-        authed = true;
+    const authed = isAdmin(session);
 
     return {
         props: {
-
+            authed: authed
         }
     }
 }

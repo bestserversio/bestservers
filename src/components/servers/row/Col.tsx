@@ -2,7 +2,7 @@ import { GameplayerCtx } from "@components/GamePlayer";
 import { PlatformFlag } from "@prisma/client";
 import Link from "next/link";
 import { useContext } from "react";
-import { ServerPublic } from "~/types/Server";
+import { type ServerPublic } from "~/types/Server";
 import ServerLink from "../Link";
 
 export default function ServerRowCol ({
@@ -41,7 +41,7 @@ export default function ServerRowCol ({
                 </div>
             </div>
             <div className="col-span-2 flex gap-4">
-                {(server.platform?.jsInternal || server.platform?.jsExternal) && (
+                {(server.platform?.jsInternal ?? server.platform?.jsExternal) && (
                     <button
                         onClick={() => {
                             if (!gameplayerCtx)

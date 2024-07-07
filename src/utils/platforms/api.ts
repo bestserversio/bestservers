@@ -1,4 +1,4 @@
-import { Platform, PlatformFlag } from "@prisma/client"
+import { type Platform, type PlatformFlag } from "@prisma/client"
 import { prisma } from "@server/db"
 
 export type PlatformBodyT = {

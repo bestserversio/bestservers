@@ -1,4 +1,4 @@
-import { Region, Server, ServerOs } from "@prisma/client"
+import { type Region, type Server, type ServerOs } from "@prisma/client"
 import { prisma } from "@server/db"
 
 export type ServerBodyT = {

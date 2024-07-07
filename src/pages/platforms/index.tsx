@@ -1,9 +1,8 @@
 import Meta from "@components/Meta";
 import Wrapper from "@components/Wrapper";
 import PlatformRow from "@components/platforms/Row";
-import { Platform, PlatformFlag } from "@prisma/client";
+import { type Platform, PlatformFlag } from "@prisma/client";
 import { prisma } from "@server/db";
-import { GetServerSidePropsContext } from "next";
 
 export default function Page({
     games,
@@ -60,7 +59,7 @@ export default function Page({
     );
 }
 
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+export async function getServerSideProps() {
     const games = await prisma.platform.findMany({
         where: {
             flags: {
