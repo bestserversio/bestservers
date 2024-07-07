@@ -37,6 +37,9 @@ export const ServerPublicSelect = {
     maxUsers: true,
     bots: true,
     mapName: true,
+    secure: true,
+    os: true,
+    password: true,
 
     avgUsers: true,
 

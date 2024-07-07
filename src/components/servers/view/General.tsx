@@ -85,12 +85,20 @@ export default function ServerViewGeneral ({
                         </div>
                         <div>
                             <table className="table table-auto border-separate">
-                                <tbody>
+                                <tbody className="[&>tr>td:first-child]:pr-4">
+                                    <tr>
+                                        <td className="font-bold">Status</td>
+                                        <td>
+                                            {server.online ? (
+                                                <span className="text-green-300">Online</span>
+                                            ) : (
+                                                <span className="text-red-400">Offline</span>
+                                            )}
+                                        </td>
+                                    </tr>
                                     {server.region && (
                                         <tr>
-                                            <td>
-                                                <span className="font-bold">Region</span>
-                                            </td>
+                                            <td className="font-bold">Region</td>
                                             <td>
                                                 <IconAndText
                                                     icon={
@@ -113,9 +121,7 @@ export default function ServerViewGeneral ({
                                     )}
                                     {platform && platformUrl && (
                                         <tr>
-                                            <td>
-                                                <span className="font-bold">Platform</span>
-                                            </td>
+                                            <td className="font-bold">Platform</td>
                                             <td>
                                                 <IconAndText
                                                     icon={<>
@@ -141,9 +147,7 @@ export default function ServerViewGeneral ({
                                     )}
                                     {cat && catUrl && (
                                         <tr>
-                                            <td>
-                                                <span className="font-bold">Category</span>
-                                            </td>
+                                            <td className="font-bold">Category</td>
                                             <td className="flex flex-wrap gap-1 items-center">
                                                 {catParent && catParentUrl && (
                                                     <>
@@ -196,9 +200,7 @@ export default function ServerViewGeneral ({
                                         </tr>
                                     )}
                                     <tr>
-                                        <td className="pr-4">
-                                            <span className="font-bold">Current Users</span>
-                                        </td>
+                                        <td className="font-bold">Current Users</td>
                                         <td className="flex flex-wrap gap-1">
                                             <span className={curUserClasses}>{server.curUsers.toString()}</span>
                                             <span>/</span>
@@ -206,31 +208,45 @@ export default function ServerViewGeneral ({
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            <span className="font-bold">Average Users</span>
-                                        </td>
+                                        <td className="font-bold">Average Users</td>
                                         <td>
                                             <span className={avgUserClasses}>{server.avgUsers.toString()}</span>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            <span className="font-bold">Bots</span>
-                                        </td>
+                                        <td className="font-bold">Bots</td>
                                         <td>
                                             <span>{server.bots.toString()}</span>
                                         </td>
                                     </tr>
                                     {server.mapName && (
                                         <tr>
-                                            <td>
-                                                <span className="font-bold">Current Map</span>
-                                            </td>
+                                            <td className="font-bold">Current Map</td>
                                             <td>
                                                 <span>{server.mapName}</span>
                                             </td>
                                         </tr>
                                     )}
+                                    <tr>
+                                        <td className="font-bold">VAC Secured</td>
+                                        <td>
+                                            {server.secure ? (
+                                                <span className="text-green-300">Yes</span>
+                                            ) : (
+                                                <span className="text-red-400">No</span>
+                                            )}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                            <td className="font-bold">Password Protected</td>
+                                            <td>
+                                                {server.password ? (
+                                                    <span className="text-green-300">Yes</span>
+                                                ) : (
+                                                    <span className="text-red-400">No</span>
+                                                )}
+                                            </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
