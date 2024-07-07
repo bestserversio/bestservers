@@ -28,7 +28,11 @@ export default function Index({
 }
 
 export async function getServerSideProps() {
-    const totalServers = await prisma.server.count();
+    const totalServers = await prisma.server.count({
+        where: {
+            visible: true
+        }
+    });
 
     return {
         props: {
