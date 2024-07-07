@@ -51,13 +51,13 @@ export default function FiltersRegions ({
     return (
         <>
             {filters && (
-                <ul className="list-none">
+                <ul className="list-none text-sm">
                     {regions.map((region, index) => {
                         const icon = GetRegionFlag(region.region);
                         return (
                             <li
                                 key={`region-${index.toString()}`}
-                                className={`p-6 cursor-pointer`}
+                                className={`cursor-pointer p-2`}
                                 onClick={() => {
                                     const newRegions = [...filters.filterRegions];
 
@@ -76,8 +76,8 @@ export default function FiltersRegions ({
                                         icon={
                                             <Image
                                                 src={icon}
-                                                width={32}
-                                                height={20}
+                                                width={24}
+                                                height={16}
                                                 alt="Region Flag"
                                             />
                                         }

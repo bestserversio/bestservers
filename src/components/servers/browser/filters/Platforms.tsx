@@ -19,7 +19,7 @@ export default function FiltersPlatforms ({
     return (
         <>
             {filters && (
-                <ul className="list-none">
+                <ul className="list-none text-sm">
                     {platforms?.map((plat, index) => {
                         let icon = process.env.NEXT_PUBLIC_DEFAULT_PLATFORM_ICON;
 
@@ -41,7 +41,7 @@ export default function FiltersPlatforms ({
                                     filters.setFilterPlatforms(newPlatforms);
                                 }}
                                 key={`platform-${index.toString()}`}
-                                className={`cursor-pointer p-6`}
+                                className={`cursor-pointer p-2`}
                             >
                                 <div className={(filters.filterPlatforms.length < 1 || filters.filterPlatforms.includes(plat.id)) ? "opacity-100" : "opacity-75"}>
                                     <IconAndText
@@ -50,15 +50,15 @@ export default function FiltersPlatforms ({
                                                 {icon && (
                                                     <Image
                                                         src={icon}
-                                                        width={32}
-                                                        height={32}
+                                                        width={24}
+                                                        height={24}
                                                         alt="Platform Icon"
                                                         className="rounded-full"
                                                     />
                                                 )}
                                             </>
                                         }
-                                        text={<>{plat.nameShort ?? plat.name}</>}
+                                        text={<>{plat.name}</>}
                                         inline={true}
                                     />
                                 </div>

@@ -233,21 +233,21 @@ export default function ServerBrowser ({
                                         </div>
                                         <div className="flex flex-col gap-2">
                                             <h2>Platforms</h2>
-                                            <div className="h-96 overflow-y-auto bg-shade-1 px-2 rounded-md">
+                                            <div className="h-96 overflow-y-auto bg-shade-1 rounded-md">
                                                 <FiltersPlatforms />
                                             </div>
                                         </div>
                                         {/*
                                         <div className="flex flex-col gap-2">
                                             <h2>Categories</h2>
-                                            <div className="h-96 overflow-y-auto bg-shade-1 px-2 rounded-md">
+                                            <div className="h-96 overflow-y-auto bg-shade-1 rounded-md">
                                                 <FiltersCategories />
                                             </div>
                                         </div>
                                         */}
                                         <div className="flex flex-col gap-2 rounded-md">
                                             <h2>Regions</h2>
-                                            <div className="h-96 overflow-y-auto bg-shade-1 px-2">
+                                            <div className="h-96 overflow-y-auto bg-shade-1">
                                                 <FiltersRegions />
                                             </div>
                                         </div>
