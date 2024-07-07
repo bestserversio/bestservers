@@ -75,9 +75,7 @@ export default function ServerBrowser ({
 
     preSort?: string
     preSortDir?: string
-}) {
-    const viewPort = useContext(ViewPortCtx);
-    
+}) {    
     // Filters and sorting.
     const [filterCategories, setFilterCategories] = useState<number[]>(preFilterCategories);
     const [filterPlatforms, setFilterPlatforms] = useState<number[]>(preFilterPlatforms);
@@ -157,7 +155,7 @@ export default function ServerBrowser ({
     const servers: ServerPublic[] = [];
 
     if (data) {
-        data.pages.map((pg, index) => {
+        data.pages.map((pg) => {
             servers.push(...pg.servers);
 
             if (!pg.nextServer && needMoreServers)
@@ -233,12 +231,14 @@ export default function ServerBrowser ({
                                                 <FiltersPlatforms />
                                             </div>
                                         </div>
+                                        {/*
                                         <div className="flex flex-col gap-2">
                                             <h2>Categories</h2>
                                             <div className="h-96 overflow-y-auto bg-shade-1 px-2 rounded-md">
                                                 <FiltersCategories />
                                             </div>
                                         </div>
+                                        */}
                                         <div className="flex flex-col gap-2 rounded-md">
                                             <h2>Regions</h2>
                                             <div className="h-96 overflow-y-auto bg-shade-1 px-2">
