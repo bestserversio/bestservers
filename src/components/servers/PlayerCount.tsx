@@ -19,7 +19,10 @@ export default function PlayerCount ({
                 <span>/</span>
                 <span className={fullClasses}>{server.maxUsers.toString()}</span>
                 {server.bots > 0 && (
-                    <span className="text-[0.60rem]">{server.bots.toString()}</span>
+                    <span
+                        className="text-[0.60rem]"
+                        title={`${server.bots.toString()} Bots`}
+                    >{server.bots.toString()}</span>
                 )}
             </div>
             <div>
