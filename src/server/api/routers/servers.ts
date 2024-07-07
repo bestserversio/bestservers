@@ -65,6 +65,11 @@ export const serversRouter = createTRPCRouter({
                 .default(10)
         }))
         .query(async ({ ctx, input }) => {
+            let sortDir: Prisma.SortOrder = "desc";
+
+            if (input.sortDir == "asc")
+                sortDir = "asc";
+
             let servers = await ctx.prisma.server.findMany({
                 take: input.limit + 1,
                 cursor: input.cursor ? { id: input.cursor } : undefined,
@@ -164,14 +169,12 @@ export const serversRouter = createTRPCRouter({
                 },
                 orderBy: [
                     { [input.sort]: input.sortDir },
-                    ...(input.sort === "name" ? [
-                        {
-                            hostName: input.sortDir
+                    ...(input.sort === "name" ? [{
+                            hostName: sortDir
                         }
                     ] : []),
-                    ...(input.sort === "hostName" ? [
-                        {
-                            name: input.sortDir
+                    ...(input.sort === "hostName" ? [{
+                            name: sortDir
                         }
                     ] : [])
                   ]
