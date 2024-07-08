@@ -123,12 +123,17 @@ model Platform {
   name        String
   nameShort   String?
   description String? @db.Text
+  vmsId       Int?
 
   jsInternal String?
   jsExternal String?
 
-  servers     Server[]
-  serverRanks ServerRank[]
+  servers      Server[]
+  serverRanks  ServerRank[]
+  SpyScanner   SpyScanner?  @relation(fields: [spyScannerId], references: [id])
+  spyScannerId Int?
+  Spy          Spy?         @relation(fields: [spyId], references: [id])
+  spyId        Int?
 }
 
 model Category {
@@ -323,6 +328,7 @@ model ApiKey {
   limit Int @default(3000)
 
   hits ApiKeyHits[]
+  Spy  Spy[]
 }
 
 model ApiKeyHits {
@@ -336,4 +342,40 @@ model ApiKeyHits {
   time DateTime @default(now())
 
   @@id([keyId, host, endpoint, time])
+}
+
+model Spy {
+  id Int @id @default(autoincrement())
+
+  host    String
+  verbose Int    @default(0)
+
+  keyId Int?
+  key   ApiKey? @relation(fields: [keyId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+
+  apiTimeout Int @default(5)
+
+  vmsEnabled      Boolean    @default(false)
+  vmsKey          String?
+  vmsTimeout      Int        @default(5)
+  vmsPlatforms    Platform[]
+  vmsLimit        Int        @default(1000)
+  vmsMinWait      Int        @default(60)
+  vmsMaxWait      Int        @default(120)
+  vmsRecvOnly     Boolean    @default(false)
+  vmsExcludeEmpty Boolean    @default(true)
+  vmsSubBots      Boolean    @default(false)
+}
+
+model SpyScanner {
+  id Int @id @default(autoincrement())
+
+  platforms Platform[]
+
+  protocol String  @default("A2S")
+  minWait  Int     @default(60)
+  maxWait  Int     @default(120)
+  limit    Int     @default(100)
+  recvOnly Boolean @default(false)
+  subBots  Boolean @default(false)
 }
