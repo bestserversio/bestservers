@@ -1,4 +1,3 @@
-import { useSession } from "next-auth/react";
 import { type GetServerSidePropsContext } from "next";
 
 import { getServerAuthSession } from "@server/auth";
@@ -10,19 +9,23 @@ import { isAdmin } from "@utils/auth";
 import Meta from "@components/Meta";
 import ServerQuickForm from "@components/servers/forms/Quick";
 
-export default function Page () {
-    const { data: session } = useSession();
-
+export default function Page ({
+    authed    
+} : {
+    authed: boolean
+}) {
     return (
         <>
             <Meta
 
             />
             <Wrapper>
-                {isAdmin(session) ? (
+                {authed ? (
                     <>
                         <h1>Add Server</h1>
-                        <ServerQuickForm />
+                        <div className="bg-shade-1/70 p-4 rounded-sm">
+                            <ServerQuickForm />
+                        </div>
                     </>
                 ) : (
                     <NoPermissions />

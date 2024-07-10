@@ -1,20 +1,121 @@
 import Wrapper from "@components/Wrapper";
 import NoPermissions from "@components/statements/NoPermissions";
+import { type ApiKey } from "@prisma/client";
+import { getServerAuthSession } from "@server/auth";
+import { prisma } from "@server/db";
+import { api } from "@utils/api";
 import { isAdmin } from "@utils/auth";
-import { useSession } from "next-auth/react";
+import { type GetServerSidePropsContext } from "next";
+import Link from "next/link";
 
-export default function Page() {
-    const { data: session } = useSession()
-
+export default function Page({
+    authed,
+    keys
+} : {
+    authed: boolean
+    keys?: ApiKey[]
+}) {
     return (
         <Wrapper>
-            {isAdmin(session) ? (
+            {authed ? (
                 <>
-                    <h1>API Settings & Keys</h1>
+                    <h1>API Keys</h1>
+                    <div className="bg-shade-1/70 p-4 rounded-sm">
+                        <div className="flex flex-col gap-2">
+                            {(keys && keys.length > 0) ? (
+                                <table className="table table-auto">
+                                    <thead>
+                                        <tr className="font-bold text-left">
+                                            <th>Host</th>
+                                            <th>Endpoint</th>
+                                            <th>Write Access</th>
+                                            <th>Limit</th>
+                                            <th>Key</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {keys.map((key, idx) => {
+                                            return (
+                                                <Row
+                                                    key={`${idx.toString()}`}
+                                                    apiKey={key}
+                                                />
+                                            )
+                                        })}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <p>No API keys found.</p>
+                            )}
+                            <div className="flex justify-center">
+                                <Link
+                                    href="/admin/api/add"
+                                    className="button button-primary"
+                                >Add API Key!</Link>
+                            </div>
+                        </div>
+                    </div>
                 </>
             ) : (
                 <NoPermissions />
             )}
         </Wrapper>
     )
+}
+
+function Row({
+    apiKey
+} : {
+    apiKey: ApiKey
+}) {
+    const editLink = `/admin/api/edit/${apiKey.id.toString()}`;
+    const deleteMut = api.api.delete.useMutation();
+
+    return (
+        <tr>
+            <td>{apiKey.host ?? ""}</td>
+            <td>{apiKey.endpoint ?? ""}</td>
+            <td>{apiKey.writeAccess ? "Yes" : "No"}</td>
+            <td>{apiKey.limit.toString()}</td>
+            <td>{apiKey.key}</td>
+            <td>
+                <div className="flex flex-wrap gap-2">
+                    <Link
+                        href={editLink}
+                        className="button button-primary"
+                    >Edit</Link>
+                    <button
+                        onClick={() => {
+                            const yes = confirm("Are you sure you want to delete this API key?");
+
+                            if (yes) {
+                                deleteMut.mutate({
+                                    id: apiKey.id
+                                })
+                            }
+                        }}
+                        className="button button-danger"
+                    >Delete</button>
+                </div>
+            </td>
+        </tr>
+    )
+}
+
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+    const session = await getServerAuthSession(ctx);
+    const authed = isAdmin(session);
+
+    let keys: ApiKey[] | null = null;
+
+    if (authed)
+            keys = await prisma.apiKey.findMany();
+
+    return {
+        props: {
+            authed: authed,
+            keys: keys
+        }
+    }
 }

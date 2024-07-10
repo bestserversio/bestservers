@@ -6,18 +6,17 @@ import { getServerAuthSession } from "@server/auth";
 import { prisma } from "@server/db";
 import { isAdmin } from "@utils/auth";
 import { type GetServerSidePropsContext } from "next";
-import { useSession } from "next-auth/react";
 
 export default function Page({
-    apiKey
+    apiKey,
+    authed
 }  : {
     apiKey?: ApiKey
+    authed: boolean
 }) {
-    const { data: session } = useSession()
-
     return (
         <Wrapper>
-            {isAdmin(session) ? (
+            {authed ? (
                 <>
                     {apiKey ? (
                         <>
@@ -43,7 +42,9 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     let apiKey: ApiKey | null = null;
 
-    if (isAdmin(session) && id) {
+    const authed = isAdmin(session);
+
+    if (authed && id) {
         apiKey = await prisma.apiKey.findFirst({
             where: {
                 id: Number(id)
@@ -53,7 +54,8 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     return {
         props: {
-            apikey: apiKey
+            apikey: apiKey,
+            authed: authed
         }
     }
 }

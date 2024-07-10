@@ -1,4 +1,3 @@
-import { useSession } from "next-auth/react";
 import { type GetServerSidePropsContext } from "next";
 
 import { getServerAuthSession } from "@server/auth";
@@ -9,16 +8,18 @@ import NoPermissions from "@components/statements/NoPermissions";
 import { isAdmin } from "@utils/auth";
 import Meta from "@components/Meta";
 
-export default function Page () {
-    const { data: session } = useSession();
-
+export default function Page ({
+    authed    
+} : {
+    authed: boolean
+}) {
     return (
         <>
             <Meta
 
             />
             <Wrapper>
-                {isAdmin(session) ? (
+                {authed ? (
                     <>
 
                     </>

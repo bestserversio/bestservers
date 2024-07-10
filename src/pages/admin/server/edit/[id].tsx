@@ -1,4 +1,3 @@
-import { useSession } from "next-auth/react";
 import { type GetServerSidePropsContext } from "next";
 
 import { getServerAuthSession } from "@server/auth";
@@ -15,25 +14,27 @@ import ServerForm from "@components/servers/forms/Main";
 import Meta from "@components/Meta";
 
 export default function Page ({
-    server
+    server,
+    authed
 } : {
     server?: ServerWithRelations
+    authed: boolean
 }) {
-    const { data: session } = useSession();
-
     return (
         <>
             <Meta
             
             />
             <Wrapper>
-                {isAdmin(session) ? (
+                {authed ? (
                     <>
                         {server ? (
-                            <>
+                            <div className="flex flex-col gap-2">
                                 <h1>Edit Server {server.name}</h1>
-                                <ServerForm server={server} />
-                            </>
+                                <div className="bg-shade-1/70 p-4 rounded-sm">
+                                    <ServerForm server={server} />
+                                </div>
+                            </div>
                         ) : (
                             <NotFound item="server" />
                         )}
@@ -53,8 +54,9 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const id = params?.id?.toString();
 
     const session = await getServerAuthSession(ctx);
+    const authed = isAdmin(session);
 
-    if (isAdmin(session) && id) {
+    if (authed && id) {
         server = await prisma.server.findFirst({
             include: {
                 user: {
@@ -75,7 +77,8 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     return {
         props: {
-            server: server
+            authed: authed,
+            server: JSON.parse(JSON.stringify(server)) as ServerWithRelations
         }
     }
 }

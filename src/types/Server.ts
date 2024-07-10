@@ -2,6 +2,7 @@ import { type Prisma } from "@prisma/client";
 import { UserPublicSelect } from "./User";
 
 export const ServerPublicSelect = {
+    visible: true,
     id: true,
     createdAt: true,
     updatedAt: true,

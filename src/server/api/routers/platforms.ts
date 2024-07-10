@@ -213,5 +213,23 @@ export const platformsRouter = createTRPCRouter({
                     })
                 }
             }
+        }),
+    delete: adminProcedure
+        .input(z.object({
+            id: z.number()
+        }))
+        .mutation(async ({ ctx, input }) => {
+            try {
+                await ctx.prisma.platform.delete({
+                    where: {
+                        id: input.id
+                    }
+                })
+            } catch (err: unknown) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: `Failed to delete platform due to error :: ${err}`
+                })
+            }
         })
 })

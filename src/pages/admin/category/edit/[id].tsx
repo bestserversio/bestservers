@@ -1,4 +1,3 @@
-import { useSession } from "next-auth/react";
 import { type GetServerSidePropsContext } from "next";
 
 import { prisma } from "@server/db";
@@ -14,24 +13,26 @@ import NotFound from "@components/statements/NotFound";
 import Meta from "@components/Meta";
 
 export default function Page ({
-    category
+    category,
+    authed
 } : {
     category?: CategoryWithChildrenAndParent
+    authed: boolean
 }) {
-    const { data: session } = useSession();
-
     return (
         <>
             <Meta
 
             />
             <Wrapper>
-                {isAdmin(session) ? (
+                {authed ? (
                     <>
                         {category ? (
                             <>
                                 <h1>Edit Category {category.name}</h1>
-                                <CategoryForm category={category} />
+                                <div className="bg-shade-1/70 p-2 rounded-sm">
+                                    <CategoryForm category={category} />
+                                </div>
                             </>
                         ) : (
                             <NotFound item="category" />
@@ -52,8 +53,9 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const id = params?.id?.toString();
 
     const session = await getServerAuthSession(ctx);
+    const authed = isAdmin(session);
 
-    if (isAdmin(session) && id) {
+    if (authed && id) {
         category = await prisma.category.findFirst({
             include: {
                 parent: true,
@@ -67,7 +69,8 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     return {
         props: {
-            category: category
+            category: category,
+            authed: authed
         }
     }
 }

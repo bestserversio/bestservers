@@ -74,5 +74,23 @@ export const apiRouter = createTRPCRouter({
                     message: `Error updating API key with ID #${input.id.toString()}.${errMsg ? ` Error => ${errMsg}${errCode ? ` (${errCode})` : ``}` : ``}`
                 })
             }
+        }),
+    delete: adminProcedure
+        .input(z.object({
+            id: z.number()
+        }))
+        .mutation(async ({ ctx, input }) => {
+            try {
+                await ctx.prisma.apiKey.delete({
+                    where: {
+                        id: input.id
+                    }
+                })
+            } catch (err: unknown) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: `Failed to delete api Key :: ${err}`
+                })
+            }
         })
 })

@@ -1,4 +1,3 @@
-import { useSession } from "next-auth/react";
 import { type GetServerSidePropsContext } from "next";
 
 import { getServerAuthSession } from "@server/auth";
@@ -14,24 +13,26 @@ import NotFound from "@components/statements/NotFound";
 import Meta from "@components/Meta";
 
 export default function Page ({
-    platform
+    platform,
+    authed
 } : {
     platform?: Platform
+    authed: boolean
 }) {
-    const { data: session } = useSession();
-
     return (
         <>
             <Meta
 
             />
             <Wrapper>
-                {isAdmin(session) ? (
+                {authed ? (
                     <>
                         {platform ? (
                             <>
                                 <h1>Edit Platform {platform.name}</h1>
-                                <PlatformForm platform={platform} />
+                                <div className="bg-shade-1/70 p-2 rounded-sm">
+                                    <PlatformForm platform={platform} />
+                                </div>
                             </>
                         ) : (
                             <NotFound item="platform" />
@@ -52,8 +53,9 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const id = params?.id?.toString();
 
     const session = await getServerAuthSession(ctx);
+    const authed = isAdmin(session);
 
-    if (isAdmin(session) && id) {
+    if (authed && id) {
         platform = await prisma.platform.findFirst({
             where: {
                 id: Number(id)
@@ -63,7 +65,8 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     return {
         props: {
-            platform: platform
+            platform: platform,
+            authed: authed
         }
     }
 }
