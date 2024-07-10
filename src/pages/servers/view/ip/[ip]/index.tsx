@@ -2,7 +2,9 @@ import Meta from "@components/Meta";
 import Wrapper from "@components/Wrapper";
 import ServerView from "@components/servers/View";
 import NotFound from "@components/statements/NotFound";
+import { getServerAuthSession } from "@server/auth";
 import { prisma } from "@server/db";
+import { isAdmin } from "@utils/auth";
 import { type GetServerSidePropsContext } from "next";
 import { type ServerPublic, ServerPublicSelect } from "~/types/Server";
 
@@ -47,11 +49,18 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
             port = Number(split[1]);
 
         if (ip && port) {
+            // Check if we're an admin or moderator.
+            const session = await getServerAuthSession(ctx);
+            const mod = isAdmin(session);
+
             server = await prisma.server.findFirst({
                 select: ServerPublicSelect,
                 where: {
                     ip: ip,
-                    port: port
+                    port: port,
+                    ...(!mod && {
+                        visible: true
+                    })
                 }
             });
         }
