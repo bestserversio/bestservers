@@ -85,11 +85,11 @@ export default function ApiKeyForm({
                     <Field name="endpoint" />
                 </div>
                 <div>
-                    <label htmlFor="writeAccess">Write Access</label>
                     <Switch
                         onChange={() => {
                             setWriteAccess(!writeAccess)
                         }}
+                        label={<>Write Access</>}
                     ></Switch>
                 </div>
                 <div>
@@ -98,6 +98,12 @@ export default function ApiKeyForm({
                         as="number"
                         name="limit"
                     />
+                </div>
+                <div className="flex justify-center">
+                    <button
+                        type="submit"
+                        className="button button-primary"
+                    >{apiKey ? "Save Key" : "Add Key"}</button>
                 </div>
             </Form>
         </Formik>
