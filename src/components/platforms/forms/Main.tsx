@@ -1,5 +1,6 @@
+import Switch from "@components/helpers/Switch";
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
-import { type Platform } from "@prisma/client";
+import { PlatformFlag, type Platform } from "@prisma/client";
 import { api } from "@utils/api";
 import { GetContents } from "@utils/file_cl";
 import { Field, Form, Formik } from "formik";
@@ -37,12 +38,18 @@ export default function PlatformForm ({
 
     const [jsInternal, setJsInternal] = useState<string | ArrayBuffer | null>(null);
 
+    const [flagA2s, setFlagA2s] = useState(platform?.flags?.includes("A2S") ?? false);
+    const [flagTs, setFlagTs] = useState(platform?.flags?.includes("TEAMSPEAK3") ?? false);
+    const [flagDiscord, setFlagDiscord] = useState(platform?.flags?.includes("DISCORD") ?? false);
+
     return (
         <Formik
             initialValues={{
                 url: platform?.url ?? "",
                 name: platform?.name ?? "",
+                nameShort: platform?.nameShort ?? "",
                 description: platform?.description ?? "",
+                vmsId: platform?.vmsId,
 
                 bannerRemove: false,
                 iconRemove: false,
@@ -50,19 +57,36 @@ export default function PlatformForm ({
                 jsExternal: platform?.jsExternal ?? ""
             }}
             onSubmit={(values) => {
+                // Compile flags.
+                const flags: PlatformFlag[] = [];
+
+                if (flagA2s)
+                    flags.push("A2S");
+
+                if (flagTs)
+                    flags.push("TEAMSPEAK3");
+                
+                if (flagDiscord)
+                        flags.push("DISCORD");
+
                 addOrUpdateMut.mutate({
                     banner: banner?.toString(),
                     icon: icon?.toString(),
+                    id: platform?.id,
 
                     bannerRemove: values.bannerRemove,
                     iconRemove: values.iconRemove,
 
                     url: values.url,
                     name: values.name,
+                    nameShort: values.nameShort,
                     description: values.description || null,
+                    vmsId: values.vmsId,
 
                     jsInternal: jsInternal?.toString(),
-                    jsExternal: values.jsExternal || null
+                    jsExternal: values.jsExternal || null,
+
+                    flags: flags
                 })
             }}
         >
@@ -121,8 +145,16 @@ export default function PlatformForm ({
                     <Field name="name" />
                 </div>
                 <div>
+                    <label htmlFor="nameShort">Short Name</label>
+                    <Field name="nameShort" />
+                </div>
+                <div>
                     <label htmlFor="description">Description</label>
                     <Field name="description" />
+                </div>
+                <div>
+                    <label htmlFor="vmsId">App/VMS ID</label>
+                    <Field name="vmsId" type="number" />
                 </div>
 
                 <h2>Web Settings</h2>
@@ -150,6 +182,37 @@ export default function PlatformForm ({
                 <div>
                     <label htmlFor="jsExternal">External JS URL</label>
                     <Field name="jsExternal" />
+                </div>
+
+                <h2>Flags</h2>
+                <div>
+                    <Switch
+                        onChange={() => {
+                            setFlagA2s(!flagA2s);
+                        }}
+                        value={flagA2s}
+                        label={<>A2S</>}
+                    />
+                    <Switch
+                        onChange={() => {
+                            setFlagTs(!flagTs);
+                        }}
+                        value={flagTs}
+                        label={<>TeamSpeak</>}
+                    />
+                    <Switch
+                        onChange={() => {
+                            setFlagDiscord(!flagDiscord);
+                        }}
+                        value={flagDiscord}
+                        label={<>Discord</>}
+                    />  
+                </div>
+                <div className="flex justify-center">
+                    <button
+                        type="submit"
+                        className="button button-primary"
+                    >{platform ? "Save Platform" : "Add Platform"}</button>
                 </div>
             </Form>
         </Formik>
