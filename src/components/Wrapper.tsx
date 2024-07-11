@@ -145,7 +145,7 @@ export default function Wrapper ({
                         setShowBg={setShowBg}
                     />
                     <GoogleAnalytics />
-                    <div className="content">
+                    <div className="content pt-4">
                         <ErrorBox
                             title={errorCtx?.title}
                             message={errorCtx?.msg}
