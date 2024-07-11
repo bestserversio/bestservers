@@ -80,107 +80,118 @@ export default function ServerForm ({
                 });
             }}
         >
-            <Form>
-                <h2>Platform & Category</h2>
-                <div>
-                    <label htmlFor="platform">Platform</label>
-                    <select name="platform">
-                        {platforms.map((platform, index) => {
-                            return (
-                                <option
-                                    key={`platform-${index.toString()}`}
-                                    value={platform.id}
-                                >{platform.name}</option>
-                            );
-                        })}
-                    </select>
-                </div>
-                <div>
-                    <label htmlFor="category">Category</label>
-                    <select name="category">
-                        <option value={0}>None</option>
-                        {categories.map((category, index) => {
-                            return (
-                                <React.Fragment key={`category-${index.toString()}`}>
-                                    <option value={category.id}>
-                                        {category.name}
-                                    </option>
-                                    {category.children.map((child, index) => {
-                                        return (
-                                            <option
-                                                key={`child-${index.toString()}`}
-                                                value={child.id}
-                                            >{child.name}</option>
-                                        );
-                                    })}
-                                </React.Fragment>
-                            );
-                        })}
-                    </select>
-                </div>
-                <h2>General</h2>
-                <div>
-                    <label htmlFor="url">URL</label>
-                    <Field name="url" />
-                </div>
-                <div>
-                    <label htmlFor="name">Name</label>
-                    <Field name="name" />
-                </div>
-                <div>
-                    <label htmlFor="descriptionShort">Short Description</label>
-                    <Field
-                        as="textfield"
-                        name="descriptionShort"
-                        rows={30}
-                        cols={15}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="description">Description</label>
-                    <Field
-                        as="textfield"
-                        name="description"
-                        rows={30}
-                        cols={15}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="features">Features</label>
-                    <Field
-                        as="textfield"
-                        name="features"
-                        rows={30}
-                        cols={15}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="rules">Rules</label>
-                    <Field
-                        as="textfield"
-                        name="rules"
-                        rows={30}
-                        cols={30}
-                    />
-                </div>
-                <h2>Network</h2>
-                <div>
-                    <label htmlFor="ip">IPv4 Address</label>
-                    <Field name="ip" />
-                </div>
-                <div>
-                    <label htmlFor="ip6">IPv6 Address</label>
-                    <Field name="ip6" />
-                </div>
-                <div>
-                    <label htmlFor="port">Port</label>
-                    <Field name="port" />
-                </div>
-                <div>
-                    <label htmlFor="hostName">Host Name</label>
-                    <Field name="hostName" />
-                </div>
-            </Form>
+            {(form) => (
+                <Form>
+                    <h2>Platform & Category</h2>
+                    <div>
+                        <label htmlFor="platform">Platform</label>
+                        <select
+                            onChange={form.handleChange}
+                            name="platform"
+                        >
+                            {platforms.map((platform, index) => {
+                                return (
+                                    <option
+                                        key={`platform-${index.toString()}`}
+                                        value={platform.id}
+                                    >{platform.name}</option>
+                                );
+                            })}
+                        </select>
+                    </div>
+                    <div>
+                        <label htmlFor="category">Category</label>
+                        <select name="category">
+                            <option value={0}>None</option>
+                            {categories.map((category, index) => {
+                                return (
+                                    <React.Fragment key={`category-${index.toString()}`}>
+                                        <option value={category.id}>
+                                            {category.name}
+                                        </option>
+                                        {category.children.map((child, index) => {
+                                            return (
+                                                <option
+                                                    key={`child-${index.toString()}`}
+                                                    value={child.id}
+                                                >{child.name}</option>
+                                            );
+                                        })}
+                                    </React.Fragment>
+                                );
+                            })}
+                        </select>
+                    </div>
+                    <h2>General</h2>
+                    <div>
+                        <label htmlFor="url">URL</label>
+                        <Field name="url" />
+                    </div>
+                    <div>
+                        <label htmlFor="name">Name</label>
+                        <Field name="name" />
+                    </div>
+                    <div>
+                        <label htmlFor="descriptionShort">Short Description</label>
+                        <Field
+                            as="textarea"
+                            name="descriptionShort"
+                            rows={10}
+                            cols={15}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="description">Description</label>
+                        <Field
+                            as="textarea"
+                            name="description"
+                            rows={10}
+                            cols={15}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="features">Features</label>
+                        <Field
+                            as="textarea"
+                            name="features"
+                            rows={10}
+                            cols={15}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="rules">Rules</label>
+                        <Field
+                            as="textarea"
+                            name="rules"
+                            rows={10}
+                            cols={30}
+                        />
+                    </div>
+                    <h2>Network</h2>
+                    <div>
+                        <label htmlFor="ip">IPv4 Address</label>
+                        <Field name="ip" />
+                    </div>
+                    <div>
+                        <label htmlFor="ip6">IPv6 Address</label>
+                        <Field name="ip6" />
+                    </div>
+                    <div>
+                        <label htmlFor="port">Port</label>
+                        <Field name="port" />
+                    </div>
+                    <div>
+                        <label htmlFor="hostName">Host Name</label>
+                        <Field name="hostName" />
+                    </div>
+                    <div className="flex justify-center">
+                        <button
+                            type="button"
+                            className="button button-primary"
+                        >{server ? "Save Server" : "Add Server"}</button>
+                    </div>
+                </Form>
+            )}
         </Formik>
     );
 }
