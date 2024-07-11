@@ -138,11 +138,11 @@ export default function CategoryForm({
                         rows={10}
                     />
                 </div>
-                <div>
+                <div className="flex justify-center">
                     <button
                         type="submit"
-                        className="button-primary"
-                    >Add Category!</button>
+                        className="button button-primary"
+                    >{category ? "Save Category" : "Add Category"}</button>
                 </div>
             </Form>
         </Formik>
