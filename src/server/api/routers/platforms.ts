@@ -10,6 +10,9 @@ export const PLATFORM_URL_MAX = 64;
 export const PLATFORM_NAME_MIN = 3;
 export const PLATFORM_NAME_MAX = 128;
 
+export const PLATFORM_NAME_SHORT_MIN = 2;
+export const PLATFORM_NAME_SHORT_MAX = 64;
+
 export const PLATFORM_DESCRIPTION_MAX = 30_720;
 
 export const platformsRouter = createTRPCRouter({
@@ -72,8 +75,16 @@ export const platformsRouter = createTRPCRouter({
             name: z.string()
                 .min(PLATFORM_NAME_MIN, `Name too short (< ${PLATFORM_NAME_MIN.toString()})`)
                 .max(PLATFORM_NAME_MAX, `Name too long (> ${PLATFORM_NAME_MAX.toString()})`),
+            nameShort: z.string()
+                .min(PLATFORM_NAME_SHORT_MIN, `Short name too short (< ${PLATFORM_NAME_SHORT_MIN.toString()}`)
+                .max(PLATFORM_NAME_SHORT_MAX, `Short name too ling (> ${PLATFORM_NAME_SHORT_MAX.toString()})`)
+                .nullable()
+                .optional(),
             description: z.string()
                 .max(PLATFORM_DESCRIPTION_MAX, `Description too long (> ${PLATFORM_DESCRIPTION_MAX.toString()})`)
+                .nullable()
+                .optional(),
+            vmsId: z.number()
                 .nullable()
                 .optional()
         }))
@@ -92,7 +103,9 @@ export const platformsRouter = createTRPCRouter({
 
                         url: input.url,
                         name: input.name,
-                        description: input.description
+                        nameShort: input.nameShort,
+                        description: input.description,
+                        vmsId: input.vmsId,
                     },
                     update: {
                         ...(input.flags !== undefined && {
@@ -108,7 +121,9 @@ export const platformsRouter = createTRPCRouter({
 
                         url: input.url,
                         name: input.name,
-                        description: input.description
+                        nameShort: input.nameShort,
+                        description: input.description,
+                        vmsId: input.vmsId
                     }
                 });
             } catch (err) {
