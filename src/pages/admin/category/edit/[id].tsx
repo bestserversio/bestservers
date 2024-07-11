@@ -11,6 +11,7 @@ import { type CategoryWithChildrenAndParent } from "~/types/Category";
 import CategoryForm from "@components/categories/forms/Main";
 import NotFound from "@components/statements/NotFound";
 import Meta from "@components/Meta";
+import AdminMenu from "@components/admin/Menu";
 
 export default function Page ({
     category,
@@ -26,18 +27,16 @@ export default function Page ({
             />
             <Wrapper>
                 {authed ? (
-                    <>
+                    <AdminMenu current="categories">
                         {category ? (
                             <>
                                 <h1>Edit Category {category.name}</h1>
-                                <div className="bg-shade-1/70 p-2 rounded-sm">
-                                    <CategoryForm category={category} />
-                                </div>
+                                <CategoryForm category={category} />
                             </>
                         ) : (
                             <NotFound item="category" />
                         )}
-                    </>
+                    </AdminMenu>
                 ) : (
                     <NoPermissions />
                 )}

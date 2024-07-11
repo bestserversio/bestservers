@@ -11,6 +11,7 @@ import { prisma } from "@server/db";
 import PlatformForm from "@components/platforms/forms/Main";
 import NotFound from "@components/statements/NotFound";
 import Meta from "@components/Meta";
+import AdminMenu from "@components/admin/Menu";
 
 export default function Page ({
     platform,
@@ -26,18 +27,16 @@ export default function Page ({
             />
             <Wrapper>
                 {authed ? (
-                    <>
+                    <AdminMenu current="platforms">
                         {platform ? (
                             <>
                                 <h1>Edit Platform {platform.name}</h1>
-                                <div className="bg-shade-1/70 p-2 rounded-sm">
-                                    <PlatformForm platform={platform} />
-                                </div>
+                                <PlatformForm platform={platform} />
                             </>
                         ) : (
                             <NotFound item="platform" />
                         )}
-                    </>
+                    </AdminMenu>
                 ) : (
                     <NoPermissions />
                 )}

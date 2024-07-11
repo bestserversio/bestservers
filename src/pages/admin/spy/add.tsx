@@ -21,8 +21,8 @@ export default function Page ({
             />
             <Wrapper>
                 {authed ? (
-                    <AdminMenu>
-                        <p>Welcome to the index!</p>
+                    <AdminMenu current="spy">
+                        <p>Welcome to the Spy add page!</p>
                     </AdminMenu>
                 ) : (
                     <NoPermissions />

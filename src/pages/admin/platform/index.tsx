@@ -12,6 +12,7 @@ import { prisma } from "@server/db";
 import Image from "next/image";
 import { api } from "@utils/api";
 import Link from "next/link";
+import AdminMenu from "@components/admin/Menu";
 
 export default function Page ({
     authed,
@@ -27,44 +28,42 @@ export default function Page ({
             />
             <Wrapper>
                 {authed ? (
-                    <div className="flex flex-col gap-4">
+                    <AdminMenu current="platforms">
                         <h1>Platforms</h1>
-                        <div className="bg-shade-1/70 p-2 rounded-sm">
-                            <div className="flex flex-col gap-2">
-                                {(platforms && platforms.length > 0) ? (
-                                    <table className="table table-auto">
-                                        <thead>
-                                            <tr className="font-bold text-left">
-                                                <th></th>
-                                                <th>Name</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {platforms.map((platform, idx) => {
-                                                return (
-                                                    <Row
-                                                        key={`${idx.toString()}`}
-                                                        platform={platform}
-                                                    />
-                                                )
-                                            })}
-                                        </tbody>
-                                    </table>
-                                ) : (
-                                    <p>No platforms found.</p>
-                                )}
-                                <div className="flex justify-center">
-                                    <Link
-                                        href="/admin/platform/add"
-                                        className="button button-primary"
-                                    >
-                                        Add Platform!
-                                    </Link>
-                                </div>
+                        <div className="flex flex-col gap-2">
+                            {(platforms && platforms.length > 0) ? (
+                                <table className="table table-auto">
+                                    <thead>
+                                        <tr className="font-bold text-left">
+                                            <th></th>
+                                            <th>Name</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {platforms.map((platform, idx) => {
+                                            return (
+                                                <Row
+                                                    key={`${idx.toString()}`}
+                                                    platform={platform}
+                                                />
+                                            )
+                                        })}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <p>No platforms found.</p>
+                            )}
+                            <div className="flex justify-center">
+                                <Link
+                                    href="/admin/platform/add"
+                                    className="button button-primary"
+                                >
+                                    Add Platform!
+                                </Link>
                             </div>
                         </div>
-                    </div>
+                    </AdminMenu>
                 ) : (
                     <NoPermissions />
                 )}

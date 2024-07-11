@@ -8,6 +8,7 @@ import NoPermissions from "@components/statements/NoPermissions";
 import { isAdmin } from "@utils/auth";
 import Meta from "@components/Meta";
 import ServerQuickForm from "@components/servers/forms/Quick";
+import AdminMenu from "@components/admin/Menu";
 
 export default function Page ({
     authed    
@@ -21,12 +22,10 @@ export default function Page ({
             />
             <Wrapper>
                 {authed ? (
-                    <>
+                    <AdminMenu current="servers">
                         <h1>Add Server</h1>
-                        <div className="bg-shade-1/70 p-4 rounded-sm">
-                            <ServerQuickForm />
-                        </div>
-                    </>
+                        <ServerQuickForm />
+                    </AdminMenu>
                 ) : (
                     <NoPermissions />
                 )}

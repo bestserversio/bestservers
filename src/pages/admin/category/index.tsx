@@ -7,6 +7,7 @@ import NoPermissions from "@components/statements/NoPermissions";
 
 import { isAdmin } from "@utils/auth";
 import Meta from "@components/Meta";
+import AdminMenu from "@components/admin/Menu";
 
 export default function Page ({
     authed    
@@ -20,9 +21,9 @@ export default function Page ({
             />
             <Wrapper>
                 {authed ? (
-                    <>
-
-                    </>
+                    <AdminMenu current="categories">
+                        <p>Placeholder.</p>
+                    </AdminMenu>
                 ) : (
                     <NoPermissions />
                 )}

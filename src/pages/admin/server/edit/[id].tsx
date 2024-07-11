@@ -12,13 +12,20 @@ import { UserPublicSelect } from "~/types/User";
 import NotFound from "@components/statements/NotFound";
 import ServerForm from "@components/servers/forms/Main";
 import Meta from "@components/Meta";
+import AdminMenu from "@components/admin/Menu";
+import { type Platform } from "@prisma/client";
+import { type CategoryWithChildren } from "~/types/Category";
 
 export default function Page ({
     server,
-    authed
+    authed,
+    platforms,
+    categories
 } : {
     server?: ServerWithRelations
     authed: boolean
+    platforms: Platform[]
+    categories: CategoryWithChildren[]
 }) {
     return (
         <>
@@ -27,18 +34,20 @@ export default function Page ({
             />
             <Wrapper>
                 {authed ? (
-                    <>
+                    <AdminMenu current="servers">
                         {server ? (
                             <div className="flex flex-col gap-2">
-                                <h1>Edit Server {server.name}</h1>
-                                <div className="bg-shade-1/70 p-4 rounded-sm">
-                                    <ServerForm server={server} />
-                                </div>
+                                <h1>Editing Server {server.name}</h1>
+                                <ServerForm
+                                    platforms={platforms}
+                                    categories={categories}
+                                    server={server}
+                                />
                             </div>
                         ) : (
                             <NotFound item="server" />
                         )}
-                    </>
+                    </AdminMenu>
                 ) : (
                     <NoPermissions />
                 )}
@@ -55,6 +64,9 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     const session = await getServerAuthSession(ctx);
     const authed = isAdmin(session);
+
+    let platforms: Platform[] = [];
+    let categories: CategoryWithChildren[] = [];
 
     if (authed && id) {
         server = await prisma.server.findFirst({
@@ -73,12 +85,24 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
                 id: Number(id)
             }
         });
+
+        platforms = await prisma.platform.findMany();
+        categories = await prisma.category.findMany({
+            where: {
+                parent: null
+            },
+            include: {
+                children: true
+            }
+        });
     }
 
     return {
         props: {
             authed: authed,
-            server: JSON.parse(JSON.stringify(server)) as ServerWithRelations
+            server: JSON.parse(JSON.stringify(server)) as ServerWithRelations,
+            platforms: platforms,
+            categories: categories
         }
     }
 }
