@@ -49,7 +49,7 @@ export default function PlatformForm ({
                 name: platform?.name ?? "",
                 nameShort: platform?.nameShort ?? "",
                 description: platform?.description ?? "",
-                vmsId: platform?.vmsId,
+                vmsId: platform?.vmsId ?? "",
 
                 bannerRemove: false,
                 iconRemove: false,
@@ -81,7 +81,7 @@ export default function PlatformForm ({
                     name: values.name,
                     nameShort: values.nameShort,
                     description: values.description || null,
-                    vmsId: values.vmsId,
+                    vmsId: Number(values.vmsId),
 
                     jsInternal: jsInternal?.toString(),
                     jsExternal: values.jsExternal || null,
@@ -154,7 +154,7 @@ export default function PlatformForm ({
                 </div>
                 <div>
                     <label htmlFor="vmsId">App/VMS ID</label>
-                    <Field name="vmsId" type="number" />
+                    <Field name="vmsId" />
                 </div>
 
                 <h2>Web Settings</h2>
