@@ -8,11 +8,16 @@ import NoPermissions from "@components/statements/NoPermissions";
 import { isAdmin } from "@utils/auth";
 import Meta from "@components/Meta";
 import AdminMenu from "@components/admin/Menu";
+import { Platform } from "@prisma/client";
+import { prisma } from "@server/db";
+import ScannerForm from "@components/spy/forms/Scanner";
 
 export default function Page ({
-    authed    
+    authed,
+    platforms
 } : {
     authed: boolean
+    platforms: Platform[]
 }) {
     return (
         <>
@@ -22,7 +27,8 @@ export default function Page ({
             <Wrapper>
                 {authed ? (
                     <AdminMenu current="spy">
-                        <p>Welcome to the Spy add page!</p>
+                        <h1>Add Spy Scanner!</h1>
+                        <ScannerForm platforms={platforms} />
                     </AdminMenu>
                 ) : (
                     <NoPermissions />
@@ -37,9 +43,15 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     const authed = isAdmin(session);
 
+    let platforms: Platform[] = [];
+
+    if (authed)
+        platforms = await prisma.platform.findMany();
+
     return {
         props: {
-            authed: authed
+            authed: authed,
+            platforms: platforms,
         }
     }
 }

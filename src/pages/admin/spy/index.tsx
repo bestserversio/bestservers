@@ -8,6 +8,12 @@ import NoPermissions from "@components/statements/NoPermissions";
 import { isAdmin } from "@utils/auth";
 import Meta from "@components/Meta";
 import AdminMenu from "@components/admin/Menu";
+import SpyBlock from "@components/spy/SpyBlock";
+import ScannerBlock from "@components/spy/ScannerBlock";
+import BadWordsBlock from "@components/spy/BadWordBlock";
+import { ContentItem2 } from "@components/Content";
+import BadIpsBlock from "@components/spy/BadIpBlock";
+import BadAsnsBlock from "@components/spy/BadAsnBlock";
 
 export default function Page ({
     authed    
@@ -22,7 +28,27 @@ export default function Page ({
             <Wrapper>
                 {authed ? (
                     <AdminMenu current="spy">
-                        <p>Welcome to the Spy index!</p>
+                        <div className="flex gap-6 justify-between">
+                            <div className="w-full flex flex-col gap-2">
+                                <ContentItem2 title="Spies">
+                                    <SpyBlock />
+                                </ContentItem2>
+                                <ContentItem2 title="Scanners">
+                                    <ScannerBlock />
+                                </ContentItem2>
+                            </div>
+                            <div className="flex flex-col gap-2 w-full">
+                                <ContentItem2 title="Bad Words">
+                                    <BadWordsBlock />
+                                </ContentItem2>
+                                <ContentItem2 title="Bad IPs">
+                                    <BadIpsBlock />
+                                </ContentItem2>
+                                <ContentItem2 title="Bad ASNs">
+                                    <BadAsnsBlock />
+                                </ContentItem2>
+                            </div>
+                        </div>
                     </AdminMenu>
                 ) : (
                     <NoPermissions />
