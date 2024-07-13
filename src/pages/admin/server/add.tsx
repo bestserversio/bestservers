@@ -9,6 +9,7 @@ import { isAdmin } from "@utils/auth";
 import Meta from "@components/Meta";
 import ServerQuickForm from "@components/servers/forms/Quick";
 import AdminMenu from "@components/admin/Menu";
+import { ContentItem2 } from "@components/Content";
 
 export default function Page ({
     authed    
@@ -23,8 +24,9 @@ export default function Page ({
             <Wrapper>
                 {authed ? (
                     <AdminMenu current="servers">
-                        <h1>Add Server</h1>
-                        <ServerQuickForm />
+                        <ContentItem2 title="Add Server!">
+                            <ServerQuickForm />
+                        </ContentItem2>
                     </AdminMenu>
                 ) : (
                     <NoPermissions />

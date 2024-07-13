@@ -11,6 +11,7 @@ import AdminMenu from "@components/admin/Menu";
 import SpyForm from "@components/spy/forms/Spy";
 import { ApiKey, Platform, SpyScanner } from "@prisma/client";
 import { prisma } from "@server/db";
+import { ContentItem2 } from "@components/Content";
 
 export default function Page ({
     authed,
@@ -31,12 +32,13 @@ export default function Page ({
             <Wrapper>
                 {authed ? (
                     <AdminMenu current="spy">
-                        <h1>Add Spy Instance!</h1>
-                        <SpyForm
-                            apiKeys={apiKeys}
-                            platforms={platforms}
-                            scanners={scanners}
-                        />
+                        <ContentItem2 title="Add Spy Instance!">
+                            <SpyForm
+                                apiKeys={apiKeys}
+                                platforms={platforms}
+                                scanners={scanners}
+                            />
+                        </ContentItem2>
                     </AdminMenu>
                 ) : (
                     <NoPermissions />

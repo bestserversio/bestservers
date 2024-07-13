@@ -8,6 +8,7 @@ import NoPermissions from "@components/statements/NoPermissions";
 import { isAdmin } from "@utils/auth";
 import PlatformForm from "@components/platforms/forms/Main";
 import AdminMenu from "@components/admin/Menu";
+import { ContentItem2 } from "@components/Content";
 
 export default function Page ({
     authed    
@@ -19,8 +20,9 @@ export default function Page ({
             <Wrapper>
                 {authed ? (
                     <AdminMenu current="platforms">
-                        <h1>Add Platform</h1>
-                        <PlatformForm />
+                        <ContentItem2 title="Add Platform!">
+                            <PlatformForm />
+                        </ContentItem2>
                     </AdminMenu>
                 ) : (
                     <NoPermissions />

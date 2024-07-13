@@ -10,6 +10,7 @@ import { isAdmin } from "@utils/auth";
 import Meta from "@components/Meta";
 import CategoryForm from "@components/categories/forms/Main";
 import AdminMenu from "@components/admin/Menu";
+import { ContentItem2 } from "@components/Content";
 
 export default function Page ({
     authed    
@@ -24,8 +25,9 @@ export default function Page ({
             <Wrapper>
                 {authed ? (
                     <AdminMenu current="categories">
-                        <h1>Add Category</h1>
-                        <CategoryForm />
+                        <ContentItem2 title="Add Category!">
+                            <CategoryForm />
+                        </ContentItem2>
                     </AdminMenu>
                 ) : (
                     <NoPermissions />

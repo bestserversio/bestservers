@@ -12,6 +12,7 @@ import CategoryForm from "@components/categories/forms/Main";
 import NotFound from "@components/statements/NotFound";
 import Meta from "@components/Meta";
 import AdminMenu from "@components/admin/Menu";
+import { ContentItem2 } from "@components/Content";
 
 export default function Page ({
     category,
@@ -29,10 +30,9 @@ export default function Page ({
                 {authed ? (
                     <AdminMenu current="categories">
                         {category ? (
-                            <>
-                                <h1>Edit Category {category.name}</h1>
+                            <ContentItem2 title={`Editing Category - ${category.name}`}>
                                 <CategoryForm category={category} />
-                            </>
+                            </ContentItem2>
                         ) : (
                             <NotFound item="category" />
                         )}

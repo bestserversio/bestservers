@@ -22,10 +22,9 @@ export default function Page({
             {authed ? (
                 <AdminMenu current="api">
                     {apiKey ? (
-                        <>
-                            <h1>Editing API Key #{apiKey.id.toString()}</h1>
+                        <ContentItem1 title={`Editing API Key - #${apiKey.id.toString()}`}>
                             <ApiKeyForm apiKey={apiKey} />
-                        </>
+                        </ContentItem1>
                     ) : (
                         <NotFound item="API Key" />
                     )}

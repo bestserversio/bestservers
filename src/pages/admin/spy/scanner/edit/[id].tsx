@@ -13,6 +13,7 @@ import { prisma } from "@server/db";
 import ScannerForm from "@components/spy/forms/Scanner";
 import NotFound from "@components/statements/NotFound";
 import { ScannerWithRelations } from "~/types/Spy";
+import { ContentItem2 } from "@components/Content";
 
 export default function Page ({
     authed,
@@ -32,13 +33,12 @@ export default function Page ({
                 {authed ? (
                     <AdminMenu current="spy">
                         {scanner ? (
-                            <>
-                                <h1>Add Spy Scanner!</h1>
+                            <ContentItem2 title={`Editing Scanner - ${scanner.name}!`}>
                                 <ScannerForm
                                     platforms={platforms}
                                     scanner={scanner}
                                 />
-                            </>
+                            </ContentItem2>
                         ) : (
                             <NotFound item="spy scanner" />
                         )}

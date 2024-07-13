@@ -13,6 +13,7 @@ import { prisma } from "@server/db";
 import NotFound from "@components/statements/NotFound";
 import SpyForm from "@components/spy/forms/Spy";
 import { SpyWithRelations } from "~/types/Spy";
+import { ContentItem2 } from "@components/Content";
 
 export default function Page ({
     authed,
@@ -36,15 +37,14 @@ export default function Page ({
                 {authed ? (
                     <AdminMenu current="spy">
                         {spy ? (
-                            <>
-                                <h1>Editing Spy Instance - {spy.host}</h1>
+                            <ContentItem2 title={`Editing Spy Instance - ${spy.host}`}>
                                 <SpyForm
                                     spy={spy}
                                     apiKeys={apiKeys}
                                     platforms={platforms}
                                     scanners={scanners}
                                 />
-                            </>
+                            </ContentItem2>
                         ) : (
                             <NotFound item="spy instance" />
                         )}

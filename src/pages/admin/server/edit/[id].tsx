@@ -15,6 +15,7 @@ import Meta from "@components/Meta";
 import AdminMenu from "@components/admin/Menu";
 import { type Platform } from "@prisma/client";
 import { type CategoryWithChildren } from "~/types/Category";
+import { ContentItem2 } from "@components/Content";
 
 export default function Page ({
     server,
@@ -36,14 +37,13 @@ export default function Page ({
                 {authed ? (
                     <AdminMenu current="servers">
                         {server ? (
-                            <div className="flex flex-col gap-2">
-                                <h1>Editing Server {server.name}</h1>
+                            <ContentItem2 title={`Editing Server - ${server.name} (${server.ip ?? "N/A"}:${server.port?.toString() ?? "N/A"})`}>
                                 <ServerForm
                                     platforms={platforms}
                                     categories={categories}
                                     server={server}
                                 />
-                            </div>
+                            </ContentItem2>
                         ) : (
                             <NotFound item="server" />
                         )}

@@ -11,6 +11,7 @@ import AdminMenu from "@components/admin/Menu";
 import { Platform } from "@prisma/client";
 import { prisma } from "@server/db";
 import ScannerForm from "@components/spy/forms/Scanner";
+import { ContentItem2 } from "@components/Content";
 
 export default function Page ({
     authed,
@@ -27,8 +28,9 @@ export default function Page ({
             <Wrapper>
                 {authed ? (
                     <AdminMenu current="spy">
-                        <h1>Add Spy Scanner!</h1>
-                        <ScannerForm platforms={platforms} />
+                        <ContentItem2 title="Add Spy Scanner!">
+                            <ScannerForm platforms={platforms} />
+                        </ContentItem2>
                     </AdminMenu>
                 ) : (
                     <NoPermissions />

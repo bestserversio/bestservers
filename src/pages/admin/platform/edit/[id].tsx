@@ -12,6 +12,7 @@ import PlatformForm from "@components/platforms/forms/Main";
 import NotFound from "@components/statements/NotFound";
 import Meta from "@components/Meta";
 import AdminMenu from "@components/admin/Menu";
+import { ContentItem2 } from "@components/Content";
 
 export default function Page ({
     platform,
@@ -29,10 +30,9 @@ export default function Page ({
                 {authed ? (
                     <AdminMenu current="platforms">
                         {platform ? (
-                            <>
-                                <h1>Edit Platform {platform.name}</h1>
+                            <ContentItem2 title={`Editing Platforming - ${platform.name}`}>
                                 <PlatformForm platform={platform} />
-                            </>
+                            </ContentItem2>
                         ) : (
                             <NotFound item="platform" />
                         )}

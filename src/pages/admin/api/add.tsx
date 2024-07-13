@@ -1,4 +1,4 @@
-import { ContentItem1 } from "@components/Content";
+import { ContentItem1, ContentItem2 } from "@components/Content";
 import Wrapper from "@components/Wrapper";
 import AdminMenu from "@components/admin/Menu";
 import ApiKeyForm from "@components/api/keys/forms/KeyForm";
@@ -17,8 +17,9 @@ export default function Page({
         <Wrapper>
             {authed ? (
                 <AdminMenu current="api">
-                    <h1>Add API Key</h1>
-                    <ApiKeyForm />
+                    <ContentItem2 title="Add API Key!">
+                        <ApiKeyForm />
+                    </ContentItem2>
                 </AdminMenu>
             ) : (
                 <NoPermissions />
