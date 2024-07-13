@@ -134,7 +134,7 @@ export const spyRouter = createTRPCRouter({
             id: z.number().optional(),
             host: z.string(),
             verbose: z.number().default(1),
-            keyId: z.number().optional(),
+            keyId: z.number().optional().nullable(),
             apiHost: z.string().optional(),
             apiTimeout: z.number().optional(),
             webApiEnabled: z.boolean().optional(),

@@ -71,11 +71,13 @@ export default function SpyForm ({
                 vmsMaxWait: spy?.vmsMaxWait ?? ""
             }}
             onSubmit={(values) => {
-                const { verbose, apiHost, apiTimeout, webApiHost, webApiEndpoint, webApiInterval, webApiTimeout, vmsKey, vmsTimeout, vmsLimit, vmsMinWait, vmsMaxWait } = values;
+                const { verbose, apiHost, apiTimeout, webApiHost, keyId, webApiEndpoint, webApiInterval, webApiTimeout, vmsKey, vmsTimeout, vmsLimit, vmsMinWait, vmsMaxWait } = values;
+                
                 addOrUpdateMut.mutate({
                     id: spy?.id,
                     host: values.host,
                     verbose: verbose ? Number(verbose) : undefined,
+                    keyId: keyId > 0 ? Number(keyId) : null,
                     apiHost: apiHost,
                     apiTimeout: apiTimeout ? Number(apiTimeout) : undefined,
                     webApiEnabled: webApiEnabled,
@@ -109,11 +111,12 @@ export default function SpyForm ({
                         <Field name="verbose" />
                     </div>
                     <div>
-                        <label htmlFor="vmsKey">API Key</label>
+                        <label htmlFor="keyId">API Key</label>
                         <select
-                            name="vmsKey"
+                            name="keyId"
                             onChange={form.handleChange}
                             onBlur={form.handleBlur}
+                            defaultValue={spy?.keyId ?? 0}
                         >
                             <option value="0">None</option>
                             {apiKeys.length > 0 && (
