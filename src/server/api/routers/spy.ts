@@ -3,7 +3,7 @@ import { adminProcedure, createTRPCRouter } from "../trpc";
 import * as z from "zod"
 import { TRPCError } from "@trpc/server";
 
-export const apiRouter = createTRPCRouter({
+export const spyRouter = createTRPCRouter({
     allSpies: adminProcedure
         .input(z.object({
             limit: z.number().default(10),
@@ -129,11 +129,11 @@ export const apiRouter = createTRPCRouter({
                 nextBadAsn
             }
         }),
-    addorUpdateSpy: adminProcedure
+    addOrUpdateSpy: adminProcedure
         .input(z.object({
             id: z.number().optional(),
             host: z.string(),
-            verbose: z.number(),
+            verbose: z.number().default(1),
             keyId: z.number().optional(),
             apiTimeout: z.number().default(5),
             vmsEnabled: z.boolean().default(false),
@@ -150,6 +150,16 @@ export const apiRouter = createTRPCRouter({
         }))
         .mutation(async ({ ctx, input }) => {
             try {
+                const eSpy = await ctx.prisma.spy.findFirst({
+                    where: {
+                        id: input.id ?? 0
+                    },
+                    include: {
+                        scanners: true,
+                        vmsPlatforms: true
+                    }
+                })
+
                 await ctx.prisma.spy.upsert({
                     where: {
                         id: input.id ?? 0
@@ -168,7 +178,7 @@ export const apiRouter = createTRPCRouter({
                         vmsExcludeEmpty: input.vmsExcludeEmpty,
                         vmsSubBots: input.vmsSubBots,
                         vmsPlatforms: {
-                            disconnect: [],
+                            disconnect: eSpy?.vmsPlatforms?.map(p => ({ id: p.id })) || [],
                             ...(input.vmsPlatforms.length > 0 && { 
                                 connect: input.vmsPlatforms.map((id) => ({
                                     id: id
@@ -176,7 +186,7 @@ export const apiRouter = createTRPCRouter({
                             })
                         },
                         scanners: {
-                            disconnect: [],
+                            disconnect: eSpy?.scanners?.map(s => ({ id: s.id })) || [],
                             ...(input.scanners.length > 0 && {
                                 connect: input.scanners.map((id) => ({
                                     id: id
@@ -226,6 +236,7 @@ export const apiRouter = createTRPCRouter({
 
             platforms: z.array(z.number()).default([]),
             
+            name: z.string(),
             protocol: z.string().default("A2S"),
             minWait: z.number().default(60),
             maxWait: z.number().default(120),
@@ -235,11 +246,21 @@ export const apiRouter = createTRPCRouter({
         }))
         .mutation(async ({ ctx, input }) => {
             try {
+                const eScanner = await ctx.prisma.spyScanner.findFirst({
+                    where: {
+                        id: input.id ?? 0
+                    },
+                    include: {
+                        platforms: true
+                    }
+                })
+
                 await ctx.prisma.spyScanner.upsert({
                     where: {
                         id: input.id ?? 0
                     },
                     create: {
+                        name: input.name,
                         protocol: input.protocol,
                         minWait: input.minWait,
                         maxWait: input.maxWait,
@@ -255,6 +276,7 @@ export const apiRouter = createTRPCRouter({
                         })
                     },
                     update: {
+                        name: input.name,
                         protocol: input.protocol,
                         minWait: input.minWait,
                         maxWait: input.maxWait,
@@ -262,7 +284,7 @@ export const apiRouter = createTRPCRouter({
                         recvOnly: input.recvOnly,
                         subBots: input.subBots,
                         platforms: {
-                            disconnect: [],
+                            disconnect: eScanner?.platforms?.map(p => ({ id: p.id })) || [],
                             ...(input.platforms.length > 0 && {
                                 connect: input.platforms.map((id) => ({
                                     id: id
