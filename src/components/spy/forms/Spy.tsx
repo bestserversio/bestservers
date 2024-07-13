@@ -47,13 +47,23 @@ export default function SpyForm ({
     const [vmsSubBots, setVmsSubBots] = useState(spy?.vmsSubBots ?? false);
     const [vmsPlatforms, setVmsPlatforms] = useState<number[]>(spy?.vmsPlatforms.map(p => p.id) ?? []);
 
+    const [webApiEnabled, setWebApiEnabled] = useState(spy?.webApiEnabled ?? false);
+
     return (
         <Formik
             initialValues={{
                 host: spy?.host ?? "",
                 verbose: spy?.verbose ?? "",
                 keyId: spy?.keyId ?? 0,
+
+                apiHost: spy?.apiHost ?? "",
                 apiTimeout: spy?.apiTimeout ?? "",
+
+                webApiHost: spy?.webApiHost ?? "",
+                webApiEndpoint: spy?.webApiEndpoint ?? "",
+                webApiTimeout: spy?.webApiTimeout ?? "",
+                webApiInterval: spy?.webApiInterval ?? "",
+                
                 vmsKey: spy?.vmsKey ?? "",
                 vmsTimeout: spy?.vmsTimeout ?? "",
                 vmsLimit: spy?.vmsLimit ?? "",
@@ -61,12 +71,18 @@ export default function SpyForm ({
                 vmsMaxWait: spy?.vmsMaxWait ?? ""
             }}
             onSubmit={(values) => {
-                const { verbose, apiTimeout, vmsKey, vmsTimeout, vmsLimit, vmsMinWait, vmsMaxWait } = values;
+                const { verbose, apiHost, apiTimeout, webApiHost, webApiEndpoint, webApiInterval, webApiTimeout, vmsKey, vmsTimeout, vmsLimit, vmsMinWait, vmsMaxWait } = values;
                 addOrUpdateMut.mutate({
                     id: spy?.id,
                     host: values.host,
                     verbose: verbose ? Number(verbose) : undefined,
+                    apiHost: apiHost,
                     apiTimeout: apiTimeout ? Number(apiTimeout) : undefined,
+                    webApiEnabled: webApiEnabled,
+                    webApiHost: webApiHost,
+                    webApiEndpoint: webApiEndpoint,
+                    webApiTimeout: webApiTimeout ? Number(webApiTimeout) : undefined,
+                    webApiInterval: webApiInterval ? Number(webApiInterval) : undefined,
                     vmsEnabled: vmsEnabled,
                     vmsKey: vmsKey,
                     vmsTimeout: vmsTimeout ? Number(vmsTimeout) : undefined,
@@ -113,6 +129,43 @@ export default function SpyForm ({
                                 </>
                             )}
                         </select>
+                    </div>
+
+                    <h2>Main API</h2>
+                    <div>
+                        <label htmlFor="apiHost">Host</label>
+                        <Field name="apiHost" />
+                    </div>
+                    <div>
+                        <label htmlFor="apiTimeout">Timeout</label>
+                        <Field name="apiTimeout" />
+                    </div>
+
+                    <h2>Web API</h2>
+                    <div className="flex flex-row">
+                        <Switch
+                            onChange={() => {
+                                setWebApiEnabled(!webApiEnabled);
+                            }}
+                            value={webApiEnabled}
+                        />
+                        <label htmlFor="webApiEnabled">Enabled</label>
+                    </div>
+                    <div>
+                        <label htmlFor="webApiHost">Host</label>
+                        <Field name="webApiHost" />
+                    </div>
+                    <div>
+                        <label htmlFor="webApiEndpoint">Endpoint</label>
+                        <Field name="webApiEndpoint" />
+                    </div>
+                    <div>
+                        <label htmlFor="webApiTimeout">Timeout</label>
+                        <Field name="webApiTimeout" />
+                    </div>
+                    <div>
+                        <label htmlFor="webApiInterval">Interval</label>
+                        <Field name="webApiInterval" />
                     </div>
 
                     <h2>Scanners</h2>

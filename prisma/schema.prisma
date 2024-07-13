@@ -352,7 +352,14 @@ model Spy {
   keyId Int?
   key   ApiKey? @relation(fields: [keyId], references: [id], onUpdate: Cascade, onDelete: SetNull)
 
-  apiTimeout Int @default(5)
+  apiHost    String @default("http://localhost")
+  apiTimeout Int    @default(5)
+
+  webApiEnabled  Boolean @default(false)
+  webApiHost     String  @default("http://localhost")
+  webApiEndpoint String  @default("/api/spy/get")
+  webApiTimeout  Int     @default(5)
+  webApiInterval Int     @default(60)
 
   vmsEnabled      Boolean @default(false)
   vmsKey          String?
