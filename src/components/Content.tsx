@@ -20,3 +20,24 @@ export function ContentItem1({
         </div>
     )
 }
+
+export function ContentItem2({
+    title,
+    className,
+    children
+} : {
+    title?: string
+    className?: string
+    children: React.ReactNode
+}) {
+    return (
+        <div className={`${className ?? ""} flex flex-col gap-2`}>
+            {title && (
+                <h1>{title}</h1>
+            )}
+            <div>
+                {children}
+            </div>
+        </div>
+    )
+}
