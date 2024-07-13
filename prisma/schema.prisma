@@ -128,12 +128,11 @@ model Platform {
   jsInternal String?
   jsExternal String?
 
-  servers      Server[]
-  serverRanks  ServerRank[]
-  SpyScanner   SpyScanner?  @relation(fields: [spyScannerId], references: [id])
-  spyScannerId Int?
-  Spy          Spy?         @relation(fields: [spyId], references: [id])
-  spyId        Int?
+  servers     Server[]
+  serverRanks ServerRank[]
+
+  spies       Spy[]        @relation("SpyPlatforms")
+  spyScanners SpyScanner[] @relation("SpyScannerPlatforms")
 }
 
 model Category {
@@ -347,7 +346,7 @@ model ApiKeyHits {
 model Spy {
   id Int @id @default(autoincrement())
 
-  host    String
+  host    String @unique
   verbose Int    @default(0)
 
   keyId Int?
@@ -355,22 +354,26 @@ model Spy {
 
   apiTimeout Int @default(5)
 
-  vmsEnabled      Boolean    @default(false)
+  vmsEnabled      Boolean @default(false)
   vmsKey          String?
-  vmsTimeout      Int        @default(5)
-  vmsPlatforms    Platform[]
-  vmsLimit        Int        @default(1000)
-  vmsMinWait      Int        @default(60)
-  vmsMaxWait      Int        @default(120)
-  vmsRecvOnly     Boolean    @default(false)
-  vmsExcludeEmpty Boolean    @default(true)
-  vmsSubBots      Boolean    @default(false)
+  vmsTimeout      Int     @default(5)
+  vmsLimit        Int     @default(1000)
+  vmsMinWait      Int     @default(60)
+  vmsMaxWait      Int     @default(120)
+  vmsRecvOnly     Boolean @default(false)
+  vmsExcludeEmpty Boolean @default(true)
+  vmsSubBots      Boolean @default(false)
+
+  vmsPlatforms Platform[]   @relation("SpyPlatforms")
+  scanners     SpyScanner[] @relation("SpyScanners")
 }
 
 model SpyScanner {
   id Int @id @default(autoincrement())
 
-  platforms Platform[]
+  name String
+
+  platforms Platform[] @relation("SpyScannerPlatforms")
 
   protocol String  @default("A2S")
   minWait  Int     @default(60)
@@ -378,4 +381,25 @@ model SpyScanner {
   limit    Int     @default(100)
   recvOnly Boolean @default(false)
   subBots  Boolean @default(false)
+
+  spies Spy[] @relation("SpyScanners")
+}
+
+model BadWord {
+  id    Int     @id @default(autoincrement())
+  word  String
+  exact Boolean @default(false)
+}
+
+model BadIp {
+  id   Int    @id @default(autoincrement())
+  ip   String
+  cidr Int    @default(32)
+
+  @@unique([ip, cidr])
+}
+
+model BadAsn {
+  id  Int @id @default(autoincrement())
+  asn Int @unique
 }
