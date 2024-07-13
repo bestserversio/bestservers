@@ -55,9 +55,9 @@ export default function ScannerForm ({
                     id: scanner?.id,
                     name: name,
                     protocol: protocol,
-                    minWait: typeof minWait !== "undefined" ? Number(minWait) : undefined,
-                    maxWait: typeof maxWait !== "undefined" ? Number(maxWait) : undefined,
-                    limit: typeof limit !== "undefined" ? Number(limit) : undefined,
+                    minWait: minWait ? Number(minWait) : undefined,
+                    maxWait: maxWait ? Number(maxWait) : undefined,
+                    limit: limit ? Number(limit) : undefined,
                     recvOnly: recvOnly,
                     subBots: subBots,
                     platforms: scannerPlatforms
