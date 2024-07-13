@@ -48,7 +48,8 @@ export const apiRouter = createTRPCRouter({
             host: z.string().nullable().optional(),
             endpoint: z.string().nullable().optional(),
             writeAccess: z.boolean().optional(),
-            limit: z.number().optional()
+            limit: z.number().optional(),
+            key: z.string().optional()
         }))
         .mutation(async ({ ctx, input }) => {
             try {
@@ -58,7 +59,8 @@ export const apiRouter = createTRPCRouter({
                         host: input.host,
                         endpoint: input.endpoint,
                         writeAccess: input.writeAccess,
-                        limit: input.limit
+                        limit: input.limit,
+                        key: input.key
                     },
                     where: {
                         id: input.id

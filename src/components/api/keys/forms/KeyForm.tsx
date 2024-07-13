@@ -31,15 +31,19 @@ export default function ApiKeyForm({
         //onSuccess: sucHandler
     })
 
-    const [writeAccess, setWriteAccess] = useState(false);
+    const [writeAccess, setWriteAccess] = useState(apiKey?.writeAccess ?? false);
 
-    const [key, setKey] = useState<string | undefined>(undefined)
+    const [key, setKey] = useState(apiKey?.key)
+
+    const regenKey = () => {
+        const genKey = randomBytes(64).toString("hex")
+
+        setKey(genKey)
+    }
 
     useEffect(() => {
         if (!key) {
-            const genKey = randomBytes(64).toString("hex")
-
-            setKey(genKey)
+            regenKey();
         }
     }, [key])
     return (
@@ -62,7 +66,8 @@ export default function ApiKeyForm({
                         host: values.host,
                         endpoint: values.endpoint,
                         writeAccess: writeAccess,
-                        limit: values.limit
+                        limit: Number(values.limit),
+                        key: key
                     })
                 } else {
                     add.mutate({
@@ -70,12 +75,17 @@ export default function ApiKeyForm({
                         host: values.host,
                         endpoint: values.endpoint,
                         writeAccess: writeAccess,
-                        limit: values.limit
+                        limit: Number(values.limit)
                     })
                 }
             }}
         >
             <Form className="form">
+                {apiKey && (
+                    <div className="flex flex-row gap-2 flex-wrap text-sm">
+                        <span className="font-bold">Key</span><span>-</span><span>{key ?? "N/A"}</span>
+                    </div>
+                )}
                 <div>
                     <label htmlFor="host">Host</label>
                     <Field name="host" />
@@ -89,21 +99,28 @@ export default function ApiKeyForm({
                         onChange={() => {
                             setWriteAccess(!writeAccess)
                         }}
+                        value={writeAccess}
                         label={<>Write Access</>}
                     ></Switch>
                 </div>
                 <div>
                     <label htmlFor="limit">Limit</label>
-                    <Field
-                        as="number"
-                        name="limit"
-                    />
+                    <Field name="limit" />
                 </div>
-                <div className="flex justify-center">
+                <div className="flex justify-center gap-2">
                     <button
                         type="submit"
                         className="button button-primary"
                     >{apiKey ? "Save Key" : "Add Key"}</button>
+                    {apiKey && (
+                        <button
+                            type="button"
+                            onClick={() => {
+                                regenKey();
+                            }}
+                            className="button button-secondary"
+                        >Regenerate Key</button>
+                    )}
                 </div>
             </Form>
         </Formik>
