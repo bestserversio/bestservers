@@ -1,5 +1,5 @@
 import Switch from "@components/helpers/Switch";
-import { ErrorCtx, SuccessCtx } from "@pages/_app";
+import { NotiCtx } from "@pages/_app";
 import { ApiKey, Platform, SpyScanner, type Spy } from "@prisma/client";
 import { api } from "@utils/api";
 import { Field, Form, Formik } from "formik";
@@ -17,8 +17,7 @@ export default function SpyForm ({
     platforms?: Platform[]
     scanners?: SpyScanner[]
 }) {
-    const errorCtx = useContext(ErrorCtx);
-    const successCtx = useContext(SuccessCtx);
+    const notiCtx = useContext(NotiCtx);
 
     const addOrUpdateMut = api.spy.addOrUpdateSpy.useMutation({
         onError: (opts) => {
@@ -26,16 +25,18 @@ export default function SpyForm ({
 
             console.error(message);
 
-            if (errorCtx) {
-                errorCtx.setTitle(`Failed To ${spy ? "Save" : "Add"} Spy Instance`);
-                errorCtx.setMsg(`Error ${spy ? "saving" : "adding"} Spy Instance.`);
-            }
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Failed To ${spy ? "Save" : "Add"} Spy Instance`,
+                msg: `Error ${spy ? "saving" : "adding"} Spy Instance.`
+            })
         },
         onSuccess: () => {
-            if (successCtx) {
-                successCtx.setTitle(`Successfully ${spy ? "Saved" : "Added"} Spy Instance!`);
-                successCtx.setMsg(`Successfully ${spy ? "saved" : "added"} Spy Instance!`)
-            }
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Successfully ${spy ? "Saved" : "Added"} Spy Instance!`,
+                msg: `Successfully ${spy ? "saved" : "added"} Spy Instance!`
+            })
         }
     });
 

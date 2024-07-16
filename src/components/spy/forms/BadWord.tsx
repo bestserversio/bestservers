@@ -1,10 +1,9 @@
-import { ErrorCtx, SuccessCtx } from "@pages/_app";
+import { NotiCtx } from "@pages/_app";
 import { api } from "@utils/api";
 import { useContext, useState } from "react";
 
 export default function BadWordForm() {
-    const errorCtx = useContext(ErrorCtx);
-    const successCtx = useContext(SuccessCtx);
+    const notiCtx = useContext(NotiCtx);
 
     const [word, setWord] = useState("");
 
@@ -13,17 +12,18 @@ export default function BadWordForm() {
             const { message } = opts;
 
             console.error(message);
-
-            if (errorCtx) {
-                errorCtx.setTitle(`Added Bad Word '${word}'!`);
-                errorCtx.setMsg(`Error adding bad word '${word}'.`);
-            }
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Added Bad Word '${word}'!`,
+                msg: `Error adding bad word '${word}'.`
+            })
         },
         onSuccess: () => {
-            if (successCtx) {
-                successCtx.setTitle(`Successfully Added Bad Word '${word}'!`);
-                successCtx.setMsg(`Successfully added the bad word '${word}'.`)
-            }
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Successfully Added Bad Word '${word}'!`,
+                msg: `Successfully added the bad word '${word}'.`
+            })
         }
     });
 

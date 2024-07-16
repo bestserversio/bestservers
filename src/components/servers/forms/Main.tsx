@@ -1,4 +1,4 @@
-import { ErrorCtx, SuccessCtx } from "@pages/_app";
+import { NotiCtx } from "@pages/_app";
 import { type Platform } from "@prisma/client";
 import { api } from "@utils/api";
 import { Field, Form, Formik } from "formik";
@@ -15,8 +15,7 @@ export default function ServerForm ({
     platforms?: Platform[]
     categories?: CategoryWithChildren[]
 }) {
-    const errorCtx = useContext(ErrorCtx);
-    const successCtx = useContext(SuccessCtx);
+    const notiCtx = useContext(NotiCtx);
 
     const updateMut = api.servers.update.useMutation({
         onError: (opts) => {
@@ -24,16 +23,18 @@ export default function ServerForm ({
 
             console.error(message);
 
-            if (errorCtx) {
-                errorCtx.setTitle("Failed To Update Server");
-                errorCtx.setMsg("An error occurred when attempting to update the server.");
-            }
+            notiCtx?.addNoti({
+                type: "Error",
+                title: "Failed To Update Server",
+                msg: "An error occurred when attempting to update the server."
+            })
         },
         onSuccess: () => {
-            if (successCtx) {
-                successCtx.setTitle("Successfully Updated Server!");
-                successCtx.setMsg("Successfully updated server!");
-            }
+            notiCtx?.addNoti({
+                type: "Success",
+                title: "Successfully Updated Server!",
+                msg: "Successfully updated server!"
+            })
         }
     });
 

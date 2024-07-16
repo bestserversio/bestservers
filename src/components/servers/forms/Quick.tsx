@@ -1,4 +1,4 @@
-import { ErrorCtx, SuccessCtx } from "@pages/_app";
+import { NotiCtx } from "@pages/_app";
 import { api } from "@utils/api";
 import { Field, Form, Formik } from "formik";
 import { useContext } from "react";
@@ -8,25 +8,26 @@ export default function ServerQuickForm({
 } : {
     inline?: boolean
 }) {
-    const errorCtx = useContext(ErrorCtx);
-    const successCtx = useContext(SuccessCtx);
+    const notiCtx = useContext(NotiCtx);
 
     const addMut = api.servers.addGameServer.useMutation({
         onError: (opts) => {
             const { message } = opts;
 
-            if (errorCtx) {
-                console.error(message);
+            console.error(message);
 
-                errorCtx.setTitle("Failed To Add Server");
-                errorCtx.setMsg("Failed to add server.");
-            }
+            notiCtx?.addNoti({
+                type: "Error",
+                title: "Failed To Add Server",
+                msg: "Failed to add server."
+            })
         },
         onSuccess: () => {
-            if (successCtx) {
-                successCtx.setTitle("Successfully Added Server");
-                successCtx.setMsg("Successfully added server!");
-            }
+            notiCtx?.addNoti({
+                type: "Success",
+                title: "Added server successfully!",
+                msg: "Added the game server successfully!"
+            })
         }
     });
 

@@ -1,5 +1,5 @@
 import Switch from "@components/helpers/Switch";
-import { ErrorCtx, SuccessCtx } from "@pages/_app";
+import { NotiCtx } from "@pages/_app";
 import { PlatformFlag, type Platform } from "@prisma/client";
 import { api } from "@utils/api";
 import { GetContents } from "@utils/file_cl";
@@ -11,8 +11,7 @@ export default function PlatformForm ({
 } : {
     platform?: Platform
 }) {
-    const errorCtx = useContext(ErrorCtx);
-    const successCtx = useContext(SuccessCtx);
+    const notiCtx = useContext(NotiCtx);
 
     const addOrUpdateMut = api.platforms.addOrUpdate.useMutation({
         onError: (opts) => {
@@ -20,16 +19,18 @@ export default function PlatformForm ({
 
             console.error(message);
 
-            if (errorCtx) {
-                errorCtx.setTitle(`Failed To ${platform ? "Save" : "Add"} Platform`);
-                errorCtx.setMsg(`Error ${platform ? "saving" : "adding"} platform.`);
-            }
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Failed To ${platform ? "Save" : "Add"} Platform`,
+                msg: `Error ${platform ? "saving" : "adding"} platform.`
+            })
         },
         onSuccess: () => {
-            if (successCtx) {
-                successCtx.setTitle(`Successfully ${platform ? "Saved" : "Added"} Platform!`);
-                successCtx.setMsg(`Successfully ${platform ? "saved" : "added"} platform!`)
-            }
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Successfully ${platform ? "Saved" : "Added"} Platform!`,
+                msg: `Successfully ${platform ? "saved" : "added"} platform!`
+            })
         }
     });
 

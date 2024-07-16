@@ -1,10 +1,9 @@
-import { ErrorCtx, SuccessCtx } from "@pages/_app";
+import { NotiCtx } from "@pages/_app";
 import { api } from "@utils/api";
 import { useContext, useState } from "react";
 
 export default function BadIpForm() {
-    const errorCtx = useContext(ErrorCtx);
-    const successCtx = useContext(SuccessCtx);
+    const notiCtx = useContext(NotiCtx);
 
     const [ip, setIp] = useState("");
 
@@ -13,17 +12,19 @@ export default function BadIpForm() {
             const { message } = opts;
 
             console.error(message);
-
-            if (errorCtx) {
-                errorCtx.setTitle(`Added Bad IP '${ip}'!`);
-                errorCtx.setMsg(`Error adding bad IP '${ip}'.`);
-            }
+            
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Added Bad IP '${ip}'!`,
+                msg: `Error adding bad IP '${ip}'.`
+            })
         },
         onSuccess: () => {
-            if (successCtx) {
-                successCtx.setTitle(`Successfully Added Bad IP '${ip}'!`);
-                successCtx.setMsg(`Successfully added the bad IP '${ip}'.`)
-            }
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Successfully added bad IP '${ip}'!`,
+                msg: `Successfully added the bad IP '${ip}'!`
+            })
         }
     });
 

@@ -1,12 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Header from "./Header";
 import GoogleAnalytics from "./GoogleAnalytics";
-import { ErrorCtx, SuccessCtx } from "@pages/_app";
-import SuccessBox from "./statements/Success";
-import ErrorBox from "./statements/Error";
 import GamePlayer from "./GamePlayer";
 import { useCookies } from "react-cookie";
 import Settings from "./wrapper/Settings";
+import { NotiCtx } from "@pages/_app";
+import Notification from "./statements/Notification";
 
 const bgImages = [
     "csgo.jpg",
@@ -32,8 +31,7 @@ export default function Wrapper ({
 } : {
     children: React.ReactNode
 }) {
-    const errorCtx = useContext(ErrorCtx);
-    const successCtx = useContext(SuccessCtx);
+    const notiCtx = useContext(NotiCtx);
 
     const [cookies] = useCookies(["bs_showbg"]);
 
@@ -146,14 +144,19 @@ export default function Wrapper ({
                     />
                     <GoogleAnalytics />
                     <div className="content pt-4">
-                        <ErrorBox
-                            title={errorCtx?.title}
-                            message={errorCtx?.msg}
-                        />
-                        <SuccessBox
-                            title={successCtx?.title}
-                            message={successCtx?.msg}
-                        />
+                        <div className="fixed bottom-2 right-2">
+                            <div className="flex flex-col gap-2">
+                                {notiCtx?.notis?.map((noti) => {
+                                    return (
+                                        <Notification
+                                            type={noti.type}
+                                            title={noti.title}
+                                            msg={noti.msg}
+                                        />
+                                    )
+                                })}
+                            </div>
+                        </div>
                         <GamePlayer>
                             {children}
                         </GamePlayer>

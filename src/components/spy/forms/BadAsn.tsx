@@ -1,10 +1,9 @@
-import { ErrorCtx, SuccessCtx } from "@pages/_app";
+import { NotiCtx } from "@pages/_app";
 import { api } from "@utils/api";
 import { useContext, useState } from "react";
 
 export default function BadAsnForm() {
-    const errorCtx = useContext(ErrorCtx);
-    const successCtx = useContext(SuccessCtx);
+    const notiCtx = useContext(NotiCtx);
 
     const [asn, setAsn] = useState(0);
 
@@ -14,16 +13,18 @@ export default function BadAsnForm() {
 
             console.error(message);
 
-            if (errorCtx) {
-                errorCtx.setTitle(`Added Bad Word 'AS${asn}'!`);
-                errorCtx.setMsg(`Error adding bad word 'AS${asn}'.`);
-            }
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Added Bad Word 'AS${asn}'!`,
+                msg: `Error adding bad word 'AS${asn}'.`
+            })
         },
         onSuccess: () => {
-            if (successCtx) {
-                successCtx.setTitle(`Successfully Added Bad Word 'AS${asn}'!`);
-                successCtx.setMsg(`Successfully added the bad word 'AS${asn}'.`)
-            }
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Successfully Added Bad Word 'AS${asn}'!`,
+                msg: `Successfully added the bad word 'AS${asn}'.`
+            })
         }
     });
 

@@ -3,32 +3,32 @@ import { Field, Form, Formik } from "formik";
 import { type Category } from "@prisma/client";
 import { api } from "@utils/api";
 import { useContext, useState } from "react";
-import { ErrorCtx, SuccessCtx } from "@pages/_app";
+import { NotiCtx } from "@pages/_app";
 
 export default function CategoryForm({
     category
 } : {
     category?: Category
 }) {
-    const errorCtx = useContext(ErrorCtx);
-    const successCtx = useContext(SuccessCtx);
+    const notiCtx = useContext(NotiCtx);
 
     // Mutations.
     const addOrUpdate = api.categories.addOrUpdate.useMutation({
         onError: () => {
             //const { message, data } = opts;
 
-            if (errorCtx) {
-                errorCtx.setTitle(`Failed To ${category ? "Save" : "Add"} Category`)
-
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Failed To ${category ? "Save" : "Add"} Category`
                 // To Do: Determine error message.
-            }
+            })
         },
         onSuccess: () => {
-            if (successCtx) {
-                errorCtx?.setTitle(`Successfully ${category ? "Saved" : "Added"} Category!`)
-                errorCtx?.setMsg(`The category was not ${category ? "saved" : "added"} successfully.`)
-            }
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Successfully ${category ? "Saved" : "Added"} Category!`,
+                msg: `The category was not ${category ? "saved" : "added"} successfully.`
+            })
         }
     });
 
