@@ -2,7 +2,7 @@
 
 We are almost ready for initial release, but there is no ETA yet.
 
-![Index 1](./images/index-1.png)
+![Index 1](https://github.com/bestserversio/bestservers/blob/main/images/index-1.png)
 
 ## Roadmap
 Our roadmap, milestones, and progression may be viewed [here](https://github.com/bestserversio/bestservers/issues).
@@ -23,36 +23,36 @@ Here is a list of required tools for Best Servers to run properly.
 **To Do...**
 
 ## Showcase
-![Index 1](./images/index-1.png)
+![Index 1](https://github.com/bestserversio/bestservers/blob/main/images/index-1.png)
 
-![Index 2](./images/index-2.png)
+![Index 2](https://github.com/bestserversio/bestservers/blob/main/images/index-2.png)
 
-![Index 3](./images/index-3.png)
+![Index 3](https://github.com/bestserversio/bestservers/blob/main/images/index-3.png)
 
-![Index 4](./images/index-4.png)
+![Index 4](https://github.com/bestserversio/bestservers/blob/main/images/index-4.png)
 
-![Index 5](./images/index-5.png)
+![Index 5](https://github.com/bestserversio/bestservers/blob/main/images/index-5.png)
 
-![View 1](./images/view-1.png)
+![View 1](https://github.com/bestserversio/bestservers/blob/main/images/view-1.png)
 
 <details>
     <summary>Admin Area</summary>
 
-![Admin 1](./images/admin-1.png)
+![Admin 1](https://github.com/bestserversio/bestservers/blob/main/images/admin-1.png)
 
-![Admin 2](./images/admin-2.png)
+![Admin 2](https://github.com/bestserversio/bestservers/blob/main/images/admin-2.png)
 
-![Admin 3](./images/admin-3.png)
+![Admin 3](https://github.com/bestserversio/bestservers/blob/main/images/admin-3.png)
 
-![Admin 4](./images/admin-4.png)
+![Admin 4](https://github.com/bestserversio/bestservers/blob/main/images/admin-4.png)
 
-![Admin 5](./images/admin-5.png)
+![Admin 5](https://github.com/bestserversio/bestservers/blob/main/images/admin-5.png)
 
-![Admin 6](./images/admin-6.png)
+![Admin 6](https://github.com/bestserversio/bestservers/blob/main/images/admin-6.png)
 
-![Admin 7](./images/admin-7.png)
+![Admin 7](https://github.com/bestserversio/bestservers/blob/main/images/admin-7.png)
 
-![Admin 8](./images/admin-8.png)
+![Admin 8](https://github.com/bestserversio/bestservers/blob/main/images/admin-8.png)
 </details>
 
 ## Credits
