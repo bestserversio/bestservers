@@ -37,6 +37,9 @@ export default function PlatformForm ({
     const [banner, setBanner] = useState<string | ArrayBuffer | null>(null);
     const [icon, setIcon] = useState<string | ArrayBuffer | null>(null);
 
+    const [bannerRemove, setBannerRemove] = useState(false);
+    const [iconRemove, setIconRemove] = useState(false);
+
     const [jsInternal, setJsInternal] = useState<string | ArrayBuffer | null>(null);
 
     const [flagA2s, setFlagA2s] = useState(platform?.flags?.includes("A2S") ?? false);
@@ -51,9 +54,6 @@ export default function PlatformForm ({
                 nameShort: platform?.nameShort ?? "",
                 description: platform?.description ?? "",
                 vmsId: platform?.vmsId ?? "",
-
-                bannerRemove: false,
-                iconRemove: false,
 
                 jsExternal: platform?.jsExternal ?? ""
             }}
@@ -75,8 +75,8 @@ export default function PlatformForm ({
                     icon: icon?.toString(),
                     id: platform?.id,
 
-                    bannerRemove: values.bannerRemove,
-                    iconRemove: values.iconRemove,
+                    bannerRemove: bannerRemove,
+                    iconRemove: iconRemove,
 
                     url: values.url,
                     name: values.name,
@@ -113,6 +113,14 @@ export default function PlatformForm ({
                             }
                         }}
                     />
+                    <div>
+                        <Switch
+                            label={<>Remove Banner</>}
+                            onChange={() => {
+                                setBannerRemove(!bannerRemove);
+                            }}
+                        />
+                    </div>
                 </div>
                 <div>
                     <label htmlFor="icon">Icon</label>
@@ -134,6 +142,14 @@ export default function PlatformForm ({
                             }
                         }}
                     />
+                    <div>
+                        <Switch
+                            label={<>Remove Icon</>}
+                            onChange={() => {
+                                setIconRemove(!iconRemove);
+                            }}
+                        />
+                    </div>
                 </div>
 
                 <h2>General</h2>

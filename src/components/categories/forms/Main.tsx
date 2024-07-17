@@ -4,6 +4,7 @@ import { type Category } from "@prisma/client";
 import { api } from "@utils/api";
 import { useContext, useState } from "react";
 import { NotiCtx } from "@pages/_app";
+import Switch from "@components/helpers/Switch";
 
 export default function CategoryForm({
     category
@@ -40,6 +41,9 @@ export default function CategoryForm({
     const [banner, setBanner] = useState<string | ArrayBuffer | null>(null);
     const [icon, setIcon] = useState<string | ArrayBuffer | null>(null);
 
+    const [bannerRemove, setBannerRemove] = useState(false);
+    const [iconRemove, setIconRemove] = useState(false);
+
     return (
         <Formik
             initialValues={{
@@ -57,7 +61,9 @@ export default function CategoryForm({
                     description: values.description || null,
                     id: category?.id,
                     banner: banner?.toString(),
-                    icon: icon?.toString()
+                    icon: icon?.toString(),
+                    bannerRemove: bannerRemove,
+                    iconRemove: iconRemove
                 });
             }}
         >
@@ -79,6 +85,14 @@ export default function CategoryForm({
                             }
                         }}
                     />
+                    <div>
+                        <Switch
+                            label={<>Remove Banner</>}
+                            onChange={() => {
+                                setBannerRemove(!bannerRemove);
+                            }}
+                        />
+                    </div>
                 </div>
                 <div>
                     <label>Icon</label>
@@ -97,6 +111,14 @@ export default function CategoryForm({
                             }
                         }}
                     />
+                    <div>
+                        <Switch
+                            label={<>Remove Icon</>}
+                            onChange={() => {
+                                setIconRemove(!iconRemove);
+                            }}
+                        />
+                    </div>
                 </div>
                 <div>
                     <label htmlFor="parent">Parent</label>
