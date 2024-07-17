@@ -1,9 +1,10 @@
 import Loader from "@components/Loader";
 import { BadIp, BadWord } from "@prisma/client";
 import { api } from "@utils/api";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import BadIpForm from "./forms/BadIp";
+import { NotiCtx } from "@pages/_app";
 
 export default function BadIpsBlock ({
     limit = 10
@@ -80,11 +81,47 @@ function Row({
 } : {
     badIp: BadIp
 }) {
+    const notiCtx = useContext(NotiCtx);
+
     const [editMode, setEditMode] = useState(false);
     const [newIp, setNewIp] = useState(`${badIp.ip}/${badIp.cidr.toString()}`);
 
-    const editMut = api.spy.addOrUpdateBadIp.useMutation();
-    const deleteMut = api.spy.deleteBadIp.useMutation();
+    const editMut = api.spy.addOrUpdateBadIp.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
+
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Failed to modify bad IP '${badIp.ip}/${badIp.cidr.toString()}'`,
+                msg: `Failed to edit modify IP '${badIp.ip}/${badIp.cidr.toString()}'. Error: ${message}`
+            })
+        },
+        onSuccess: () => {
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Modifed Bad IP '${badIp.ip}/${badIp.cidr.toString()}'!`,
+                msg: `Successfully modified bad IP '${badIp.ip}/${badIp.cidr.toString()}'`
+            })
+        }
+    });
+    const deleteMut = api.spy.deleteBadIp.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
+
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Failed to delete bad IP '${badIp.ip}/${badIp.cidr.toString()}'`,
+                msg: `Failed to delete bad IP '${badIp.ip}/${badIp.cidr.toString()}'. Error: ${message}`
+            })
+        },
+        onSuccess: () => {
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Deleted Bad IP '${badIp.ip}/${badIp.cidr.toString()}'!`,
+                msg: `Successfully deleted bad IP '${badIp.ip}/${badIp.cidr.toString()}'`
+            })
+        }
+    });
 
     return (
         <tr>

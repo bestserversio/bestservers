@@ -14,7 +14,8 @@ import { type Category } from "@prisma/client";
 import Link from "next/link";
 import Image from "next/image";
 import { api } from "@utils/api";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
+import { NotiCtx } from "@pages/_app";
 
 export default function Page ({
     authed,
@@ -131,6 +132,8 @@ function CategoryInfo({
     setShowChildren?: Dispatch<SetStateAction<boolean>>
     childrenCnt?: number
 }) {
+    const notiCtx = useContext(NotiCtx);
+
     const uploadPath = process.env.NEXT_PUBLIC_UPLOADS_URL ?? "";
 
     let icon = "/images/default_icon.png";
@@ -139,7 +142,24 @@ function CategoryInfo({
         icon = uploadPath + category.icon;
 
     const editUrl = `/admin/category/edit/${category.id.toString()}`;
-    const deleteMut = api.categories.delete.useMutation();
+    const deleteMut = api.categories.delete.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
+
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Failed To Delete Category '${category.name}'`,
+                msg: `Failed to delete category '${category.name}' due to error. Error: ${message}`
+            })
+        },
+        onSuccess: () => {
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Deleted Category '${category.name}'!`,
+                msg: `Successfully deleted category '${category.name}'!`
+            })
+        }
+    });
 
     return (
         <>

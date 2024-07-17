@@ -1,8 +1,9 @@
 import Loader from "@components/Loader";
+import { NotiCtx } from "@pages/_app";
 import { Spy, SpyScanner } from "@prisma/client";
 import { api } from "@utils/api";
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 
 export default function ScannerBlock({
@@ -86,8 +87,27 @@ function Row({
 } : {
     scanner: SpyScanner
 }) {
+    const notiCtx = useContext(NotiCtx);
+
     const editLink = `/admin/spy/scanner/edit/${scanner.id.toString()}`;
-    const deleteMut = api.spy.deleteScanner.useMutation();
+    const deleteMut = api.spy.deleteScanner.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
+
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Failed To Delete Scanner '${scanner.name}'`,
+                msg: `Failed to delete scanner '${scanner.name}' due to error. Error: ${message}`
+            })
+        },
+        onSuccess: () => {
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Deleted Scanner '${scanner.name}'!`,
+                msg: `Successfully deleted scanner '${scanner.name}'!`
+            })
+        }
+    });
 
     return (
         <tr>

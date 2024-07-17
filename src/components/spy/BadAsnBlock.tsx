@@ -1,9 +1,10 @@
 import Loader from "@components/Loader";
 import { BadAsn } from "@prisma/client";
 import { api } from "@utils/api";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import BadAsnForm from "./forms/BadAsn";
+import { NotiCtx } from "@pages/_app";
 
 export default function BadAsnsBlock ({
     limit = 10
@@ -80,11 +81,46 @@ function Row({
 } : {
     badAsn: BadAsn
 }) {
+    const notiCtx = useContext(NotiCtx);
     const [editMode, setEditMode] = useState(false);
     const [newAsn, setNewAsn] = useState(badAsn.asn);
 
-    const editMut = api.spy.addOrUpdateBadAsn.useMutation();
-    const deleteMut = api.spy.deleteBadAsn.useMutation();
+    const editMut = api.spy.addOrUpdateBadAsn.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
+
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Failed to modify bad ASN 'AS${badAsn.asn.toString()}'`,
+                msg: `Failed to edit modify ASN 'AS${badAsn.asn.toString()}'. Error: ${message}`
+            })
+        },
+        onSuccess: () => {
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Modifed Bad ASN 'AS${badAsn.asn.toString()}'!`,
+                msg: `Successfully modified bad ASN '${badAsn.asn.toString()}'`
+            })
+        }
+    });
+    const deleteMut = api.spy.deleteBadAsn.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
+
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Failed to delete bad ASN 'AS${badAsn.asn.toString()}'`,
+                msg: `Failed to delete bad ASN 'AS${badAsn.asn.toString()}'. Error: ${message}`
+            })
+        },
+        onSuccess: () => {
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Deleted Bad ASN 'AS${badAsn.asn.toString()}'!`,
+                msg: `Successfully deleted bad ASN '${badAsn.asn.toString()}'`
+            })
+        }
+    });
 
     return (
         <tr>

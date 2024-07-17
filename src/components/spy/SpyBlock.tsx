@@ -1,8 +1,9 @@
 import Loader from "@components/Loader";
+import { NotiCtx } from "@pages/_app";
 import { Spy } from "@prisma/client";
 import { api } from "@utils/api";
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 
 export default function SpyBlock({
@@ -87,8 +88,27 @@ function Row({
 } : {
     spy: Spy
 }) {
+    const notiCtx = useContext(NotiCtx);
+
     const editLink = `/admin/spy/spy/edit/${spy.id.toString()}`;
-    const deleteMut = api.spy.deleteSpy.useMutation();
+    const deleteMut = api.spy.deleteSpy.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
+
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Failed To Delete Spy Instance '${spy.host}'`,
+                msg: `Failed to delete Spy instance '${spy.host}' due to error. Error: ${message}`
+            })
+        },
+        onSuccess: () => {
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Deleted Spy Instance '${spy.host}'!`,
+                msg: `Successfully deleted Spy instance '${spy.host}'!`
+            })
+        }
+    });
 
     return (
         <tr>

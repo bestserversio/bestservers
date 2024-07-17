@@ -1,9 +1,10 @@
 import Loader from "@components/Loader";
 import { BadWord } from "@prisma/client";
 import { api } from "@utils/api";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import BadWordForm from "./forms/BadWord";
+import { NotiCtx } from "@pages/_app";
 
 export default function BadWordsBlock ({
     limit = 10
@@ -80,11 +81,47 @@ function Row({
 } : {
     badWord: BadWord
 }) {
+    const notiCtx = useContext(NotiCtx);
+
     const [editMode, setEditMode] = useState(false);
     const [newWord, setNewWord] = useState(badWord.word);
 
-    const editMut = api.spy.addOrUpdateBadWord.useMutation();
-    const deleteMut = api.spy.deleteBadWord.useMutation();
+    const editMut = api.spy.addOrUpdateBadWord.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
+
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Failed to modify bad word '${badWord.word}'`,
+                msg: `Failed to edit modify word '${badWord.word}'. Error: ${message}`
+            })
+        },
+        onSuccess: () => {
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Modifed Bad word '${badWord.word}'!`,
+                msg: `Successfully modified bad word '${badWord.word}'`
+            })
+        }
+    });
+    const deleteMut = api.spy.deleteBadWord.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
+
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Failed to delete bad word '${badWord.word}'`,
+                msg: `Failed to delete bad word '${badWord.word}'. Error: ${message}`
+            })
+        },
+        onSuccess: () => {
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Deleted Bad word '${badWord.word}'!`,
+                msg: `Successfully deleted bad word '${badWord.word}'`
+            })
+        }
+    });
 
     return (
         <tr>

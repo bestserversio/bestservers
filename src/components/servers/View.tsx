@@ -7,7 +7,8 @@ import { useSession } from "next-auth/react";
 import { isAdmin } from "@utils/auth";
 import { api } from "@utils/api";
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { NotiCtx } from "@pages/_app";
 
 export default function ServerView ({
     server,
@@ -18,9 +19,45 @@ export default function ServerView ({
 }) {
     const { data: session} = useSession();
 
+    const notiCtx = useContext(NotiCtx);
+
     const editLink = `/admin/server/edit/${server.id.toString()}`;
-    const deleteMut = api.servers.delete.useMutation();
-    const updateMut = api.servers.update.useMutation();
+    const deleteMut = api.servers.delete.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
+
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Failed To Delete Server`,
+                msg: `Failed to delete this server. Error: ${message}`
+            })
+        },
+        onSuccess: () => {
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Deleted Server!`,
+                msg: `Successfully deleted server!`
+            })
+        }
+    });
+    const updateMut = api.servers.update.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
+
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Failed To Hide Server`,
+                msg: `Failed to hide server. Error: ${message}`
+            })
+        },
+        onSuccess: () => {
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Hid Server!`,
+                msg: `Successfully hid server!`
+            })
+        }
+    });
 
     const [visible, setVisible] = useState(server.visible);
     

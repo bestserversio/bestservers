@@ -1,6 +1,7 @@
 import Wrapper from "@components/Wrapper";
 import AdminMenu from "@components/admin/Menu";
 import NoPermissions from "@components/statements/NoPermissions";
+import { NotiCtx } from "@pages/_app";
 import { type ApiKey } from "@prisma/client";
 import { getServerAuthSession } from "@server/auth";
 import { prisma } from "@server/db";
@@ -8,6 +9,7 @@ import { api } from "@utils/api";
 import { isAdmin } from "@utils/auth";
 import { type GetServerSidePropsContext } from "next";
 import Link from "next/link";
+import { useContext } from "react";
 
 export default function Page({
     authed,
@@ -68,8 +70,27 @@ function Row({
 } : {
     apiKey: ApiKey
 }) {
+    const notiCtx = useContext(NotiCtx);
+
     const editLink = `/admin/api/edit/${apiKey.id.toString()}`;
-    const deleteMut = api.api.delete.useMutation();
+    const deleteMut = api.api.delete.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
+
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Failed To Delete API Key '${apiKey.key}'`,
+                msg: `Failed to delete API key '${apiKey.key}' due to error. Error: ${message}`
+            })
+        },
+        onSuccess: () => {
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Deleted API Key '${apiKey.key}'!`,
+                msg: `Successfully deleted API key '${apiKey.key}'!`
+            })
+        }
+    });
 
     return (
         <tr>

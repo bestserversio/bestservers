@@ -13,6 +13,8 @@ import Image from "next/image";
 import { api } from "@utils/api";
 import Link from "next/link";
 import AdminMenu from "@components/admin/Menu";
+import { useContext } from "react";
+import { NotiCtx } from "@pages/_app";
 
 export default function Page ({
     authed,
@@ -77,8 +79,27 @@ function Row({
 } : {
     platform: Platform
 }) {
+    const notiCtx = useContext(NotiCtx);
+
     const editLink = `/admin/platform/edit/${platform.id.toString()}`;
-    const deleteMut = api.platforms.delete.useMutation();
+    const deleteMut = api.platforms.delete.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
+
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Failed To Delete Platform '${platform.name}'`,
+                msg: `Failed to delete platform '${platform.name}' due to error. Error: ${message}`
+            })
+        },
+        onSuccess: () => {
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Deleted Platform '${platform.name}'!`,
+                msg: `Successfully deleted platform '${platform.name}'!`
+            })
+        }
+    });
 
     const uploadPath = process.env.NEXT_PUBLIC_UPLOADS_URL ?? "";
 

@@ -1,34 +1,53 @@
 import Switch from "@components/helpers/Switch";
+import { NotiCtx } from "@pages/_app";
 import { type ApiKey } from "@prisma/client";
 import { api } from "@utils/api";
 import { randomBytes } from "crypto";
 import { Field, Form, Formik } from "formik";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 export default function ApiKeyForm({
     apiKey
 } : {
     apiKey?: ApiKey
 }) {
-    //const errorCtx = useContext(ErrorCtx)
-    //const successCtx = useContext(SuccessCtx)
-
-    /*
-    const errHandler = (opts: unknown) => {
-
-    }
-    const sucHandler = () => {
-
-    }
-    */
+    const notiCtx = useContext(NotiCtx);
 
     const add = api.api.add.useMutation({
-        //onError: errHandler,
-        //onSuccess: sucHandler
+        onError: (opts) => {
+            const { message } = opts;
+
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Failed To Add API Key`,
+                msg: `Failed to add API key due to error. Error: ${message}`
+            })
+        },
+        onSuccess: () => {
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Added API Key!`,
+                msg: `Successfully added API key!`
+            })
+        }
     })
     const update = api.api.update.useMutation({
-        //onError: errHandler,
-        //onSuccess: sucHandler
+        onError: (opts) => {
+            const { message } = opts;
+
+            notiCtx?.addNoti({
+                type: "Error",
+                title: `Failed To Update API Key '${apiKey?.key ?? "N/A"}'`,
+                msg: `Failed to update API key '${apiKey?.key ?? "N/A"}' due to error. Error: ${message}`
+            })
+        },
+        onSuccess: () => {
+            notiCtx?.addNoti({
+                type: "Success",
+                title: `Updated API Key '${apiKey?.key ?? "N/A"}'!`,
+                msg: `Successfully updated API key '${apiKey?.key ?? "N/A"}'!`
+            })
+        }
     })
 
     const [writeAccess, setWriteAccess] = useState(apiKey?.writeAccess ?? false);
