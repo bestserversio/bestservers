@@ -5,7 +5,7 @@ We are almost ready for initial release, but there is no ETA yet.
 ![Index 1](https://github.com/bestserversio/bestservers/blob/main/images/index-1.png)
 
 ## Roadmap
-Our roadmap, milestones, and progression may be viewed [here](https://github.com/bestserversio/bestservers/issues).
+Our roadmap, milestones, and progression may be viewed [here](https://github.com/orgs/bestserversio/projects/2).
 
 ## Required Tools
 Here is a list of required tools for Best Servers to run properly.
