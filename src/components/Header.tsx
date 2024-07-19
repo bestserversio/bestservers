@@ -20,7 +20,7 @@ import RoadmapIcon from "./icons/header/RoadMap";
 const FCabin = Cabin({ subsets: ["latin"], weight: "700" })
 const FSourceCode = Source_Code_Pro({ subsets: ["cyrillic"], weight: "900" })
 
-const navItemClassName = `${FCabin.className} text-white text-lg duration-150 opacity-80 hover:opacity-100`
+const navItemClassName = `${FCabin.className} text-white duration-150 opacity-80 hover:opacity-100`
 
 export default function Header () {
     const router = useRouter();
@@ -59,27 +59,11 @@ export default function Header () {
                     <NavItem
                         url="/"
                         active={path == "/"}
-                    >
-                        <IconAndText
-                            icon={<>
-                                <HomeIcon className="w-6 h-6 stroke-white" />
-                            </>}
-                            text={<>Home</>}
-                            inline={true}
-                        />
-                    </NavItem>
+                    >Home</NavItem>
                     <NavItem
                         url="/about"
                         active={path == "/about"}
-                    >
-                        <IconAndText
-                            icon={<>
-                                <AboutIcon className="w-6 h-6 stroke-white" />
-                            </>}
-                            text={<>About</>}
-                            inline={true}
-                        />
-                    </NavItem>
+                    >About</NavItem>
 
                     <DropDown
                         btnClassName={navItemClassName}
@@ -92,7 +76,7 @@ export default function Header () {
                                     inline={true}
                                 />,
                                 newTab: true,
-                                className: "text-sm font-normal"
+                                className: "text-sm font-normal text-gray-200 hover:text-white"
                             },
                             {
                                 link: "https://moddingcommunity.com/forum/262-announcements/",
@@ -102,7 +86,7 @@ export default function Header () {
                                     inline={true}
                                     />,
                                 newTab: true,
-                                className: "text-sm font-normal"
+                                className: "text-sm font-normal text-gray-200 hover:text-white"
                             },
                             {
                                 link: "https://github.com/bestserversio/bestservers/issues",
@@ -112,7 +96,7 @@ export default function Header () {
                                     inline={true}
                                 />,
                                 newTab: true,
-                                className: "text-sm font-normal"
+                                className: "text-sm font-normal text-gray-200 hover:text-white"
                             }
                         ]}
 
