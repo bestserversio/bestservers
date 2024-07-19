@@ -12,9 +12,15 @@ import { useRouter } from "next/router";
 
 import { type ReactNode } from "react";
 import { Cabin, Source_Code_Pro } from "next/font/google";
+import { DropDown } from "./helpers/DropDown";
+import CodeIcon from "./icons/header/Code";
+import AnnouncementIcon from "./icons/header/Announcement";
+import RoadmapIcon from "./icons/header/RoadMap";
 
 const FCabin = Cabin({ subsets: ["latin"], weight: "700" })
 const FSourceCode = Source_Code_Pro({ subsets: ["cyrillic"], weight: "900" })
+
+const navItemClassName = `${FCabin.className} text-white text-lg duration-150 opacity-80 hover:opacity-100`
 
 export default function Header () {
     const router = useRouter();
@@ -70,10 +76,49 @@ export default function Header () {
                             icon={<>
                                 <AboutIcon className="w-6 h-6 stroke-white" />
                             </>}
-                            text={<>About Us</>}
+                            text={<>About</>}
                             inline={true}
                         />
                     </NavItem>
+
+                    <DropDown
+                        btnClassName={navItemClassName}
+                        items={[
+                            {
+                                link: "https://github.com/bestserversio",
+                                contents: <IconAndText
+                                    icon={<CodeIcon className="fill-white h-6 w-6" />}
+                                    text={<>Source Code</>}
+                                    inline={true}
+                                />,
+                                newTab: true,
+                                className: "text-sm font-normal"
+                            },
+                            {
+                                link: "https://moddingcommunity.com/forum/262-announcements/",
+                                contents: <IconAndText
+                                    icon={<AnnouncementIcon className="fill-white h-6 w-6" />}
+                                    text={<>Announcements</>}
+                                    inline={true}
+                                    />,
+                                newTab: true,
+                                className: "text-sm font-normal"
+                            },
+                            {
+                                link: "https://github.com/bestserversio/bestservers/issues",
+                                contents: <IconAndText
+                                    icon={<RoadmapIcon className="fill-white h-6 w-6" />}
+                                    text={<>Roadmap</>}
+                                    inline={true}
+                                />,
+                                newTab: true,
+                                className: "text-sm font-normal"
+                            }
+                        ]}
+
+                    >
+                        More
+                    </DropDown>
                     
                     <div className="grow"></div>
                     {session?.user ? (
@@ -90,7 +135,7 @@ export default function Header () {
                                 icon={
                                     <AccountIcon className="w-6 h-6 stroke-white" />
                                 }
-                                text={<>My Account</>}
+                                text={<>Account</>}
                                 inline={true}
                             />
                         </NavItem>
