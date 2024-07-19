@@ -88,14 +88,12 @@ export default async function Handler (
     // Retrieve query parameters.
     const { query } = req;
 
-    // Limit and sorting.
-    const host = query?.host?.toString();
+    // Get host.
+    let host = query?.host?.toString();
 
-    if (!host) {
-        return res.status(404).json({
-            message: "Host query not used."
-        })
-    }
+    // If host param not found, use connecting IP.
+    if (!host)
+        host = req.headers?.["cf-connecting-ip"]?.toString() ?? req.socket.remoteAddress;
     
     try {
         const spy = await prisma.spy.findFirst({
