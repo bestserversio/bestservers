@@ -68,7 +68,6 @@ export default async function Handler (
             message: "Method not allowed."
         });
     }
-    /*
 
     // Check if we have API access.
     const check = await CheckApiAccess({
@@ -83,7 +82,6 @@ export default async function Handler (
             message: check.message
         });
     }
-    */
 
     // Retrieve query parameters.
     const { query } = req;
