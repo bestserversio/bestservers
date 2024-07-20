@@ -146,9 +146,10 @@ export default function Wrapper ({
                     <div className="content pt-4">
                         <div className="fixed bottom-2 right-2">
                             <div className="flex flex-col gap-2">
-                                {notiCtx?.notis?.map((noti) => {
+                                {notiCtx?.notis?.map((noti, idx) => {
                                     return (
                                         <Notification
+                                            key={`noti-${idx.toString()}`}
                                             type={noti.type}
                                             title={noti.title}
                                             msg={noti.msg}
