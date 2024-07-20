@@ -382,12 +382,13 @@ model SpyScanner {
 
   platforms Platform[] @relation("SpyScannerPlatforms")
 
-  protocol String  @default("A2S")
-  minWait  Int     @default(60)
-  maxWait  Int     @default(120)
-  limit    Int     @default(100)
-  recvOnly Boolean @default(false)
-  subBots  Boolean @default(false)
+  protocol     String  @default("A2S")
+  minWait      Int     @default(60)
+  maxWait      Int     @default(120)
+  limit        Int     @default(100)
+  recvOnly     Boolean @default(false)
+  subBots      Boolean @default(false)
+  queryTimeout Int     @default(3)
 
   spies Spy[] @relation("SpyScanners")
 }
