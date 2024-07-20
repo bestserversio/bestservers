@@ -389,6 +389,7 @@ model SpyScanner {
   recvOnly     Boolean @default(false)
   subBots      Boolean @default(false)
   queryTimeout Int     @default(3)
+  a2sPlayer    Boolean @default(true)
 
   spies Spy[] @relation("SpyScanners")
 }

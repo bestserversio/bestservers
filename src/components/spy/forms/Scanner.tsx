@@ -36,8 +36,11 @@ export default function ScannerForm ({
         }
     });
 
+    // Flags and booleans
     const [recvOnly, setRecvOnly] = useState(scanner?.recvOnly ?? false);
     const [subBots, setSubBots] = useState(scanner?.subBots ?? false);
+    const [a2sPlayer, setA2sPlayer] = useState(scanner?.a2sPlayer ?? true)
+
     const [scannerPlatforms, setScannerPlatforms] = useState<number[]>(scanner?.platforms.map(s => s.id) ?? []);
 
     return (
@@ -123,7 +126,7 @@ export default function ScannerForm ({
                         )}
                     </div>
                     
-                    <h2>Misc</h2>
+                    <h2>Flags</h2>
                     <div className="flex flex-row">
                         <Switch
                             onChange={() => {
@@ -142,13 +145,22 @@ export default function ScannerForm ({
                         />
                         <label htmlFor="subBots">Subtract Bots</label>
                     </div>
+                    <div className="flex flex-row">
+                        <Switch
+                            onChange={() => {
+                                setA2sPlayer(!a2sPlayer);
+                            }}
+                            value={a2sPlayer}
+                        />
+                        <label htmlFor="a2sPlayer">A2S Player</label>
+                    </div>
 
                     <div className="flex justify-center">
                         <button
                             type="submit"
                             className="button button-primary"
                         >{scanner ? "Save" : "Add"} Scanner!</button>
-                    </div>
+                    </div>             
                 </Form>
             )}
         </Formik>

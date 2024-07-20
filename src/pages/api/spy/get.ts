@@ -40,6 +40,7 @@ type ScannerT = {
     recv_only?: boolean
     sub_bots?: boolean
     query_timeout?: number
+    a2s_player?: boolean
 }
 
 type PlatformMapT = {
@@ -175,7 +176,8 @@ export default async function Handler (
                 limit: s.limit,
                 recv_only: s.recvOnly,
                 sub_bots: s.subBots,
-                query_timeout: s.queryTimeout
+                query_timeout: s.queryTimeout,
+                a2s_player: s.a2sPlayer
             })
         })
 
