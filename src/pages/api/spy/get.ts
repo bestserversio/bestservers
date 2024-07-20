@@ -39,6 +39,7 @@ type ScannerT = {
     limit?: number
     recv_only?: boolean
     sub_bots?: boolean
+    query_timeout?: number
 }
 
 type PlatformMapT = {
@@ -173,7 +174,8 @@ export default async function Handler (
                 max_wait: s.maxWait,
                 limit: s.limit,
                 recv_only: s.recvOnly,
-                sub_bots: s.subBots
+                sub_bots: s.subBots,
+                query_timeout: s.queryTimeout
             })
         })
 

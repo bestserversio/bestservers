@@ -260,7 +260,8 @@ export const spyRouter = createTRPCRouter({
             maxWait: z.number().default(120),
             limit: z.number().default(100),
             recvOnly: z.boolean().default(false),
-            subBots: z.boolean().default(false)
+            subBots: z.boolean().default(false),
+            queryTimeout: z.number().default(3)
         }))
         .mutation(async ({ ctx, input }) => {
             try {
@@ -285,6 +286,7 @@ export const spyRouter = createTRPCRouter({
                         limit: input.limit,
                         recvOnly: input.recvOnly,
                         subBots: input.subBots,
+                        queryTimeout: input.queryTimeout,
                         ...(input.platforms.length > 0 && {
                             platforms: {
                                 connect: input.platforms.map((id) => ({
@@ -301,6 +303,7 @@ export const spyRouter = createTRPCRouter({
                         limit: input.limit,
                         recvOnly: input.recvOnly,
                         subBots: input.subBots,
+                        queryTimeout: input.queryTimeout,
                         platforms: {
                             disconnect: eScanner?.platforms?.map(p => ({ id: p.id })) || [],
                             ...(input.platforms.length > 0 && {

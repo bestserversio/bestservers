@@ -47,10 +47,11 @@ export default function ScannerForm ({
                 protocol: scanner?.protocol ?? "A2S",
                 minWait: scanner?.minWait ?? "",
                 maxWait: scanner?.maxWait ?? "",
-                limit: scanner?.limit ?? ""
+                limit: scanner?.limit ?? "",
+                queryTimeout: scanner?.queryTimeout ?? ""
             }}
             onSubmit={(values) => {
-                const { name, protocol, minWait, maxWait, limit } = values;
+                const { name, protocol, minWait, maxWait, limit, queryTimeout } = values;
 
                 addOrUpdateMut.mutate({
                     id: scanner?.id,
@@ -61,6 +62,7 @@ export default function ScannerForm ({
                     limit: limit ? Number(limit) : undefined,
                     recvOnly: recvOnly,
                     subBots: subBots,
+                    queryTimeout: queryTimeout ? Number(queryTimeout) : undefined,
                     platforms: scannerPlatforms
                 })
             }}
@@ -87,6 +89,10 @@ export default function ScannerForm ({
                     <div>
                         <label htmlFor="limit">Limit</label>
                         <Field name="limit" />
+                    </div>
+                    <div>
+                        <label htmlFor="queryTimeout">Query Timeout</label>
+                        <Field name="queryTimeout" />
                     </div>
 
                     <h2>Platforms</h2>
