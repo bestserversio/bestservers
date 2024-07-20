@@ -370,6 +370,7 @@ model Spy {
   vmsRecvOnly     Boolean @default(false)
   vmsExcludeEmpty Boolean @default(true)
   vmsSubBots      Boolean @default(false)
+  vmsAddOnly      Boolean @default(false)
 
   vmsPlatforms Platform[]   @relation("SpyPlatforms")
   scanners     SpyScanner[] @relation("SpyScanners")

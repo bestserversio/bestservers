@@ -47,6 +47,7 @@ export default function SpyForm ({
     const [vmsExcludeEmpty, setVmsExcludeEmpty] = useState(spy?.vmsExcludeEmpty ?? true);
     const [vmsSubBots, setVmsSubBots] = useState(spy?.vmsSubBots ?? false);
     const [vmsPlatforms, setVmsPlatforms] = useState<number[]>(spy?.vmsPlatforms.map(p => p.id) ?? []);
+    const [vmsAddOnly, setVmsAddOnly] = useState(spy?.vmsAddOnly ?? false);
 
     const [webApiEnabled, setWebApiEnabled] = useState(spy?.webApiEnabled ?? false);
 
@@ -95,6 +96,7 @@ export default function SpyForm ({
                     vmsRecvOnly: vmsRecvOnly,
                     vmsExcludeEmpty: vmsExcludeEmpty,
                     vmsSubBots: vmsSubBots,
+                    vmsAddOnly: vmsAddOnly,
                     vmsPlatforms: vmsPlatforms,
                     scanners: spyScanners
                 })
@@ -282,6 +284,15 @@ export default function SpyForm ({
                             value={vmsSubBots}
                         />
                         <label htmlFor="vmsSubBots">Subtract Bots</label>
+                    </div>
+                    <div className="flex flex-row">
+                        <Switch
+                            onChange={() => {
+                                setVmsAddOnly(!vmsAddOnly);
+                            }}
+                            value={vmsAddOnly}
+                        />
+                        <label htmlFor="vmsAddOnly">Add Only</label>
                     </div>
                     <div className="flex justify-center">
                         <button

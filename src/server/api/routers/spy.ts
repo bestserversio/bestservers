@@ -152,6 +152,7 @@ export const spyRouter = createTRPCRouter({
             vmsRecvOnly: z.boolean().default(false),
             vmsExcludeEmpty: z.boolean().default(true),
             vmsSubBots: z.boolean().default(false),
+            vmsAddOnly: z.boolean().default(false),
             scanners: z.array(z.number()).default([])
         }))
         .mutation(async ({ ctx, input }) => {
@@ -189,6 +190,7 @@ export const spyRouter = createTRPCRouter({
                         vmsRecvOnly: input.vmsRecvOnly,
                         vmsExcludeEmpty: input.vmsExcludeEmpty,
                         vmsSubBots: input.vmsSubBots,
+                        vmsAddOnly: input.vmsAddOnly,
                         vmsPlatforms: {
                             disconnect: eSpy?.vmsPlatforms?.map(p => ({ id: p.id })) || [],
                             ...(input.vmsPlatforms.length > 0 && { 
@@ -225,6 +227,7 @@ export const spyRouter = createTRPCRouter({
                         vmsRecvOnly: input.vmsRecvOnly,
                         vmsExcludeEmpty: input.vmsExcludeEmpty,
                         vmsSubBots: input.vmsSubBots,
+                        vmsAddOnly: input.vmsAddOnly,
                         ...(input.vmsPlatforms.length > 0 && {
                             vmsPlatforms: {
                                 connect: input.vmsPlatforms.map((id) => ({
