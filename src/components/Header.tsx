@@ -164,7 +164,7 @@ function NavItem({
         <Link
             href={url}
             onClick={onClick}
-            className={`${FCabin.className} text-white text-lg duration-150 font-bold ${active ? "opacity-100": "opacity-80"} hover:opacity-100`}
+            className={`${FCabin.className} text-white duration-150 font-bold ${active ? "opacity-100": "opacity-80"} hover:opacity-100`}
             target={newTab ? "_blank" : undefined}
         >
             {children}
