@@ -1,5 +1,5 @@
 import { api } from "@utils/api"
-import { createContext, useEffect, useState, type Dispatch, type SetStateAction } from "react"
+import { createContext, useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react"
 import { type ServerPublic } from "~/types/Server"
 import { type Region } from "@prisma/client"
 import ServerBrowserCol from "./browser/Col"
@@ -173,6 +173,41 @@ export default function ServerBrowser ({
 
     const [showFilters, setShowFilters] = useState(true);
 
+    const filtersDiv = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        const div = filtersDiv.current;
+
+        if (!div)
+            return;
+
+        if (showFilters) {
+            div.classList.remove("animate-right-to-left")
+            div.classList.remove("hidden")
+
+            div.classList.add("animate-left-to-right")
+            div.classList.add("flex")
+        } else {
+            div.classList.remove("animate-left-to-right")
+            div.classList.add("animate-right-to-left")
+        }
+
+        const animEnd = (e: AnimationEvent) => {
+            if (e.animationName == "right-to-left") {
+                div.classList.remove("flex")
+                div.classList.add("hidden")
+            }
+        }
+
+        div.addEventListener("animationend", animEnd, {
+            once: true
+        })
+
+        return () => {
+            div.removeEventListener("animationend", animEnd);
+        }
+    }, [filtersDiv.current, showFilters])
+
     return (
         <FiltersCtx.Provider value={{
             filterCategories: filterCategories,
@@ -204,64 +239,65 @@ export default function ServerBrowser ({
             <div className="flex gap-2 py-4">
                 <div className="flex flex-col">
                     <div className="flex flex-col sticky top-[3.8rem]">
-                        {showFilters ? (
-                            <div className="flex flex-col">
-                                <div className="text-center font-bold">
-                                    <span>Showing {servers.length.toString()}/{totalServers.toString()}</span>
+                        {!showFilters && (
+                            <div className="flex justify-end">
+                                <div
+                                    className="cursor-pointer"
+                                    onClick={() => setShowFilters(!showFilters)}
+                                >
+                                    <AnglesRightIcon className={`w-4 h-4 fill-white transform`} />
                                 </div>
-                                <div className=" bg-shade-2/70 py-6 px-12 h-[75vh] overflow-auto rounded-lg">
-                                    <div className="flex justify-end">
-                                        <div
-                                            className="cursor-pointer"
-                                            onClick={() => setShowFilters(!showFilters)}
-                                        >
-                                            <AnglesRightIcon className="w-4 h-4 fill-white transform rotate-180" />
+                            </div>
+                        )}
+                        <div className={`flex flex-col duration-500 transition-all animate-left-to-right`} ref={filtersDiv}>
+                            <div className="text-center font-bold">
+                                <span>Showing {servers.length.toString()}/{totalServers.toString()}</span>
+                            </div>
+                            <div className={`bg-shade-2/70 py-6 px-12 h-[75vh] overflow-auto rounded-lg`}>
+                                <div className="flex justify-end">
+                                    <div
+                                        className="cursor-pointer"
+                                        onClick={() => setShowFilters(!showFilters)}
+                                    >
+                                        <AnglesRightIcon className={`w-4 h-4 fill-white transform ${showFilters ? "rotate-180" : ""}`} />
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <div className="flex flex-col gap-2">
+                                        <h2>General</h2>
+                                        <div>
+                                            <FiltersMain
+                                                showSearch={true}
+                                                showMapName={true}
+                                                showOffline={true}
+                                                showHideEmpty={true}
+                                                showHideFull={true}
+                                            />
                                         </div>
                                     </div>
                                     <div className="flex flex-col gap-2">
-                                        <div className="flex flex-col gap-2">
-                                            <h2>General</h2>
-                                            <div>
-                                                <FiltersMain
-                                                    showSearch={true}
-                                                    showMapName={true}
-                                                    showOffline={true}
-                                                    showHideEmpty={true}
-                                                    showHideFull={true}
-                                                />
-                                            </div>
+                                        <h2>Platforms</h2>
+                                        <div className="h-96 overflow-y-auto bg-shade-1 rounded-md">
+                                            <FiltersPlatforms />
                                         </div>
-                                        <div className="flex flex-col gap-2">
-                                            <h2>Platforms</h2>
-                                            <div className="h-96 overflow-y-auto bg-shade-1 rounded-md">
-                                                <FiltersPlatforms />
-                                            </div>
+                                    </div>
+                                    {/*
+                                    <div className="flex flex-col gap-2">
+                                        <h2>Categories</h2>
+                                        <div className="h-96 overflow-y-auto bg-shade-1 rounded-md">
+                                            <FiltersCategories />
                                         </div>
-                                        {/*
-                                        <div className="flex flex-col gap-2">
-                                            <h2>Categories</h2>
-                                            <div className="h-96 overflow-y-auto bg-shade-1 rounded-md">
-                                                <FiltersCategories />
-                                            </div>
-                                        </div>
-                                        */}
-                                        <div className="flex flex-col gap-2 rounded-md">
-                                            <h2>Regions</h2>
-                                            <div className="h-96 overflow-y-auto bg-shade-1">
-                                                <FiltersRegions />
-                                            </div>
+                                    </div>
+                                    */}
+                                    <div className="flex flex-col gap-2 rounded-md">
+                                        <h2>Regions</h2>
+                                        <div className="h-96 overflow-y-auto bg-shade-1">
+                                            <FiltersRegions />
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        ) : (
-                            <div
-                                className="cursor-pointer"
-                                onClick={() => setShowFilters(!showFilters)}
-                            >
-                                <AnglesRightIcon className="w-4 h-4 fill-white" />
-                            </div>
-                        )}
+                        </div>
                     </div>
                 </div>
                 <div className="w-full">

@@ -1,5 +1,19 @@
-.server-filters-main {
+@keyframes left-to-right {
+    0% {
+        transform: translateX(-200%)
+    }
+    100% {
+        transform: translateX(0)
+    }
+}
 
+@keyframes right-to-left {
+    0% {
+        transform: translateX(0)
+    }
+    100% {
+        transform: translateX(-200%)
+    }
 }
 
 .server-filters-style1 {
