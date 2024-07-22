@@ -31,7 +31,7 @@ export default function Page({
                 <div className="grid grid-cols-4">
                     <div className="col-span-4 sm:col-span-3 sm:pr-4">
                         <ContentItem1 title="About Us">
-                            <p>Placeholder</p>
+                            <p><Link href="/">Best Servers</Link> is an <Link href="https://github.com/bestserversio" target="_blank" className="font-bold">open-source</Link> server browser.</p>
                         </ContentItem1>
                         <ContentItem2
                             title="Frequently Asked Questions"
@@ -45,12 +45,16 @@ export default function Page({
                                     <p>Yes! Our public roadmap may be found on GitHub <Link href="https://github.com/orgs/bestserversio/projects/2" target="_blank">here</Link>.</p>
                                 </FAQ>
                                 <FAQ title="Why Aren't Latency/Ping To Servers Displayed?">
-                                    <p>Most game servers </p>
+                                    <>
+                                        <p>Most game servers use queries that utilize the <Link href="https://www.fortinet.com/resources/cyberglossary/user-datagram-protocol-udp" target="_blank">UDP</Link> network protocol such as <Link href="https://developer.valvesoftware.com/wiki/Server_queries" target="_blank">A2S</Link> to measure the latency/ping to a game server. Unfortunately, most web browsers do not allow you to send these types of packets, at least not by default. Therefore, we cannot accurately display the latency in our web version of the server browser.</p>
+                                        
+                                        <p>With that said, we will be creating a desktop application that will support this in the future! Progress on this desktop application may be found <Link href="https://github.com/bestserversio/bestservers/issues/19" target="_blank">here</Link>.</p>
+                                    </>
                                 </FAQ>
                                 <FAQ title="What Are The IPs Of All Query Servers?">
                                     <>
-                                        <p>If your servers aren't displaying as online, it's possible your server's firewall is blocking our servers that query all game server's information.</p>
-                                        <p>Here's a list of all of our query servers.</p>
+                                        <p>If your game servers aren't displaying as online, it's possible your server's firewall is blocking our servers that query all game server's information.</p>
+                                        <p>Here's a list of IPs of our query servers.</p>
                                         <ul className="list-disc [&>li]:ml-4">
                                             <li>N/A</li>
                                             <li>N/A</li>
