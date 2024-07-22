@@ -66,7 +66,8 @@ export default function ScannerForm ({
                     recvOnly: recvOnly,
                     subBots: subBots,
                     queryTimeout: queryTimeout ? Number(queryTimeout) : undefined,
-                    platforms: scannerPlatforms
+                    platforms: scannerPlatforms,
+                    a2sPlayer: a2sPlayer
                 })
             }}
         >
