@@ -89,7 +89,7 @@ export default function Header () {
                                 className: "text-sm font-normal text-gray-200 hover:text-white"
                             },
                             {
-                                link: "https://github.com/bestserversio/bestservers/issues",
+                                link: "https://github.com/orgs/bestserversio/projects/2",
                                 contents: <IconAndText
                                     icon={<RoadmapIcon className="fill-white h-6 w-6" />}
                                     text={<>Roadmap</>}
