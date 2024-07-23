@@ -209,12 +209,14 @@ export default function ServerViewGeneral ({
                                             <span className={fullClasses}>{server.maxUsers.toString()}</span>
                                         </td>
                                     </tr>
+                                    {/*
                                     <tr>
                                         <td className="font-bold">Average Users</td>
                                         <td>
                                             <span className={avgUserClasses}>{server.avgUsers.toString()}</span>
                                         </td>
                                     </tr>
+                                    */}
                                     <tr>
                                         <td className="font-bold">Bots</td>
                                         <td>

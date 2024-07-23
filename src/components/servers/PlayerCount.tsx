@@ -25,9 +25,10 @@ export default function PlayerCount ({
                     >{server.bots.toString()}</span>
                 )}
             </div>
+            {/*
             <div>
                 Avg <span className={avgUserClasses}>{server.avgUsers.toString()}</span>
-            </div>
+            </div>*/}
         </div>
     );
 }
