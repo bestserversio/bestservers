@@ -108,11 +108,6 @@ export default function Header () {
                     {session?.user ? (
                         <NavItem
                             url="/account"
-                            onClick={(e) => {
-                                e.preventDefault();
-
-                                void signIn();
-                            }}
                             active={path.includes("/account")}
                         >
                             <IconAndText

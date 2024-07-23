@@ -343,11 +343,34 @@ export const serversRouter = createTRPCRouter({
                     message: "IPv4 and IPv6 addresses both not present. Please add an IP address."
                 });
             }
+
+            // Try finding server first.
+            const server = await ctx.prisma.server.findFirst({
+                where: {
+                    OR: [
+                        {
+                            ip: input.ip
+                        },
+                        {
+                            ip6: input.ip6
+                        }
+                    ],
+                    port: input.port
+                }
+            })
+
+            if (server) {
+                throw new TRPCError({
+                    code: "PARSE_ERROR",
+                    message: "Server already exists."
+                })
+            }
             
             try {
                 await ctx.prisma.server.create({
                     data: {
                         ip: input.ip,
+                        ip6: input.ip6,
                         port: input.port
                     }
                 });

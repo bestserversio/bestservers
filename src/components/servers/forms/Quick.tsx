@@ -14,19 +14,17 @@ export default function ServerQuickForm({
         onError: (opts) => {
             const { message } = opts;
 
-            console.error(message);
-
             notiCtx?.addNoti({
                 type: "Error",
                 title: "Failed To Add Server",
-                msg: "Failed to add server."
+                msg: `Failed to add server due to error :: ${message}`
             })
         },
         onSuccess: () => {
             notiCtx?.addNoti({
                 type: "Success",
-                title: "Added server successfully!",
-                msg: "Added the game server successfully!"
+                title: "Added server!",
+                msg: "Successfully added the game server! Please allow time for our system to query the server."
             })
         }
     });
@@ -40,9 +38,9 @@ export default function ServerQuickForm({
             }}
             onSubmit={(values) => {
                 addMut.mutate({
-                    ip: values.ip,
-                    ip6: values.ip6,
-                    port: values.port
+                    ip: values.ip || undefined,
+                    ip6: values.ip6 || undefined,
+                    port: Number(values.port)
                 });
             }}
         >
@@ -58,15 +56,20 @@ export default function ServerQuickForm({
                     <Field
                         name="ip6"
                     />
+                    <p className="text-xs">Most game servers only utilize IPv4 addresses.</p>
                 </div>
                 <div>
                     <label htmlFor="port">Port</label>
                     <Field
                         name="port"
                     />
+                    <p className="text-xs">Must be between 1 and 65535!</p>
                 </div>
                 <div>
-                    <button type="submit">Add!</button>
+                    <button
+                        type="submit"
+                        className="button button-primary"
+                    >Add Server!</button>
                 </div>
             </Form>
         </Formik>
