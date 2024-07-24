@@ -29,7 +29,7 @@ export default function Page({
             />
             <Wrapper>
                 <div className="grid grid-cols-4">
-                    <div className="col-span-4 sm:col-span-3 sm:pr-4">
+                    <div className="col-span-4 sm:col-span-3 sm:pr-4 flex flex-col gap-4">
                         <ContentItem1 title="About Us">
                             <p><Link href="/">Best Servers</Link> is an <Link href="https://github.com/bestserversio" target="_blank" className="font-bold">open-source</Link> server browser.</p>
                         </ContentItem1>
@@ -59,6 +59,12 @@ export default function Page({
                                             <li>N/A</li>
                                             <li>N/A</li>
                                         </ul>
+                                    </>
+                                </FAQ>
+                                <FAQ title="My Servers Show As Offline">
+                                    <>
+                                        <p>If your servers are showing as offline, please ensure our query server IPs aren't being blocked by your server's firewall. A list of query server IPs may be found under the "What Are The IPs Of All Query Servers?" question above.</p>
+                                        <p>If the query IPs listed above are not blocked by your server{"'"}s firewall and the server(s) are still showing as offline, please reach out to an administrator.</p>
                                     </>
                                 </FAQ>
                             </div>
