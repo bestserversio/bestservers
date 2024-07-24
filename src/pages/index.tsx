@@ -5,8 +5,10 @@ import ServerBrowser from "@components/servers/Browser";
 import { prisma } from "@server/db";
 
 export default function Index({
+    totalUsers = 0,
     totalServers = 0
 } : {
+    totalUsers?: number
     totalServers?: number
 }) {
     return (
@@ -18,7 +20,7 @@ export default function Index({
             <Wrapper>
                 <div className="flex flex-col gap-2">
                     <div className="flex justify-center py-8">
-                        <h2>Tracking <span className="font-bold text-shade-9">{totalServers.toString()}</span> Servers!</h2>
+                        <h2>Tracking <span className="font-bold text-shade-9">{totalUsers.toString()}</span> Users On <span className="font-bold text-shade-9">{totalServers.toString()}</span> Servers!</h2>
                     </div>
                     <ServerBrowser table={true} />
                 </div>
@@ -34,8 +36,24 @@ export async function getServerSideProps() {
         }
     });
 
+    let totalUsers = 0;
+
+    const q = await prisma.server.findMany({
+        select: {
+            curUsers: true
+        },
+        where: {
+            online: true
+        }
+    })
+
+    q.forEach((t) => {
+        totalUsers += t.curUsers;
+    })
+
     return {
         props: {
+            totalUsers: totalUsers,
             totalServers: totalServers
         }
     }
