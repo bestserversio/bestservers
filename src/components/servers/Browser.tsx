@@ -320,7 +320,7 @@ export default function ServerBrowser ({
                         </InfiniteScroll>
                     ) : (
                         <div className="mx-auto">
-                            <p className="text-4xl text-red-400">No Servers Found!</p>
+                            <p className="text-4xl text-shade-9 text-center">No Servers Found!</p>
                         </div>
                     )}
                 </div>
