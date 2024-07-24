@@ -79,7 +79,7 @@ export default function ServerViewGeneral ({
 
     return (
         <>
-            <div className="grid grid-cols-1 sm:grid-cols-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2">
                 <div className="flex flex-col gap-2">
                     <div>
                         <div>
@@ -391,6 +391,7 @@ export default function ServerViewGeneral ({
                     )}
 
                 </div>
+                {/*
                 <div className="flex flex-col gap-2">
                     <div>
                         <div>
@@ -405,6 +406,7 @@ export default function ServerViewGeneral ({
                         </div>
                     </div>
                 </div>
+                */}
             </div>
             <div>
                 <ServerGraph server={server} />
