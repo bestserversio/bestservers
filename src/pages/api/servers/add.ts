@@ -74,7 +74,7 @@ export default async function Handler (
     // Loop through each server.
     const promises = req.body.servers.map(async (serverBody) => {
         // Retrieve region and last queried parameters since we need to parse them differently.
-        const { where, os, region, lastQueried, ...rest } = serverBody;
+        const { where, os, region, lastQueried, lastOnline, ...rest } = serverBody;
 
         try {
             // First, try to retrieve server.
@@ -131,7 +131,8 @@ export default async function Handler (
                     os: GetOsFromString(os),
                     region: GetRegionFromString(region),
 
-                    lastQueried: lastQueried ? new Date(lastQueried) : undefined
+                    lastQueried: lastQueried ? new Date(lastQueried) : undefined,
+                    lastOnline: lastOnline ? new Date(lastOnline) : undefined
                 })
             } else {
                 // If we have an invisible server and we're adding, ignore and skip.

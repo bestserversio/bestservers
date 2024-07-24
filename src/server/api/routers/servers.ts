@@ -590,5 +590,25 @@ export const serversRouter = createTRPCRouter({
                     message: `Failed to delete server :: ${err}`
                 })
             }
+        }),
+    removeInactive: adminProcedure
+        .input(z.object({
+            time: z.date().default(new Date(Date.now() - 2592000))
+        }))
+        .mutation(async ({ ctx, input }) => {
+            try {
+                await ctx.prisma.server.deleteMany({
+                    where: {
+                        lastQueried: {
+                            lte: input.time
+                        }
+                    }
+                })
+            } catch (err: unknown) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: `Failed to remove inactive servers :: ${err}`
+                })
+            }
         })
 })

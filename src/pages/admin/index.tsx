@@ -8,6 +8,8 @@ import NoPermissions from "@components/statements/NoPermissions";
 import { isAdmin } from "@utils/auth";
 import Meta from "@components/Meta";
 import AdminMenu from "@components/admin/Menu";
+import { ContentItem2 } from "@components/Content";
+import ServerRemoveInactive from "@components/servers/forms/RemoveInactive";
 
 export default function Page ({
     authed    
@@ -22,7 +24,13 @@ export default function Page ({
             <Wrapper>
                 {authed ? (
                     <AdminMenu>
-                        <p>Welcome to the index!</p>
+                        <div className="grid grid-cols-1 sm:grid-cols-3">
+                            <div>
+                                <ContentItem2 title="Remove Inactive Servers">
+                                    <ServerRemoveInactive />
+                                </ContentItem2>
+                            </div>
+                        </div>
                     </AdminMenu>
                 ) : (
                     <NoPermissions />

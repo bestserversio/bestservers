@@ -145,7 +145,7 @@ const isAdminMiddleware = t.middleware(({ ctx, next }) => {
 export const adminProcedure = t.procedure.use(isAdminMiddleware);
 
 const isModMiddleware = t.middleware(({ ctx, next }) => {
-    if (!ctx.session?.user || !isMod(ctx.session))
+    if (!ctx.session?.user || (!isMod(ctx.session) && !isAdmin(ctx.session)))
         throw new TRPCError({ code: "UNAUTHORIZED" });
 
     return next({

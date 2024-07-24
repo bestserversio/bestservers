@@ -39,6 +39,7 @@ export type ServerBodyT = {
     locationLon?: number
 
     lastQueried?: string
+    lastOnline?: string
 }
 
 export type ServerDataT = {
@@ -78,7 +79,8 @@ export type ServerDataT = {
     locationLat?: number
     locationLon?: number
 
-    lastQueried?: Date   
+    lastQueried?: Date  
+    lastOnline?: Date 
 }
 
 export type ServerWhereT = {

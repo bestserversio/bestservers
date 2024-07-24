@@ -198,6 +198,7 @@ model Server {
   locationLon Float?
 
   lastQueried DateTime @default(now())
+  lastOnline DateTime @default(now())
 
   stats   ServerStat[]
   reviews ServerReview[]
