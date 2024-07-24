@@ -44,7 +44,7 @@ export function DropDown({
                 )}
             </button>
             {menuOpen && (
-                <div className={`${menuClassName ?? ""} origin-top-left break-all absolute left-0 mt-2 w-44 min-w-full top-[100%] z-30 rounded-b p-2 bg-shade-3/70`}>
+                <div className={`${menuClassName ?? ""} origin-top-left break-all absolute left-0 mt-2 w-44 min-w-full top-[100%] z-30 rounded-b p-2 bg-shade-3`}>
                     <ul
                         role="menu"
                         aria-orientation="vertical" 
