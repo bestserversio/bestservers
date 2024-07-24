@@ -4,7 +4,6 @@ import IconAndText from "./helpers/IconAndText";
 import HomeIcon from "./icons/header/Home";
 //import ServersIcon from "./icons/header/Servers";
 //import GamesIcon from "./icons/header/Games";
-import AboutIcon from "./icons/header/About";
 import { signIn, useSession } from "next-auth/react";
 import LoginIcon from "./icons/header/Login";
 import AccountIcon from "./icons/header/Account";
@@ -16,6 +15,8 @@ import { DropDown } from "./helpers/DropDown";
 import CodeIcon from "./icons/header/Code";
 import AnnouncementIcon from "./icons/header/Announcement";
 import RoadmapIcon from "./icons/header/RoadMap";
+import AdminIcon from "./icons/Admin";
+import { isAdmin } from "@utils/auth";
 
 const FCabin = Cabin({ subsets: ["latin"], weight: "700" })
 const FSourceCode = Source_Code_Pro({ subsets: ["cyrillic"], weight: "900" })
@@ -97,7 +98,18 @@ export default function Header () {
                                 />,
                                 newTab: true,
                                 className: "text-sm font-normal text-gray-200 hover:text-white"
-                            }
+                            },
+                            ...(isAdmin(session) ? [
+                                {
+                                    link: "/admin",
+                                    contents: <IconAndText
+                                        icon={<AdminIcon className="fill-white h-6 w-6" />}
+                                        text={<>Admin</>}
+                                        inline={true}
+                                    />,
+                                    className: "text-sm font-normal text-gray-200 hover:text-white"
+                                }
+                            ] : [])
                         ]}
 
                     >
