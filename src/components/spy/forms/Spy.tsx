@@ -49,6 +49,8 @@ export default function SpyForm ({
     const [vmsPlatforms, setVmsPlatforms] = useState<number[]>(spy?.vmsPlatforms.map(p => p.id) ?? []);
     const [vmsAddOnly, setVmsAddOnly] = useState(spy?.vmsAddOnly ?? false);
 
+    const [removeInactive, setRemoveInactive] = useState(spy?.removeInactive ?? false);
+
     const [webApiEnabled, setWebApiEnabled] = useState(spy?.webApiEnabled ?? false);
 
     return (
@@ -70,10 +72,14 @@ export default function SpyForm ({
                 vmsTimeout: spy?.vmsTimeout ?? "",
                 vmsLimit: spy?.vmsLimit ?? "",
                 vmsMinWait: spy?.vmsMinWait ?? "",
-                vmsMaxWait: spy?.vmsMaxWait ?? ""
+                vmsMaxWait: spy?.vmsMaxWait ?? "",
+
+                removeInactiveTime: spy?.removeInactiveTime ?? "",
+                removeInactiveInterval: spy?.removeInactiveInterval ?? "",
+                removeInactiveTimeout: spy?.removeInactiveTimeout ?? ""
             }}
             onSubmit={(values) => {
-                const { verbose, apiHost, apiTimeout, webApiHost, keyId, webApiEndpoint, webApiInterval, webApiTimeout, vmsKey, vmsTimeout, vmsLimit, vmsMinWait, vmsMaxWait } = values;
+                const { verbose, apiHost, apiTimeout, webApiHost, keyId, webApiEndpoint, webApiInterval, webApiTimeout, vmsKey, vmsTimeout, vmsLimit, vmsMinWait, vmsMaxWait, removeInactiveTime, removeInactiveInterval, removeInactiveTimeout } = values;
                 
                 addOrUpdateMut.mutate({
                     id: spy?.id,
@@ -98,6 +104,11 @@ export default function SpyForm ({
                     vmsSubBots: vmsSubBots,
                     vmsAddOnly: vmsAddOnly,
                     vmsPlatforms: vmsPlatforms,
+                    removeInactive: removeInactive,
+                    removeInactiveTime: removeInactiveTime ? Number(removeInactiveTime) : undefined,
+                    removeInactiveInterval: removeInactiveInterval ? Number(removeInactiveInterval) : undefined,
+                    removeInactiveTimeout: removeInactiveTimeout ? Number(removeInactiveTimeout) : undefined,
+
                     scanners: spyScanners
                 })
             }}
@@ -293,6 +304,28 @@ export default function SpyForm ({
                             value={vmsAddOnly}
                         />
                         <label htmlFor="vmsAddOnly">Add Only</label>
+                    </div>
+                    <h2>Remove Inactive</h2>
+                    <div className="flex flex-row">
+                        <Switch
+                            onChange={() => {
+                                setRemoveInactive(!removeInactive);
+                            }}
+                            value={removeInactive}
+                        />
+                        <label htmlFor="removeInactive">Enabled</label>
+                    </div>
+                    <div>
+                        <label htmlFor="removeInactiveTime">Inactive Time</label>
+                        <Field name="removeInactiveTime" />
+                    </div>
+                    <div>
+                        <label htmlFor="removeInactiveInterval">Interval</label>
+                        <Field name="removeInactiveInterval" />
+                    </div>
+                    <div>
+                        <label htmlFor="removeInactiveTimeout">Timeout</label>
+                        <Field name="removeInactiveTimeout" />
                     </div>
                     <div className="flex justify-center">
                         <button

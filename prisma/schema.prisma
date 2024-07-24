@@ -198,7 +198,7 @@ model Server {
   locationLon Float?
 
   lastQueried DateTime @default(now())
-  lastOnline DateTime @default(now())
+  lastOnline  DateTime @default(now())
 
   stats   ServerStat[]
   reviews ServerReview[]
@@ -372,6 +372,11 @@ model Spy {
   vmsExcludeEmpty Boolean @default(true)
   vmsSubBots      Boolean @default(false)
   vmsAddOnly      Boolean @default(false)
+
+  removeInactive         Boolean @default(false)
+  removeInactiveTime     Int     @default(2592000)
+  removeInactiveInterval Int     @default(86400)
+  removeInactiveTimeout  Int     @default(5)
 
   vmsPlatforms Platform[]   @relation("SpyPlatforms")
   scanners     SpyScanner[] @relation("SpyScanners")

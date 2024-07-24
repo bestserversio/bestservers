@@ -48,14 +48,22 @@ type PlatformMapT = {
     platform_id: number
 }
 
+type RemoveInactiveT = {
+    enabled: boolean
+    interval: number
+    inactive_time: number
+    timeout: number
+}
+
 type SpyResp = {
     verbose: number
 
-    api: ApiT,
-    web_api: WebApiT,
-    vms: VmsT,
-    scanners: ScannerT[],
-    platform_maps: PlatformMapT[],
+    api: ApiT
+    web_api: WebApiT
+    vms: VmsT
+    scanners: ScannerT[]
+    platform_maps: PlatformMapT[]
+    remove_inactive: RemoveInactiveT
     bad_words: string[]
     bad_ips: string[]
     bad_asns: number[]
@@ -161,6 +169,14 @@ export default async function Handler (
             sub_bots: spy.vmsSubBots
         }
 
+        // Build remove inactive.
+        const remove_inactive: RemoveInactiveT = {
+            enabled: spy.removeInactive,
+            interval: spy.removeInactiveInterval,
+            inactive_time: spy.removeInactiveTime,
+            timeout: spy.removeInactiveTimeout
+        }
+
         // Setup scanners.
         const scanners: ScannerT[] = [];
 
@@ -210,6 +226,7 @@ export default async function Handler (
             vms: vms,
             scanners: scanners,
             platform_maps: platform_maps,
+            remove_inactive: remove_inactive,
             bad_words: badWords,
             bad_ips: badIps,
             bad_asns: badAsns

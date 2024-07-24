@@ -153,6 +153,10 @@ export const spyRouter = createTRPCRouter({
             vmsExcludeEmpty: z.boolean().default(true),
             vmsSubBots: z.boolean().default(false),
             vmsAddOnly: z.boolean().default(false),
+            removeInactive: z.boolean().default(false),
+            removeInactiveTime: z.number().default(2592000),
+            removeInactiveInterval: z.number().default(86400),
+            removeInactiveTimeout: z.number().default(5),
             scanners: z.array(z.number()).default([])
         }))
         .mutation(async ({ ctx, input }) => {
@@ -191,6 +195,10 @@ export const spyRouter = createTRPCRouter({
                         vmsExcludeEmpty: input.vmsExcludeEmpty,
                         vmsSubBots: input.vmsSubBots,
                         vmsAddOnly: input.vmsAddOnly,
+                        removeInactive: input.removeInactive,
+                        removeInactiveTime: input.removeInactiveTime,
+                        removeInactiveInterval: input.removeInactiveInterval,
+                        removeInactiveTimeout: input.removeInactiveTimeout,
                         vmsPlatforms: {
                             disconnect: eSpy?.vmsPlatforms?.map(p => ({ id: p.id })) || [],
                             ...(input.vmsPlatforms.length > 0 && { 
@@ -228,6 +236,10 @@ export const spyRouter = createTRPCRouter({
                         vmsExcludeEmpty: input.vmsExcludeEmpty,
                         vmsSubBots: input.vmsSubBots,
                         vmsAddOnly: input.vmsAddOnly,
+                        removeInactive: input.removeInactive,
+                        removeInactiveTime: input.removeInactiveTime,
+                        removeInactiveInterval: input.removeInactiveInterval,
+                        removeInactiveTimeout: input.removeInactiveTimeout,
                         ...(input.vmsPlatforms.length > 0 && {
                             vmsPlatforms: {
                                 connect: input.vmsPlatforms.map((id) => ({
