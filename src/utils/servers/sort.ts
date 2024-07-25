@@ -9,16 +9,16 @@ export function GetSortFromString(str: string): ServerSort {
 
             break;
 
-        case "mapName":
+        case "mapname":
             sort = ServerSort.MAPNAME
 
             break;
 
-        case "lastQueried":
+        case "lastqueried":
             sort = ServerSort.LASTQUERIED
 
             break;
     }
-    
+
     return sort;
 }
