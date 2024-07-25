@@ -12,7 +12,7 @@ export default function JoinButton ({
     let joinUrl: string | undefined = undefined;
 
     if ("platform" in server) {
-\        if (server.platform?.flags.includes("A2S"))
+        if (server.platform?.flags.includes("A2S"))
             joinUrl = `steam://connect/${server.ip}:${server.port?.toString()}`
         else if (server.platform?.flags.includes("DISCORD") && server.hostName)
             joinUrl = server.hostName;
