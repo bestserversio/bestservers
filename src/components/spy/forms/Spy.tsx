@@ -48,6 +48,7 @@ export default function SpyForm ({
     const [vmsSubBots, setVmsSubBots] = useState(spy?.vmsSubBots ?? false);
     const [vmsPlatforms, setVmsPlatforms] = useState<number[]>(spy?.vmsPlatforms.map(p => p.id) ?? []);
     const [vmsAddOnly, setVmsAddOnly] = useState(spy?.vmsAddOnly ?? false);
+    const [vmsRandomApps, setVmsRandomApps] = useState(spy?.vmsRandomApps ?? false);
 
     const [removeInactive, setRemoveInactive] = useState(spy?.removeInactive ?? false);
 
@@ -103,6 +104,7 @@ export default function SpyForm ({
                     vmsExcludeEmpty: vmsExcludeEmpty,
                     vmsSubBots: vmsSubBots,
                     vmsAddOnly: vmsAddOnly,
+                    vmsRandomApps: vmsRandomApps,
                     vmsPlatforms: vmsPlatforms,
                     removeInactive: removeInactive,
                     removeInactiveTime: removeInactiveTime ? Number(removeInactiveTime) : undefined,
@@ -304,6 +306,15 @@ export default function SpyForm ({
                             value={vmsAddOnly}
                         />
                         <label htmlFor="vmsAddOnly">Add Only</label>
+                    </div>
+                    <div className="flex flex-row">
+                        <Switch
+                            onChange={() => {
+                                setVmsRandomApps(!vmsRandomApps);
+                            }}
+                            value={vmsRandomApps}
+                        />
+                        <label htmlFor="vmsRandomApps">Random Apps</label>
                     </div>
                     <h2>Remove Inactive</h2>
                     <div className="flex flex-row">

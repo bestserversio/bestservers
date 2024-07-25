@@ -372,6 +372,7 @@ model Spy {
   vmsExcludeEmpty Boolean @default(true)
   vmsSubBots      Boolean @default(false)
   vmsAddOnly      Boolean @default(false)
+  vmsRandomApps   Boolean @default(false)
 
   removeInactive         Boolean @default(false)
   removeInactiveTime     Int     @default(2592000)
@@ -389,14 +390,15 @@ model SpyScanner {
 
   platforms Platform[] @relation("SpyScannerPlatforms")
 
-  protocol     String  @default("A2S")
-  minWait      Int     @default(60)
-  maxWait      Int     @default(120)
-  limit        Int     @default(100)
-  recvOnly     Boolean @default(false)
-  subBots      Boolean @default(false)
-  queryTimeout Int     @default(3)
-  a2sPlayer    Boolean @default(true)
+  protocol        String  @default("A2S")
+  minWait         Int     @default(60)
+  maxWait         Int     @default(120)
+  limit           Int     @default(100)
+  recvOnly        Boolean @default(false)
+  subBots         Boolean @default(false)
+  queryTimeout    Int     @default(3)
+  a2sPlayer       Boolean @default(true)
+  randomPlatforms Boolean @default(false)
 
   spies Spy[] @relation("SpyScanners")
 }

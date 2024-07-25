@@ -40,6 +40,7 @@ export default function ScannerForm ({
     const [recvOnly, setRecvOnly] = useState(scanner?.recvOnly ?? false);
     const [subBots, setSubBots] = useState(scanner?.subBots ?? false);
     const [a2sPlayer, setA2sPlayer] = useState(scanner?.a2sPlayer ?? true)
+    const [randomPlatforms, setRandomPlatforms] = useState(scanner?.randomPlatforms ?? false);
 
     const [scannerPlatforms, setScannerPlatforms] = useState<number[]>(scanner?.platforms.map(s => s.id) ?? []);
 
@@ -67,7 +68,8 @@ export default function ScannerForm ({
                     subBots: subBots,
                     queryTimeout: queryTimeout ? Number(queryTimeout) : undefined,
                     platforms: scannerPlatforms,
-                    a2sPlayer: a2sPlayer
+                    a2sPlayer: a2sPlayer,
+                    randomPlatforms: randomPlatforms
                 })
             }}
         >
@@ -154,6 +156,16 @@ export default function ScannerForm ({
                             value={a2sPlayer}
                         />
                         <label htmlFor="a2sPlayer">A2S Player</label>
+                    </div>
+
+                    <div className="flex flex-row">
+                        <Switch
+                            onChange={() => {
+                                setRandomPlatforms(!randomPlatforms);
+                            }}
+                            value={randomPlatforms}
+                        />
+                        <label htmlFor="randomPlatforms">Random Platforms</label>
                     </div>
 
                     <div className="flex justify-center">

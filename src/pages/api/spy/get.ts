@@ -29,6 +29,7 @@ type VmsT = {
     limit?: number
     exclude_empty?: boolean
     sub_bots?: boolean
+    random_apps?: boolean
 }
 
 type ScannerT = {
@@ -41,6 +42,7 @@ type ScannerT = {
     sub_bots?: boolean
     query_timeout?: number
     a2s_player?: boolean
+    random_platforms?: boolean
 }
 
 type PlatformMapT = {
@@ -166,7 +168,8 @@ export default async function Handler (
             max_wait: spy.vmsMaxWait,
             limit: spy.vmsLimit,
             exclude_empty: spy.vmsExcludeEmpty,
-            sub_bots: spy.vmsSubBots
+            sub_bots: spy.vmsSubBots,
+            random_apps: spy.vmsRandomApps
         }
 
         // Build remove inactive.
@@ -193,7 +196,8 @@ export default async function Handler (
                 recv_only: s.recvOnly,
                 sub_bots: s.subBots,
                 query_timeout: s.queryTimeout,
-                a2s_player: s.a2sPlayer
+                a2s_player: s.a2sPlayer,
+                random_platforms: s.randomPlatforms
             })
         })
 

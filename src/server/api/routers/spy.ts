@@ -153,6 +153,7 @@ export const spyRouter = createTRPCRouter({
             vmsExcludeEmpty: z.boolean().default(true),
             vmsSubBots: z.boolean().default(false),
             vmsAddOnly: z.boolean().default(false),
+            vmsRandomApps: z.boolean().default(false),
             removeInactive: z.boolean().default(false),
             removeInactiveTime: z.number().default(2592000),
             removeInactiveInterval: z.number().default(86400),
@@ -195,6 +196,7 @@ export const spyRouter = createTRPCRouter({
                         vmsExcludeEmpty: input.vmsExcludeEmpty,
                         vmsSubBots: input.vmsSubBots,
                         vmsAddOnly: input.vmsAddOnly,
+                        vmsRandomApps: input.vmsRandomApps,
                         removeInactive: input.removeInactive,
                         removeInactiveTime: input.removeInactiveTime,
                         removeInactiveInterval: input.removeInactiveInterval,
@@ -236,6 +238,7 @@ export const spyRouter = createTRPCRouter({
                         vmsExcludeEmpty: input.vmsExcludeEmpty,
                         vmsSubBots: input.vmsSubBots,
                         vmsAddOnly: input.vmsAddOnly,
+                        vmsRandomApps: input.vmsRandomApps,
                         removeInactive: input.removeInactive,
                         removeInactiveTime: input.removeInactiveTime,
                         removeInactiveInterval: input.removeInactiveInterval,
@@ -277,7 +280,8 @@ export const spyRouter = createTRPCRouter({
             recvOnly: z.boolean().default(false),
             subBots: z.boolean().default(false),
             queryTimeout: z.number().default(3),
-            a2sPlayer: z.boolean().default(true)
+            a2sPlayer: z.boolean().default(true),
+            randomPlatforms: z.boolean().default(false)
         }))
         .mutation(async ({ ctx, input }) => {
             try {
@@ -304,6 +308,7 @@ export const spyRouter = createTRPCRouter({
                         subBots: input.subBots,
                         queryTimeout: input.queryTimeout,
                         a2sPlayer: input.a2sPlayer,
+                        randomPlatforms: input.randomPlatforms,
                         ...(input.platforms.length > 0 && {
                             platforms: {
                                 connect: input.platforms.map((id) => ({
@@ -322,6 +327,7 @@ export const spyRouter = createTRPCRouter({
                         subBots: input.subBots,
                         queryTimeout: input.queryTimeout,
                         a2sPlayer: input.a2sPlayer,
+                        randomPlatforms: input.randomPlatforms,
                         platforms: {
                             disconnect: eScanner?.platforms?.map(p => ({ id: p.id })) || [],
                             ...(input.platforms.length > 0 && {
