@@ -1,11 +1,11 @@
 import { type Server } from "@prisma/client";
 import { RetrieveUserCountClasses, RetrieveUserFullClasses } from "@utils/UserCountClasses";
-import { type ServerPublic } from "~/types/Server";
+import { ServerBrowser, type ServerPublic } from "~/types/Server";
 
 export default function PlayerCount ({
     server    
 } : {
-    server: ServerPublic | Server
+    server: ServerPublic | Server | ServerBrowser
 }) {
     const fullClasses = RetrieveUserFullClasses();
 

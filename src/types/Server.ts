@@ -56,6 +56,46 @@ export type ServerPublic = Prisma.ServerGetPayload<{
     rating?: number
 }
 
+export type ServerBrowserSelect = {
+    id: true,
+    visible: true,
+
+    url: true,
+
+    ip: true,
+    ip6: true,
+    port: true,
+    hostName: true,
+
+    region: true,
+
+    platform: true,
+
+    name: true,
+
+    online: true,
+    curUsers: true,
+    maxUsers: true,
+    bots: true,
+    mapName: true,
+    secure: true,
+    os: true,
+    password: true,
+
+    avgUsers: true,
+
+    locationLat: true,
+    locationLon: true,
+
+    lastQueried: true
+}
+
+export type ServerBrowser = Prisma.ServerGetPayload<{
+    select: ServerBrowserSelect
+}> & {
+    rating?: number
+}
+
 export type ServerWithRelations = Prisma.ServerGetPayload<{
     include: {
         user: {

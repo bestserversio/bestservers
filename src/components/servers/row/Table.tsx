@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { type ServerPublic } from "~/types/Server";
+import { ServerBrowser, type ServerPublic } from "~/types/Server";
 import ServerLink from "../Link";
 import Image from "next/image";
 import PlayerCount from "../PlayerCount";
@@ -11,7 +11,7 @@ import LastQueried from "../LastQueried";
 export default function ServerRowTable ({
     server
 } : {
-    server: ServerPublic
+    server: ServerBrowser
 }) {
     const uploadsUrl = process.env.NEXT_PUBLIC_UPLOADS_URL;
     //const gameplayerCtx = useContext(GameplayerCtx);
@@ -64,7 +64,7 @@ export default function ServerRowTable ({
         <tr className={`server-row-table bg-gradient-to-b from-shade-2/70 to-shade-3/70 hover:duration-150 hover:from-shade-4/70 hover:to-shade-5/70 border-separate border-spacing-4 rounded-lg ${!server.online ? "opacity-60" : ""}`}>
             <td className={!server.rating ? "w-0" : "w-auto"}>
                 {server.rating && (
-                    <span className="text-lg text-bold">{server.rating.toString()}</span>
+                    <span className="text-lg text-bold">{server.rating?.toString()}</span>
                 )}
             </td>
             <td className="w-[32px]">

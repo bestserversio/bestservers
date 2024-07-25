@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { type ReactNode } from "react";
-import { type ServerPublic } from "~/types/Server";
+import { ServerBrowser, type ServerPublic } from "~/types/Server";
 
 export default function ServerLink({
     server,
@@ -8,7 +8,7 @@ export default function ServerLink({
     className,
     children
 } : {
-    server: ServerPublic
+    server: ServerPublic | ServerBrowser
     view?: string
     className?: string
     children: ReactNode

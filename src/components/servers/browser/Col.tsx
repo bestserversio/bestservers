@@ -1,10 +1,10 @@
-import { type ServerPublic } from "~/types/Server";
+import { ServerBrowser } from "~/types/Server";
 import ServerRow from "../Row";
 
 export default function ServerBrowserCol ({
     servers
 } : {
-    servers: ServerPublic[]
+    servers: ServerBrowser[]
 }) {
     return (
         <div className="col-span-1 sm:col-span-6 flex flex-col gap-4">

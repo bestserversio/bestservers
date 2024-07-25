@@ -1,5 +1,6 @@
 import Switch from "@components/helpers/Switch";
 import { FiltersCtx } from "@components/servers/Browser";
+import { GetSortFromString } from "@utils/servers/sort";
 import { useContext } from "react";
 
 export default function FiltersMain ({
@@ -35,15 +36,15 @@ export default function FiltersMain ({
                             <h2>Filters</h2>
                         </div>
                     )}
-                    <div className="form flex flex-col gap-4">
+                    <div className="form flex flex-col gap-4 [&_label]:!text-sm">
                         {showSort && (
-                            <div>
+                            <div className="flex flex-col gap-1">
                                 <label>Sort</label>
                                 <select
                                     onChange={(e) => {
                                         const val = e.target.value;
 
-                                        filters.setSort(val);
+                                        filters.setSort(GetSortFromString(val));
                                     }}
                                     defaultValue={filters.sort}
                                 >
@@ -54,13 +55,15 @@ export default function FiltersMain ({
                             </div>
                         )}
                         {showSortDir && (
-                            <div>
+                            <div className="flex flex-col gap-1">
                                 <label>Sort Direction</label>
                                 <select
                                     onChange={(e) => {
                                         const val = e.target.value;
 
-                                        filters.setSortDir(val);
+                                        const sortDir = val.toLowerCase() == "desc" ? "DESC" : "ASC";
+
+                                        filters.setSortDir(sortDir);
                                     }}
                                     defaultValue={filters.sortDir}
                                 >
@@ -70,7 +73,7 @@ export default function FiltersMain ({
                             </div>
                         )}
                         {showSearch && (
-                            <div>
+                            <div className="flex flex-col gap-1">
                                 <label>Search</label>
                                 <input
                                     onChange={(e) => {
@@ -78,11 +81,12 @@ export default function FiltersMain ({
 
                                         filters.setFilterSearch(val);
                                     }}
+                                    className="!p-1"
                                 />
                             </div>
                         )}
                         {showMapName && (
-                            <div>
+                            <div className="flex flex-col gap-1">
                                 <label>Map Name</label>
                                 <input
                                     onChange={(e) => {
@@ -90,13 +94,14 @@ export default function FiltersMain ({
 
                                         filters.setFilterMapName(val);
                                     }}
+                                    className="!p-1"
                                 />
                             </div>
                         )}
                         {showOffline && (
                             <div className="flex gap-2 items-center">
                                 <Switch
-                                    label={<>Show Offline</>}
+                                    label={<label>Show Offline</label>}
                                     onChange={() => {
                                         filters.setFilterOffline(filters?.filterOffline ? !filters.filterOffline : true);
                                     }}
@@ -106,7 +111,7 @@ export default function FiltersMain ({
                         {showHideEmpty && (
                             <div className="flex gap-2 items-center">
                                 <Switch
-                                    label={<>Hide Empty</>}
+                                    label={<label>Hide Empty</label>}
                                     onChange={() => {
                                         filters.setFilterHideEmpty(filters?.filterHideEmpty ? !filters.filterHideEmpty : true);
                                     }}
@@ -116,7 +121,7 @@ export default function FiltersMain ({
                         {showHideFull && (
                             <div className="flex gap-2 items-center">
                                 <Switch
-                                    label={<>Hide Full</>}
+                                    label={<label>Hide Full</label>}
                                     onChange={() => {
                                         filters.setFilterHideFull(filters?.filterHideFull ? !filters.filterHideFull : true);
                                     }}

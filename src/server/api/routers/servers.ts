@@ -8,6 +8,7 @@ import z from "zod";
 import { isAdmin } from "@utils/auth";
 import { ProcessPrismaError } from "@utils/error";
 import { ServerPublicSelect } from "~/types/Server";
+import { GetServers, ServerSort } from "@utils/servers/content";
 
 // Limits
 export const SERVER_URL_MIN = 3;
@@ -40,10 +41,10 @@ export const serversRouter = createTRPCRouter({
             regions: z.array(z.nativeEnum(Region))
                 .optional(),
 
-            sort: z.string()
-                .default("curUsers"),
-            sortDir: z.string()
-                .default("desc"),
+            sort: z.nativeEnum(ServerSort)
+                .default(ServerSort.CURUSERS),
+            sortDir: z.enum(["DESC", "ASC"])
+                .default("DESC"),
             search: z.string()
                 .optional(),
             mapName: z.string()
@@ -54,9 +55,9 @@ export const serversRouter = createTRPCRouter({
                 .default(false),
             hideFull: z.boolean()
                 .default(false),
-            minCurUsers: z.number()
+            minUsers: z.number()
                 .optional(),
-            maxCurUsers: z.number()
+            maxUsers: z.number()
                 .optional(),
 
             cursor: z.number()
@@ -65,130 +66,25 @@ export const serversRouter = createTRPCRouter({
                 .default(10)
         }))
         .query(async ({ ctx, input }) => {
-            let sortDir: Prisma.SortOrder = "desc";
-
-            if (input.sortDir == "asc")
-                sortDir = "asc";
-
-            let servers = await ctx.prisma.server.findMany({
-                take: input.limit + 1,
-                cursor: input.cursor ? { id: input.cursor } : undefined,
-
-                select: ServerPublicSelect,
-
-                where: {
-                    ...(input.visible !== undefined && {
-                        visible: input.visible
-                    }),
-                    ...(input.search && {
-                        OR: [
-                            {
-                                name: {
-                                    contains: input.search,
-                                    mode: "insensitive"
-                                }
-                            },
-                            {
-    
-                                description: {
-                                    contains: input.search,
-                                    mode: "insensitive"
-                                }
-                            },
-                            {
-                                mapName: {
-                                    contains: input.search,
-                                    mode: "insensitive"
-                                }
-                            },
-                            {
-                                platform: {
-                                    name: {
-                                        contains: input.search,
-                                        mode: "insensitive"
-                                    }
-                                }
-                            },
-                            {
-                                platform: {
-                                    nameShort: {
-                                        contains: input.search,
-                                        mode: "insensitive"
-                                    }
-                                }
-                            },
-                            {
-                                category: {
-                                    name: {
-                                        contains: input.search,
-                                        mode: "insensitive"
-                                    }
-                                }
-                            }
-                        ]
-                    }),
-                    ...(input.mapName && {
-                        mapName: {
-                            contains: input.mapName,
-                            mode: "insensitive"
-                        }
-                    }),
-                    ...(!input.showOffline && {
-                        online: true
-                    }),
-                    ...(input.categories && input.categories.length > 0 && {
-                        categoryId: {
-                            in: input.categories
-                        }
-                    }),
-                    ...(input.platforms && input.platforms.length > 0 && {
-                        platformId: {
-                            in: input.platforms
-                        }
-                    }),
-                    ...(input.regions && input.regions.length > 0 && {
-                        region: {
-                            in: input.regions
-                        }
-                    }),
-                    ...(input.hideEmpty && {
-                        curUsers: {
-                            gt: 0
-                        }
-                    }),
-                    ...(input.minCurUsers && {
-                        curPlayers: {
-                            gte: input.minCurUsers
-                        }
-                    }),
-                    ...(input.maxCurUsers && {
-                        curPlayers: {
-                            lte: input.maxCurUsers
-                        }
-                    })
-                },
-                orderBy: [
-                    { [input.sort]: input.sortDir },
-                    ...(input.sort === "name" ? [{
-                            hostName: sortDir
-                        }
-                    ] : []),
-                    ...(input.sort === "hostName" ? [{
-                            name: sortDir
-                        }
-                    ] : [])
-                  ]
-            });
-
-            let nextServer: typeof input.cursor | undefined = undefined;
-
-            if (servers.length > input.limit) {
-                const next = servers.pop();
-                nextServer = next?.id;
-            }
-
-            if (input.hideFull)
-                servers = servers.filter(s => s.curUsers < s.maxUsers);
+            const [servers, nextServer] = await GetServers({
+                prisma: ctx.prisma,
+                isStatic: false,
+                cursor: input.cursor ?? undefined,
+                limit: input.limit,
+                visible: input.visible,
+                sort: input.sort,
+                sortDir: input.sortDir,
+                search: input.search,
+                mapName: input.mapName,
+                showOffline: input.showOffline,
+                hideEmpty: input.hideEmpty,
+                hideFull: input.hideFull,
+                minUsers: input.minUsers,
+                maxUsers: input.maxUsers,
+                platforms: input.platforms,
+                categories: input.categories,
+                regions: input.regions
+            })
 
             return {
                 servers,

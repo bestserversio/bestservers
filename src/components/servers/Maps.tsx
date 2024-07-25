@@ -1,11 +1,11 @@
 import { type Server } from "@prisma/client";
-import { type ServerPublic } from "~/types/Server";
+import { ServerBrowser, type ServerPublic } from "~/types/Server";
 
 export default function ServerMaps({
     server,
     className
 } : {
-    server: ServerPublic | Server
+    server: ServerPublic | Server | ServerBrowser
     className?: string
 }) {
     return (

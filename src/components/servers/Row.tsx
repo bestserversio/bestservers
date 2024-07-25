@@ -1,4 +1,4 @@
-import { type ServerPublic } from "~/types/Server";
+import { ServerBrowser, type ServerPublic } from "~/types/Server";
 import ServerRowTable from "./row/Table";
 import ServerRowCol from "./row/Col";
 
@@ -6,7 +6,7 @@ export default function ServerRow ({
     server,
     table
 } : {
-    server: ServerPublic
+    server: ServerBrowser
     table?: boolean
 }) {
     return (

@@ -1,15 +1,16 @@
-import { type ServerPublic } from "~/types/Server";
+import { ServerBrowser, type ServerPublic } from "~/types/Server";
 import ServerRow from "../Row";
 import { type Dispatch, type SetStateAction, useContext, useState } from "react";
 import { FiltersCtx } from "../Browser";
 import SortIcon from "@components/icons/Sort";
 import RefreshIcon from "@components/icons/Refresh";
+import { ServerSort } from "@utils/servers/content";
 
 export default function ServerBrowserTable ({
     servers,
     setRefresh
 } : {
-    servers: ServerPublic[]
+    servers: ServerBrowser[]
     setRefresh: Dispatch<SetStateAction<boolean>>
 }) {
     const filtersCtx = useContext(FiltersCtx);
@@ -33,8 +34,8 @@ export default function ServerBrowserTable ({
                                         if (sort != 0 && filtersCtx) {
                                             setSort(0);
 
-                                            filtersCtx.setSort("name");
-                                            filtersCtx.setSortDir("desc");
+                                            filtersCtx.setSort(ServerSort.NAME);
+                                            filtersCtx.setSortDir("DESC");
                                         }
                                     }}
                                 >
@@ -46,8 +47,8 @@ export default function ServerBrowserTable ({
                                         if (sort != 1 && filtersCtx) {
                                             setSort(1);
 
-                                            filtersCtx.setSort("name");
-                                            filtersCtx.setSortDir("asc");
+                                            filtersCtx.setSort(ServerSort.NAME);
+                                            filtersCtx.setSortDir("ASC");
                                         }
                                     }}
                                 >
@@ -66,8 +67,8 @@ export default function ServerBrowserTable ({
                                         if (sort != 2 && filtersCtx) {
                                             setSort(2);
 
-                                            filtersCtx.setSort("mapName");
-                                            filtersCtx.setSortDir("desc");
+                                            filtersCtx.setSort(ServerSort.MAPNAME);
+                                            filtersCtx.setSortDir("DESC");
                                         }
                                     }}
                                 >
@@ -79,8 +80,8 @@ export default function ServerBrowserTable ({
                                         if (sort != 3 && filtersCtx) {
                                             setSort(3);
 
-                                            filtersCtx.setSort("mapName");
-                                            filtersCtx.setSortDir("asc");
+                                            filtersCtx.setSort(ServerSort.MAPNAME);
+                                            filtersCtx.setSortDir("ASC");
                                         }
                                     }}
                                 >
@@ -99,8 +100,8 @@ export default function ServerBrowserTable ({
                                         if (sort != 4 && filtersCtx) {
                                             setSort(4);
 
-                                            filtersCtx.setSort("curUsers");
-                                            filtersCtx.setSortDir("asc");
+                                            filtersCtx.setSort(ServerSort.CURUSERS);
+                                            filtersCtx.setSortDir("ASC");
                                         }
                                     }}
                                 >
@@ -113,8 +114,8 @@ export default function ServerBrowserTable ({
                                         if (sort != 5 && filtersCtx) {
                                             setSort(5);
 
-                                            filtersCtx.setSort("curUsers");
-                                            filtersCtx.setSortDir("desc");
+                                            filtersCtx.setSort(ServerSort.CURUSERS);
+                                            filtersCtx.setSortDir("DESC");
                                         }
                                     }}
                                 >
@@ -133,8 +134,8 @@ export default function ServerBrowserTable ({
                                         if (sort != 6 && filtersCtx) {
                                             setSort(6);
 
-                                            filtersCtx.setSort("lastQueried");
-                                            filtersCtx.setSortDir("asc");
+                                            filtersCtx.setSort(ServerSort.LASTQUERIED);
+                                            filtersCtx.setSortDir("ASC");
                                         }
                                     }}
                                 >
@@ -147,8 +148,8 @@ export default function ServerBrowserTable ({
                                         if (sort != 7 && filtersCtx) {
                                             setSort(7);
 
-                                            filtersCtx.setSort("lastQueried");
-                                            filtersCtx.setSortDir("desc");
+                                            filtersCtx.setSort(ServerSort.LASTQUERIED);
+                                            filtersCtx.setSortDir("DESC");
                                         }
                                     }}
                                 >

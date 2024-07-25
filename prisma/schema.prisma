@@ -8,9 +8,9 @@ datasource db {
 }
 
 enum PlatformFlag {
-  A2S
-  DISCORD
-  TEAMSPEAK3
+  A2S        @map("A2S")
+  DISCORD    @map("DISCORD")
+  TEAMSPEAK3 @map("TEAMSPEAK3")
 }
 
 enum UserRole {
@@ -36,19 +36,19 @@ enum ServerLinkType {
 }
 
 enum ServerOs {
-  WINDOWS
-  LINUX
-  MAC
+  WINDOWS @map("WINDOWS")
+  LINUX   @map("LINUX")
+  MAC     @map("MAC")
 }
 
 enum Region {
-  AF
-  AS
-  EU
-  NA
-  SA
-  OC
-  AN
+  AF @map("AF")
+  AS @map("AS")
+  EU @map("EU")
+  NA @map("NA")
+  SA @map("SA")
+  OC @map("OC")
+  AN @map("AN")
 }
 
 model Account {

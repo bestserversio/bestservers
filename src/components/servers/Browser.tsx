@@ -1,6 +1,6 @@
 import { api } from "@utils/api"
 import { createContext, useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react"
-import { type ServerPublic } from "~/types/Server"
+import { ServerBrowser, type ServerPublic } from "~/types/Server"
 import { type Region } from "@prisma/client"
 import ServerBrowserCol from "./browser/Col"
 import ServerBrowserTable from "./browser/Table"
@@ -10,6 +10,7 @@ import FiltersRegions from "./browser/filters/Regions"
 import Loader from "@components/Loader"
 import InfiniteScroll from "react-infinite-scroller"
 import AnglesRightIcon from "@components/icons/AnglesRight"
+import { ServerSort } from "@utils/servers/content"
 
 export type FiltersType = {
     filterCategories: number[]
@@ -33,14 +34,14 @@ export type FiltersType = {
     filterMaxCurUsers?: number
     setFilterMaxCurUsers: Dispatch<SetStateAction<number | undefined>> 
 
-    sort: string
-    setSort: Dispatch<SetStateAction<string>>
-    sortDir: string
-    setSortDir: Dispatch<SetStateAction<string>>
+    sort: ServerSort
+    setSort: Dispatch<SetStateAction<ServerSort>>
+    sortDir: "ASC" | "DESC"
+    setSortDir: Dispatch<SetStateAction<"ASC" | "DESC">>
 }
 export const FiltersCtx = createContext<FiltersType | undefined>(undefined);
 
-export default function ServerBrowser ({
+export default function ServerBrowserComponent ({
     limit = 10,
     table,
 
@@ -54,8 +55,8 @@ export default function ServerBrowser ({
     preFilterHideFull,
     preFilterMinCurUsers,
     preFilterMaxCurUsers,
-    preSort = "curUsers",
-    preSortDir = "desc"
+    preSort = ServerSort.CURUSERS,
+    preSortDir = "DESC"
 } : {
     limit?: number
     table?: boolean
@@ -71,8 +72,8 @@ export default function ServerBrowser ({
     preFilterMinCurUsers?: number
     preFilterMaxCurUsers?: number,
 
-    preSort?: string
-    preSortDir?: string
+    preSort?: ServerSort
+    preSortDir?: "ASC" | "DESC"
 }) {    
     // Filters and sorting.
     const [filterCategories, setFilterCategories] = useState<number[]>(preFilterCategories);
@@ -109,8 +110,8 @@ export default function ServerBrowser ({
         showOffline: filterOffline,
         hideEmpty: filterHideEmpty,
         hideFull: filterHideFull,
-        minCurUsers: filterMinCurUsers,
-        maxCurUsers: filterMaxCurUsers,
+        minUsers: filterMinCurUsers,
+        maxUsers: filterMaxCurUsers,
         
         sort: sort,
         sortDir: sortDir,
@@ -158,7 +159,7 @@ export default function ServerBrowser ({
         })()
     }
 
-    const servers: ServerPublic[] = [];
+    const servers: ServerBrowser[] = [];
 
     if (data) {
         data.pages.map((pg) => {
@@ -236,9 +237,9 @@ export default function ServerBrowser ({
             sortDir: sortDir,
             setSortDir: setSortDir
         }}>
-            <div className="flex gap-2 py-4">
-                <div className="flex flex-col">
-                    <div className="flex flex-col sticky top-[3.8rem]">
+            <div className="flex flex-col sm:flex-row gap-2 py-4">
+                <div>
+                    <div className={`flex flex-col static sm:sticky sm:top-[3.8rem] ${showFilters ? "sm:min-w-96" : ""}`}>
                         {!showFilters && (
                             <div className="flex justify-end">
                                 <div
@@ -264,7 +265,7 @@ export default function ServerBrowser ({
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <div className="flex flex-col gap-2">
-                                        <h2>General</h2>
+                                        <h4>General</h4>
                                         <div>
                                             <FiltersMain
                                                 showSearch={true}
@@ -276,7 +277,7 @@ export default function ServerBrowser ({
                                         </div>
                                     </div>
                                     <div className="flex flex-col gap-2">
-                                        <h2>Platforms</h2>
+                                        <h4>Platforms</h4>
                                         <div className="h-96 overflow-y-auto bg-shade-1 rounded-md">
                                             <FiltersPlatforms />
                                         </div>
@@ -290,7 +291,7 @@ export default function ServerBrowser ({
                                     </div>
                                     */}
                                     <div className="flex flex-col gap-2 rounded-md">
-                                        <h2>Regions</h2>
+                                        <h4>Regions</h4>
                                         <div className="h-96 overflow-y-auto bg-shade-1">
                                             <FiltersRegions />
                                         </div>
