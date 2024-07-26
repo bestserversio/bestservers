@@ -17,6 +17,7 @@ import AnnouncementIcon from "./icons/header/Announcement";
 import RoadmapIcon from "./icons/header/RoadMap";
 import AdminIcon from "./icons/Admin";
 import { isAdmin } from "@utils/auth";
+import FeedbackIcon from "./icons/header/Feedback";
 
 const FCabin = Cabin({ subsets: ["latin"], weight: "700" })
 const FSourceCode = Source_Code_Pro({ subsets: ["cyrillic"], weight: "900" })
@@ -94,6 +95,16 @@ export default function Header () {
                                 contents: <IconAndText
                                     icon={<RoadmapIcon className="fill-white h-6 w-6" />}
                                     text={<>Roadmap</>}
+                                    inline={true}
+                                />,
+                                newTab: true,
+                                className: "text-sm font-normal text-gray-200 hover:text-white"
+                            },
+                            {
+                                link: "https://moddingcommunity.com/forum/263-suggestions/",
+                                contents: <IconAndText
+                                    icon={<FeedbackIcon className="fill-white h-6 w-6" />}
+                                    text={<>Feedback</>}
                                     inline={true}
                                 />,
                                 newTab: true,
