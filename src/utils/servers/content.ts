@@ -89,7 +89,9 @@ export async function GetServers({
         ...(search ? [
             Prisma.sql`
                 (
-                    "Server"."name" ILIKE  ${"%" + search + "%"}
+                    "Server"."name" ILIKE  ${"%" + search + "%"} OR
+                    "Server"."ip" ILIKE ${"%" + search + "%"} OR 
+                    "Server"."ip6" ILIKE ${"%" + search + "%"}
                 )
             `
         ] : []),
