@@ -379,6 +379,7 @@ model Spy {
   vmsSubBots      Boolean @default(false)
   vmsAddOnly      Boolean @default(false)
   vmsRandomApps   Boolean @default(false)
+  vmsSetOffline   Boolean @default(true)
 
   removeInactive         Boolean @default(false)
   removeInactiveTime     Int     @default(2592000)

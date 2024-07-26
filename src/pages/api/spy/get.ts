@@ -31,6 +31,7 @@ type VmsT = {
     exclude_empty?: boolean
     sub_bots?: boolean
     random_apps?: boolean
+    set_offline?: boolean
 }
 
 type ScannerT = {
@@ -179,7 +180,8 @@ export default async function Handler (
             limit: spy.vmsLimit,
             exclude_empty: spy.vmsExcludeEmpty,
             sub_bots: spy.vmsSubBots,
-            random_apps: spy.vmsRandomApps
+            random_apps: spy.vmsRandomApps,
+            set_offline: spy.vmsSetOffline
         }
 
         // Build remove inactive.
