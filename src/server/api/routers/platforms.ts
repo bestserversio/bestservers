@@ -86,7 +86,17 @@ export const platformsRouter = createTRPCRouter({
                 .optional(),
             vmsId: z.number()
                 .nullable()
+                .optional(),
+
+            // Filters
+            maxCurUsers: z.number()
                 .optional()
+                .nullable(),
+            maxUsers: z.number()
+                .optional()
+                .nullable(),
+            allowUserOverflow: z.boolean()
+                .default(true)
         }))
         .mutation(async ({ ctx, input }) => {
             let platform: Platform | null = null;
@@ -106,6 +116,9 @@ export const platformsRouter = createTRPCRouter({
                         nameShort: input.nameShort,
                         description: input.description,
                         vmsId: input.vmsId,
+                        maxCurUsers: input.maxCurUsers,
+                        maxUsers: input.maxUsers,
+                        allowUserOverflow: input.allowUserOverflow
                     },
                     update: {
                         ...(input.flags !== undefined && {
@@ -123,7 +136,10 @@ export const platformsRouter = createTRPCRouter({
                         name: input.name,
                         nameShort: input.nameShort,
                         description: input.description,
-                        vmsId: input.vmsId
+                        vmsId: input.vmsId,
+                        maxCurUsers: input.maxCurUsers,
+                        maxUsers: input.maxUsers,
+                        allowUserOverflow: input.allowUserOverflow
                     }
                 });
             } catch (err) {

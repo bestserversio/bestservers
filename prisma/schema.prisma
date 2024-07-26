@@ -128,6 +128,11 @@ model Platform {
   jsInternal String?
   jsExternal String?
 
+  // Filters
+  maxCurUsers       Int?
+  maxUsers          Int?
+  allowUserOverflow Boolean @default(true)
+
   servers     Server[]
   serverRanks ServerRank[]
 
@@ -361,6 +366,7 @@ model Spy {
   webApiEndpoint String  @default("/api/spy/get")
   webApiTimeout  Int     @default(5)
   webApiInterval Int     @default(60)
+  webApiSaveToFs Boolean @default(true)
 
   vmsEnabled      Boolean @default(false)
   vmsKey          String?

@@ -45,6 +45,7 @@ export default function PlatformForm ({
     const [flagA2s, setFlagA2s] = useState(platform?.flags?.includes("A2S") ?? false);
     const [flagTs, setFlagTs] = useState(platform?.flags?.includes("TEAMSPEAK3") ?? false);
     const [flagDiscord, setFlagDiscord] = useState(platform?.flags?.includes("DISCORD") ?? false);
+    const [allowUserOverflow, setAllowUserOverflow] = useState(platform?.allowUserOverflow ?? true);
 
     return (
         <Formik
@@ -54,6 +55,9 @@ export default function PlatformForm ({
                 nameShort: platform?.nameShort ?? "",
                 description: platform?.description ?? "",
                 vmsId: platform?.vmsId ?? "",
+
+                maxCurUsers: platform?.maxCurUsers ?? "",
+                maxUsers: platform?.maxUsers ?? "",
 
                 jsExternal: platform?.jsExternal ?? ""
             }}
@@ -82,10 +86,14 @@ export default function PlatformForm ({
                     name: values.name,
                     nameShort: values.nameShort,
                     description: values.description || null,
-                    vmsId: Number(values.vmsId),
+                    vmsId: values.vmsId ? Number(values.vmsId) : null,
 
                     jsInternal: jsInternal?.toString(),
                     jsExternal: values.jsExternal || null,
+
+                    maxCurUsers: values.maxCurUsers ? Number(values.maxCurUsers) : null,
+                    maxUsers: values.maxUsers ? Number(values.maxUsers) : null,
+                    allowUserOverflow: allowUserOverflow,
 
                     flags: flags
                 })
@@ -224,6 +232,24 @@ export default function PlatformForm ({
                         value={flagDiscord}
                         label={<>Discord</>}
                     />  
+                </div>
+                <h2>Filters</h2>
+                <div>
+                    <label htmlFor="maxCurUsers">Max Current Users</label>
+                    <Field name="maxCurUsers" />
+                </div>
+                <div>
+                    <label htmlFor="maxUsers">Max Users</label>
+                    <Field name="maxUsers" />
+                </div>
+                <div>
+                    <Switch
+                        onChange={() => {
+                            setAllowUserOverflow(!allowUserOverflow);
+                        }}
+                        value={allowUserOverflow}
+                        label={<>Allow User Overflow</>}
+                    />
                 </div>
                 <div className="flex justify-center">
                     <button

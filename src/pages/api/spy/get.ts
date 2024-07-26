@@ -16,6 +16,7 @@ type WebApiT = {
     authorization?: string
     timeout?: number
     interval?: number
+    save_to_fs?: boolean
 }
 
 type VmsT = {
@@ -57,6 +58,13 @@ type RemoveInactiveT = {
     timeout: number
 }
 
+type PlatformFilterT = {
+    id: number
+    max_cur_users?: number
+    max_users?: number
+    allow_user_overflow?: boolean
+}
+
 type SpyResp = {
     verbose: number
 
@@ -69,6 +77,7 @@ type SpyResp = {
     bad_words: string[]
     bad_ips: string[]
     bad_asns: number[]
+    platform_filters: PlatformFilterT[]
 }
 
 export default async function Handler (
@@ -151,7 +160,8 @@ export default async function Handler (
             endpoint: spy.webApiEndpoint,
             authorization: spy.key?.key,
             timeout: spy.webApiTimeout,
-            interval: spy.webApiInterval
+            interval: spy.webApiInterval,
+            save_to_fs: spy.webApiSaveToFs
         }
 
         // Start building VMS.
@@ -201,7 +211,7 @@ export default async function Handler (
             })
         })
 
-        // Setup platform mappings.
+        // Setup platform mappings and filters.
         const platforms = await prisma.platform.findMany({
             where: {
                 vmsId: {
@@ -211,14 +221,29 @@ export default async function Handler (
         })
 
         const platform_maps: PlatformMapT[] = [];
+        const platform_filters: PlatformFilterT[] = [];
 
         platforms.forEach((p) => {
-            if (!p.vmsId)
-                    return;
+            // Push VMS app ID if needed.
+            if (p.vmsId) {
+                platform_maps.push({
+                    platform_id: p.id,
+                    app_id: p.vmsId
+                })
+            }
 
-            platform_maps.push({
-                platform_id: p.id,
-                app_id: p.vmsId
+            // Push filters.
+            platform_filters.push({
+                id: p.id,
+                ...(p.maxCurUsers && {
+                    max_cur_users: p.maxCurUsers
+                }),
+                ...(p.maxUsers && {
+                    max_users: p.maxUsers
+                }),
+                ...(p.allowUserOverflow !== undefined && {
+                    allow_user_overflow: p.allowUserOverflow
+                })
             })
         })
 
@@ -233,7 +258,8 @@ export default async function Handler (
             remove_inactive: remove_inactive,
             bad_words: badWords,
             bad_ips: badIps,
-            bad_asns: badAsns
+            bad_asns: badAsns,
+            platform_filters: platform_filters
         }
 
         return res.status(200).json(spyResp);

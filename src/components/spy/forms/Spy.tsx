@@ -53,6 +53,7 @@ export default function SpyForm ({
     const [removeInactive, setRemoveInactive] = useState(spy?.removeInactive ?? false);
 
     const [webApiEnabled, setWebApiEnabled] = useState(spy?.webApiEnabled ?? false);
+    const [webApiSaveToFs, setWebApiSaveToFs] = useState(spy?.webApiSaveToFs ?? true);
 
     return (
         <Formik
@@ -94,6 +95,7 @@ export default function SpyForm ({
                     webApiEndpoint: webApiEndpoint,
                     webApiTimeout: webApiTimeout ? Number(webApiTimeout) : undefined,
                     webApiInterval: webApiInterval ? Number(webApiInterval) : undefined,
+                    webApiSaveToFs: webApiSaveToFs,
                     vmsEnabled: vmsEnabled,
                     vmsKey: vmsKey,
                     vmsTimeout: vmsTimeout ? Number(vmsTimeout) : undefined,
@@ -185,6 +187,15 @@ export default function SpyForm ({
                     <div>
                         <label htmlFor="webApiInterval">Interval</label>
                         <Field name="webApiInterval" />
+                    </div>
+                    <div className="flex flex-row">
+                        <Switch
+                            onChange={() => {
+                                setWebApiSaveToFs(!webApiSaveToFs);
+                            }}
+                            value={webApiSaveToFs}
+                        />
+                        <label htmlFor="webApiSaveToFs">Save To File System</label>
                     </div>
 
                     <h2>Scanners</h2>
