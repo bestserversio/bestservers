@@ -7,6 +7,16 @@ import { GetRegionFromString } from "@utils/region";
 import { AddServer, type ServerBodyT, type ServerWhereT, UpdateServer } from "@utils/servers/api";
 import { type NextApiRequest, type NextApiResponse } from "next";
 
+export const config = {
+    api: {
+        responseLimit: "64mb",
+        bodyParser: {
+            sizeLimit: "64mb"
+        }
+    },
+}
+
+
 type ServerBodyWithWhereT = ServerBodyT & {
     where?: ServerWhereT
 }
