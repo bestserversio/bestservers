@@ -61,6 +61,7 @@ export default function SpyForm ({
             initialValues={{
                 host: spy?.host ?? "",
                 verbose: spy?.verbose ?? "",
+                logDirectory: spy?.logDirectory ?? "",
                 keyId: spy?.keyId ?? 0,
 
                 apiHost: spy?.apiHost ?? "",
@@ -82,12 +83,13 @@ export default function SpyForm ({
                 removeInactiveTimeout: spy?.removeInactiveTimeout ?? ""
             }}
             onSubmit={(values) => {
-                const { verbose, apiHost, apiTimeout, webApiHost, keyId, webApiEndpoint, webApiInterval, webApiTimeout, vmsKey, vmsTimeout, vmsLimit, vmsMinWait, vmsMaxWait, removeInactiveTime, removeInactiveInterval, removeInactiveTimeout } = values;
+                const { verbose, logDirectory, apiHost, apiTimeout, webApiHost, keyId, webApiEndpoint, webApiInterval, webApiTimeout, vmsKey, vmsTimeout, vmsLimit, vmsMinWait, vmsMaxWait, removeInactiveTime, removeInactiveInterval, removeInactiveTimeout } = values;
                 
                 addOrUpdateMut.mutate({
                     id: spy?.id,
                     host: values.host,
                     verbose: verbose ? Number(verbose) : undefined,
+                    logDirectory: logDirectory.length > 0 ? logDirectory : null,
                     keyId: keyId > 0 ? Number(keyId) : null,
                     apiHost: apiHost,
                     apiTimeout: apiTimeout ? Number(apiTimeout) : undefined,
@@ -129,6 +131,10 @@ export default function SpyForm ({
                     <div>
                         <label htmlFor="verbose">Verbose Level</label>
                         <Field name="verbose" />
+                    </div>
+                    <div>
+                        <label htmlFor="logDirectory">Log Directory</label>
+                        <Field name="logDirectory" />
                     </div>
                     <div>
                         <label htmlFor="keyId">API Key</label>

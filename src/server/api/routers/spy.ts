@@ -134,6 +134,7 @@ export const spyRouter = createTRPCRouter({
             id: z.number().optional(),
             host: z.string(),
             verbose: z.number().default(1),
+            logDirectory: z.string().nullable().default("./logs"),
             keyId: z.number().optional().nullable(),
             apiHost: z.string().optional(),
             apiTimeout: z.number().optional(),
@@ -181,6 +182,7 @@ export const spyRouter = createTRPCRouter({
                     update: {
                         host: input.host,
                         verbose: input.verbose,
+                        logDirectory: input.logDirectory,
                         keyId: input.keyId,
                         apiHost: input.apiHost,
                         apiTimeout: input.apiTimeout,
@@ -225,6 +227,7 @@ export const spyRouter = createTRPCRouter({
                     create: {
                         host: input.host,
                         verbose: input.verbose,
+                        logDirectory: input.logDirectory,
                         keyId: input.keyId,
                         apiHost: input.apiHost,
                         apiTimeout: input.apiTimeout,

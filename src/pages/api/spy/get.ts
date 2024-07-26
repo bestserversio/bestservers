@@ -69,6 +69,7 @@ type PlatformFilterT = {
 
 type SpyResp = {
     verbose: number
+    log_directory?: string | null
 
     api: ApiT
     web_api: WebApiT
@@ -254,6 +255,7 @@ export default async function Handler (
         // Setup finaly response.
         const spyResp: SpyResp = {
             verbose: spy.verbose,
+            log_directory: spy?.logDirectory ?? null,
             api: api,
             web_api: webApi,
             vms: vms,

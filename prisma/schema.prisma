@@ -352,8 +352,9 @@ model ApiKeyHits {
 model Spy {
   id Int @id @default(autoincrement())
 
-  host    String @unique
-  verbose Int    @default(0)
+  host         String  @unique
+  verbose      Int     @default(0)
+  logDirectory String? @default("./logs")
 
   keyId Int?
   key   ApiKey? @relation(fields: [keyId], references: [id], onUpdate: Cascade, onDelete: SetNull)
