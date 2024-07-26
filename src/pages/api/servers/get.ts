@@ -34,6 +34,8 @@ export default async function Handler (
     const { query } = req;
 
     // Limit and sorting.
+    const visible = query?.visible?.toString() ?? "";
+
     const limit = query.limit?.toString() ?? "10";
     const sort = query.sort?.toString() ?? "lastQueried";
     const sortDir = query.sort?.toString() ?? "asc";
@@ -83,6 +85,9 @@ export default async function Handler (
                 ip6: ip6,
                 ...(port && {
                     port: Number(port)
+                }),
+                ...(visible && {
+                    visible: true
                 }),
                 hostName: hostName
             }

@@ -287,7 +287,8 @@ export const spyRouter = createTRPCRouter({
             subBots: z.boolean().default(false),
             queryTimeout: z.number().default(3),
             a2sPlayer: z.boolean().default(true),
-            randomPlatforms: z.boolean().default(false)
+            randomPlatforms: z.boolean().default(false),
+            visibleSkipCount: z.number().default(10)
         }))
         .mutation(async ({ ctx, input }) => {
             try {
@@ -315,6 +316,7 @@ export const spyRouter = createTRPCRouter({
                         queryTimeout: input.queryTimeout,
                         a2sPlayer: input.a2sPlayer,
                         randomPlatforms: input.randomPlatforms,
+                        visibleSkipCount: input.visibleSkipCount,
                         ...(input.platforms.length > 0 && {
                             platforms: {
                                 connect: input.platforms.map((id) => ({
@@ -334,6 +336,7 @@ export const spyRouter = createTRPCRouter({
                         queryTimeout: input.queryTimeout,
                         a2sPlayer: input.a2sPlayer,
                         randomPlatforms: input.randomPlatforms,
+                        visibleSkipCount: input.visibleSkipCount,
                         platforms: {
                             disconnect: eScanner?.platforms?.map(p => ({ id: p.id })) || [],
                             ...(input.platforms.length > 0 && {

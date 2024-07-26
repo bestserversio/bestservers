@@ -52,7 +52,8 @@ export default function ScannerForm ({
                 minWait: scanner?.minWait ?? "",
                 maxWait: scanner?.maxWait ?? "",
                 limit: scanner?.limit ?? "",
-                queryTimeout: scanner?.queryTimeout ?? ""
+                queryTimeout: scanner?.queryTimeout ?? "",
+                visibleSkipCount: scanner?.visibleSkipCount ?? ""
             }}
             onSubmit={(values) => {
                 const { name, protocol, minWait, maxWait, limit, queryTimeout } = values;
@@ -69,6 +70,7 @@ export default function ScannerForm ({
                     queryTimeout: queryTimeout ? Number(queryTimeout) : undefined,
                     platforms: scannerPlatforms,
                     a2sPlayer: a2sPlayer,
+                    visibleSkipCount: values.visibleSkipCount ? Number(values.visibleSkipCount) : undefined,
                     randomPlatforms: randomPlatforms
                 })
             }}
@@ -99,6 +101,10 @@ export default function ScannerForm ({
                     <div>
                         <label htmlFor="queryTimeout">Query Timeout</label>
                         <Field name="queryTimeout" />
+                    </div>
+                    <div>
+                        <label htmlFor="visibleSkipCount">Visible Skip Count</label>
+                        <Field name="visibleSkipCount" />
                     </div>
 
                     <h2>Platforms</h2>
