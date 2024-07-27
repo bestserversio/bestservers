@@ -14,6 +14,7 @@ import BadWordsBlock from "@components/spy/BadWordBlock";
 import { ContentItem2 } from "@components/Content";
 import BadIpsBlock from "@components/spy/BadIpBlock";
 import BadAsnsBlock from "@components/spy/BadAsnBlock";
+import GoodIpsBlock from "@components/spy/GoodIpBlock";
 
 export default function Page ({
     authed    
@@ -46,6 +47,9 @@ export default function Page ({
                                 </ContentItem2>
                                 <ContentItem2 title="Bad ASNs">
                                     <BadAsnsBlock />
+                                </ContentItem2>
+                                <ContentItem2 title="Good IPs">
+                                    <GoodIpsBlock />
                                 </ContentItem2>
                             </div>
                         </div>

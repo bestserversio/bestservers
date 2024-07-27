@@ -88,6 +88,7 @@ type SpyResp = {
     bad_words: string[]
     bad_ips: string[]
     bad_asns: number[]
+    good_ips: string[]
     platform_filters: PlatformFilterT[],
     remove_dups: RemoveDupsT
 }
@@ -152,11 +153,13 @@ export default async function Handler (
         const badWordsQ = await prisma.badWord.findMany();
         const badIpsQ = await prisma.badIp.findMany();
         const badAsnsQ = await prisma.badAsn.findMany();
+        const goodIpsQ = await prisma.goodIp.findMany();
 
         // Start compiling bad stuff arrays.
         const badWords = badWordsQ.map(q => q.word)
         const badIps = badIpsQ.map(q => `${q.ip}/${q.cidr.toString()}`)
         const badAsns = badAsnsQ.map(q => q.asn)
+        const goodIps = goodIpsQ.map(q => `${q.ip}/${q.cidr.toString()}`)
 
         // Start building API.
         const api: ApiT = {
@@ -283,6 +286,7 @@ export default async function Handler (
             bad_words: badWords,
             bad_ips: badIps,
             bad_asns: badAsns,
+            good_ips: goodIps,
             platform_filters: platform_filters,
             remove_dups: remove_dups
         }

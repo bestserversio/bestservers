@@ -436,3 +436,11 @@ model BadAsn {
   id  Int @id @default(autoincrement())
   asn Int @unique
 }
+
+model GoodIp {
+  id   Int    @id @default(autoincrement())
+  ip   String
+  cidr Int    @default(32)
+
+  @@unique([ip, cidr])
+}

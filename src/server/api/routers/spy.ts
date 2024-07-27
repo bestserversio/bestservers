@@ -129,6 +129,31 @@ export const spyRouter = createTRPCRouter({
                 nextBadAsn
             }
         }),
+    allGoodIps: adminProcedure
+        .input(z.object({
+            limit: z.number().default(10),
+            cursor: z.number().nullish()
+        }))
+        .query(async ({ input, ctx }) => {
+            const goodIps = await ctx.prisma.goodIp.findMany({
+                take: input.limit + 1,
+                cursor: input.cursor ? { id: input.cursor } : undefined
+            });
+
+            let nextGoodIp: typeof input.cursor | undefined = undefined;
+
+            if (goodIps.length > input.limit) {
+                const next = goodIps.pop();
+
+                if (next)
+                    nextGoodIp = next.id;
+            }
+
+            return {
+                goodIps,
+                nextGoodIp
+            }
+        }),
     addOrUpdateSpy: adminProcedure
         .input(z.object({
             id: z.number().optional(),
@@ -453,6 +478,34 @@ export const spyRouter = createTRPCRouter({
                 })
             }
         }),
+    addOrUpdateGoodIp: adminProcedure
+        .input(z.object({
+            id: z.number().optional(),
+            ip: z.string(),
+            cidr: z.number().default(32)
+        }))
+        .mutation(async ({ ctx, input }) => {
+            try {
+                await ctx.prisma.goodIp.upsert({
+                    where: {
+                        id: input.id ?? 0
+                    },
+                    create: {
+                        ip: input.ip,
+                        cidr: input.cidr
+                    },
+                    update: {
+                        ip: input.ip,
+                        cidr: input.cidr
+                    }
+                })
+            } catch (err: unknown) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: `Failed to add good IP :: ${err}`
+                })
+            }
+        }),
     deleteSpy: adminProcedure
         .input(z.object({
             id: z.number()
@@ -542,5 +595,23 @@ export const spyRouter = createTRPCRouter({
                     message: `Failed to delete bad ASN :: ${err}`
                 })
             }
-        })
+        }),
+    deleteGoodIp: adminProcedure
+        .input(z.object({
+            id: z.number()
+        }))
+        .mutation(async ({ ctx, input }) => {
+            try {
+                await ctx.prisma.goodIp.delete({
+                    where: {
+                        id: input.id
+                    }
+                })
+            } catch (err: unknown) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: `Failed to delete good IP :: ${err}`
+                })
+            }
+        }),
 })
