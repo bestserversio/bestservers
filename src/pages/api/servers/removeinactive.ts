@@ -30,7 +30,9 @@ export default async function Handler (
     // Retrieve query parameters.
     const { query } = req;
 
-    const time = new Date(query?.time?.toString() ?? new Date(Date.now() - 2592000))
+    const timeStr = query?.time?.toString() ?? "2592000"
+
+    const time = new Date(new Date(Date.now() - Number(timeStr)))
 
     let servers: Prisma.BatchPayload;
 
