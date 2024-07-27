@@ -161,6 +161,11 @@ export const spyRouter = createTRPCRouter({
             removeInactiveTime: z.number().default(2592000),
             removeInactiveInterval: z.number().default(86400),
             removeInactiveTimeout: z.number().default(5),
+            removeDups: z.boolean().default(false),
+            removeDupsInterval: z.number().default(120),
+            removeDupsLimit: z.number().default(100),
+            removeDupsMaxServers: z.number().default(100),
+            removeDupsTimeout: z.number().default(30),
             scanners: z.array(z.number()).default([])
         }))
         .mutation(async ({ ctx, input }) => {
@@ -207,6 +212,11 @@ export const spyRouter = createTRPCRouter({
                         removeInactiveTime: input.removeInactiveTime,
                         removeInactiveInterval: input.removeInactiveInterval,
                         removeInactiveTimeout: input.removeInactiveTimeout,
+                        removeDups: input.removeDups,
+                        removeDupsInterval: input.removeDupsInterval,
+                        removeDupsLimit: input.removeDupsLimit,
+                        removeDupsMaxServers: input.removeDupsMaxServers,
+                        removeDupsTimeout: input.removeDupsTimeout,
                         vmsPlatforms: {
                             disconnect: eSpy?.vmsPlatforms?.map(p => ({ id: p.id })) || [],
                             ...(input.vmsPlatforms.length > 0 && { 
@@ -252,6 +262,11 @@ export const spyRouter = createTRPCRouter({
                         removeInactiveTime: input.removeInactiveTime,
                         removeInactiveInterval: input.removeInactiveInterval,
                         removeInactiveTimeout: input.removeInactiveTimeout,
+                        removeDups: input.removeDups,
+                        removeDupsInterval: input.removeDupsInterval,
+                        removeDupsLimit: input.removeDupsLimit,
+                        removeDupsMaxServers: input.removeDupsMaxServers,
+                        removeDupsTimeout: input.removeDupsTimeout,
                         ...(input.vmsPlatforms.length > 0 && {
                             vmsPlatforms: {
                                 connect: input.vmsPlatforms.map((id) => ({

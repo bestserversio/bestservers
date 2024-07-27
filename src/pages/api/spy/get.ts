@@ -67,6 +67,14 @@ type PlatformFilterT = {
     allow_user_overflow?: boolean
 }
 
+type RemoveDupsT = {
+    enabled: boolean
+    interval: number
+    limit: number
+    max_servers: number
+    timeout: number
+}
+
 type SpyResp = {
     verbose: number
     log_directory?: string | null
@@ -80,7 +88,8 @@ type SpyResp = {
     bad_words: string[]
     bad_ips: string[]
     bad_asns: number[]
-    platform_filters: PlatformFilterT[]
+    platform_filters: PlatformFilterT[],
+    remove_dups: RemoveDupsT
 }
 
 export default async function Handler (
@@ -194,6 +203,15 @@ export default async function Handler (
             timeout: spy.removeInactiveTimeout
         }
 
+        // Build remove dups.
+        const remove_dups: RemoveDupsT = {
+            enabled: spy.removeDups,
+            interval: spy.removeDupsInterval,
+            limit: spy.removeDupsLimit,
+            max_servers: spy.removeDupsMaxServers,
+            timeout: spy.removeDupsTimeout
+        }
+
         // Setup scanners.
         const scanners: ScannerT[] = [];
 
@@ -265,7 +283,8 @@ export default async function Handler (
             bad_words: badWords,
             bad_ips: badIps,
             bad_asns: badAsns,
-            platform_filters: platform_filters
+            platform_filters: platform_filters,
+            remove_dups: remove_dups
         }
 
         return res.status(200).json(spyResp);

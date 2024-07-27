@@ -56,6 +56,8 @@ export default function SpyForm ({
     const [webApiEnabled, setWebApiEnabled] = useState(spy?.webApiEnabled ?? false);
     const [webApiSaveToFs, setWebApiSaveToFs] = useState(spy?.webApiSaveToFs ?? true);
 
+    const [removeDups, setRemoveDups] = useState(spy?.removeDups ?? false);
+
     return (
         <Formik
             initialValues={{
@@ -80,10 +82,15 @@ export default function SpyForm ({
 
                 removeInactiveTime: spy?.removeInactiveTime ?? "",
                 removeInactiveInterval: spy?.removeInactiveInterval ?? "",
-                removeInactiveTimeout: spy?.removeInactiveTimeout ?? ""
+                removeInactiveTimeout: spy?.removeInactiveTimeout ?? "",
+
+                removeDupsInterval: spy?.removeDupsInterval ?? "",
+                removeDupsLimit: spy?.removeDupsLimit ?? "",
+                removeDupsMaxServers: spy?.removeDupsMaxServers ?? "",
+                removeDupsTimeout: spy?.removeDupsTimeout ?? ""
             }}
             onSubmit={(values) => {
-                const { verbose, logDirectory, apiHost, apiTimeout, webApiHost, keyId, webApiEndpoint, webApiInterval, webApiTimeout, vmsKey, vmsTimeout, vmsLimit, vmsMinWait, vmsMaxWait, removeInactiveTime, removeInactiveInterval, removeInactiveTimeout } = values;
+                const { verbose, logDirectory, apiHost, apiTimeout, webApiHost, keyId, webApiEndpoint, webApiInterval, webApiTimeout, vmsKey, vmsTimeout, vmsLimit, vmsMinWait, vmsMaxWait, removeInactiveTime, removeInactiveInterval, removeInactiveTimeout, removeDupsInterval, removeDupsLimit, removeDupsMaxServers, removeDupsTimeout } = values;
                 
                 addOrUpdateMut.mutate({
                     id: spy?.id,
@@ -116,7 +123,11 @@ export default function SpyForm ({
                     removeInactiveTime: removeInactiveTime ? Number(removeInactiveTime) : undefined,
                     removeInactiveInterval: removeInactiveInterval ? Number(removeInactiveInterval) : undefined,
                     removeInactiveTimeout: removeInactiveTimeout ? Number(removeInactiveTimeout) : undefined,
-
+                    removeDups: removeDups,
+                    removeDupsInterval: removeDupsInterval ? Number(removeDupsInterval) : undefined,
+                    removeDupsLimit: removeDupsLimit ? Number(removeDupsLimit) : undefined,
+                    removeDupsMaxServers: removeDupsMaxServers ? Number(removeDupsMaxServers) : undefined,
+                    removeDupsTimeout: removeDupsTimeout ? Number(removeDupsTimeout) : undefined,
                     scanners: spyScanners
                 })
             }}
@@ -365,6 +376,32 @@ export default function SpyForm ({
                     <div>
                         <label htmlFor="removeInactiveTimeout">Timeout</label>
                         <Field name="removeInactiveTimeout" />
+                    </div>
+                    <h2>Remove Duplicates</h2>
+                    <div className="flex flex-row">
+                        <Switch
+                            onChange={() => {
+                                setRemoveDups(!removeDups);
+                            }}
+                            value={removeDups}
+                        />
+                        <label htmlFor="removeDups">Enabled</label>
+                    </div>
+                    <div>
+                        <label htmlFor="removeDupsInterval">Interval</label>
+                        <Field name="removeDupsInterval" />
+                    </div>
+                    <div>
+                        <label htmlFor="removeDupsLimit">Limit</label>
+                        <Field name="removeDupsLimit" />
+                    </div>
+                    <div>
+                        <label htmlFor="removeDupsMaxServers">Max Servers</label>
+                        <Field name="removeDupsMaxServers" />
+                    </div>
+                    <div>
+                        <label htmlFor="removeDupsTimeout">Timeout</label>
+                        <Field name="removeDupsTimeout" />
                     </div>
                     <div className="flex justify-center">
                         <button
