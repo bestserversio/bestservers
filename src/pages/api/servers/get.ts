@@ -33,8 +33,10 @@ export default async function Handler (
     // Retrieve query parameters.
     const { query } = req;
 
+    const countOnly = query?.countOnly?.toString();
+
     // Limit and sorting.
-    const visibleOnly = query?.visibleOnly?.toString() ?? "";
+    const visibleOnly = query?.visibleOnly?.toString();
 
     const limit = query.limit?.toString() ?? "10";
     const sort = query.sort?.toString() ?? "lastQueried";
@@ -53,58 +55,95 @@ export default async function Handler (
     // Retrieve region.
     const region = GetRegionFromString(regionStr);
 
-    // Retrieve servers.
-    let servers: ServerWithRelations[] | null = null;
-
-    try {
-        servers = await prisma.server.findMany({
-            take: Number(limit),
-            orderBy: {
-                [sort]: sortDir
-            },
-            include: {
-                user: {
-                    select: UserPublicSelect
-                },
-                platform: true,
-                category: {
-                    include: {
-                        parent: true
-                    }
+    if (countOnly) {
+        try {
+            const count = await prisma.server.count({
+                where: {
+                    ...(platformId && {
+                        platformId: Number(platformId)
+                    }),
+                    ...(categoryId && {
+                        categoryId: Number(categoryId)
+                    }),
+                    region: region,
+                    ip: ip,
+                    ip6: ip6,
+                    ...(port && {
+                        port: Number(port)
+                    }),
+                    ...(visibleOnly && {
+                        visible: true
+                    }),
+                    hostName: hostName
                 }
-            },
-            where: {
-                ...(platformId && {
-                    platformId: Number(platformId)
-                }),
-                ...(categoryId && {
-                    categoryId: Number(categoryId)
-                }),
-                region: region,
-                ip: ip,
-                ip6: ip6,
-                ...(port && {
-                    port: Number(port)
-                }),
-                ...(visibleOnly && {
-                    visible: true
-                }),
-                hostName: hostName
-            }
-        })
-    } catch (err) {
-        console.error(err);
+            })
 
-        const [errMsg, errCode] = ProcessPrismaError(err);
+            return res.status(200).json({
+                count: count
+            })
+        } catch (err: unknown) {
+            console.error(err);
 
-        return res.status(400).json({
-            message: `Error retrieving servers.${errMsg ? ` Error => ${errMsg}${errCode ? ` (${errCode})` : ``}` : ``}`
+            const [errMsg, errCode] = ProcessPrismaError(err);
+
+            return res.status(400).json({
+                message: `Error retrieving server count.${errMsg ? ` Error => ${errMsg}${errCode ? ` (${errCode})` : ``}` : ``}`
+            })
+        }
+    } else {
+        // Retrieve servers.
+        let servers: ServerWithRelations[] | null = null;
+
+        try {
+            servers = await prisma.server.findMany({
+                take: Number(limit),
+                orderBy: {
+                    [sort]: sortDir
+                },
+                include: {
+                    user: {
+                        select: UserPublicSelect
+                    },
+                    platform: true,
+                    category: {
+                        include: {
+                            parent: true
+                        }
+                    }
+                },
+                where: {
+                    ...(platformId && {
+                        platformId: Number(platformId)
+                    }),
+                    ...(categoryId && {
+                        categoryId: Number(categoryId)
+                    }),
+                    region: region,
+                    ip: ip,
+                    ip6: ip6,
+                    ...(port && {
+                        port: Number(port)
+                    }),
+                    ...(visibleOnly && {
+                        visible: true
+                    }),
+                    hostName: hostName
+                }
+            })
+        } catch (err) {
+            console.error(err);
+
+            const [errMsg, errCode] = ProcessPrismaError(err);
+
+            return res.status(400).json({
+                message: `Error retrieving servers.${errMsg ? ` Error => ${errMsg}${errCode ? ` (${errCode})` : ``}` : ``}`
+            });
+        }
+
+        return res.status(200).json({
+            count: servers?.length ?? 0,
+            servers: servers,
+            message: `Retrieved ${servers?.length?.toString() ?? "0"} servers!`
         });
     }
-
-    return res.status(200).json({
-        count: servers?.length ?? 0,
-        servers: servers,
-        message: `Retrieved ${servers?.length?.toString() ?? "0"} servers!`
-    });
 }
