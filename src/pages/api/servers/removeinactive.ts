@@ -32,7 +32,7 @@ export default async function Handler (
 
     const timeStr = query?.time?.toString() ?? "2592000"
 
-    const time = new Date(new Date(Date.now() - Number(timeStr)))
+    const time = new Date(new Date(Date.now() - (Number(timeStr) * 1000)))
 
     let servers: Prisma.BatchPayload;
 
