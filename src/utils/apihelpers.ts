@@ -94,14 +94,16 @@ export async function CheckApiAccess({
         }
 
         // Insert hits entry into database.
-        await prisma.apiKeyHits.create({
-            data: {
-                keyId: res.id,
-                host: ipAddr,
-                endpoint: endpoint,
-                write: writeAccess
-            }
-        })
+        try {
+            await prisma.apiKeyHits.create({
+                data: {
+                    keyId: res.id,
+                    host: ipAddr,
+                    endpoint: endpoint,
+                    write: writeAccess
+                }
+            })
+        } catch {}
 
         return { 
             code: 200,
