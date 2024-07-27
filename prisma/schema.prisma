@@ -387,6 +387,12 @@ model Spy {
   removeInactiveInterval Int     @default(86400)
   removeInactiveTimeout  Int     @default(5)
 
+  removeDups           Boolean @default(false)
+  removeDupsInterval   Int     @default(120)
+  removeDupsLimit      Int     @default(100)
+  removeDupsMaxServers Int     @default(100)
+  removeDupsTimeout    Int     @default(30)
+
   vmsPlatforms Platform[]   @relation("SpyPlatforms")
   scanners     SpyScanner[] @relation("SpyScanners")
 }
