@@ -82,8 +82,8 @@ export default function ApiKeyForm({
                 if (apiKey) {
                     update.mutate({
                         id: apiKey.id,
-                        host: values.host,
-                        endpoint: values.endpoint,
+                        host: values.host || null,
+                        endpoint: values.endpoint || null,
                         writeAccess: writeAccess,
                         limit: Number(values.limit),
                         key: key
@@ -92,8 +92,8 @@ export default function ApiKeyForm({
                     add.mutate({
                         key: key,
                         host: values.host,
-                        endpoint: values.endpoint,
-                        writeAccess: writeAccess,
+                        endpoint: values.endpoint || undefined,
+                        writeAccess: writeAccess || undefined,
                         limit: Number(values.limit)
                     })
                 }
