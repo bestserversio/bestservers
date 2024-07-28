@@ -23,7 +23,7 @@ export default function Page ({
     return (
         <>
             <Meta
-
+                title={`${authed ? "Admin - Spy Scanner" : "No Permission"} - Best Servers`}
             />
             <Wrapper>
                 {authed ? (

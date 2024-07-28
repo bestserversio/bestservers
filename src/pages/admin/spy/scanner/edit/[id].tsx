@@ -22,12 +22,12 @@ export default function Page ({
 } : {
     authed: boolean
     platforms: Platform[]
-    scanner: ScannerWithRelations
+    scanner?: ScannerWithRelations
 }) {
     return (
         <>
             <Meta
-
+                title={`${authed ? `Admin - Editing Spy Scanner ${scanner?.name ?? "N/A"}` : "No Permission"} - Best Servers`}
             />
             <Wrapper>
                 {authed ? (

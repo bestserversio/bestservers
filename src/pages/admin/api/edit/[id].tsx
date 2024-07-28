@@ -1,4 +1,5 @@
 import { ContentItem1 } from "@components/Content";
+import Meta from "@components/Meta";
 import Wrapper from "@components/Wrapper";
 import AdminMenu from "@components/admin/Menu";
 import ApiKeyForm from "@components/api/keys/forms/KeyForm";
@@ -18,21 +19,26 @@ export default function Page({
     authed: boolean
 }) {
     return (
-        <Wrapper>
-            {authed ? (
-                <AdminMenu current="api">
-                    {apiKey ? (
-                        <ContentItem1 title={`Editing API Key - #${apiKey.id.toString()}`}>
-                            <ApiKeyForm apiKey={apiKey} />
-                        </ContentItem1>
-                    ) : (
-                        <NotFound item="API Key" />
-                    )}
-                </AdminMenu>
-            ) : (
-                <NoPermissions />
-            )}
-        </Wrapper>
+        <>
+            <Meta
+                title={`${authed ? `Admin - Editing API Key ${apiKey?.id.toString() ?? "N/A"}` : "No Permission"} - Best Servers`}
+            />
+            <Wrapper>
+                {authed ? (
+                    <AdminMenu current="api">
+                        {apiKey ? (
+                            <ContentItem1 title={`Editing API Key - #${apiKey.id.toString()}`}>
+                                <ApiKeyForm apiKey={apiKey} />
+                            </ContentItem1>
+                        ) : (
+                            <NotFound item="API Key" />
+                        )}
+                    </AdminMenu>
+                ) : (
+                    <NoPermissions />
+                )}
+            </Wrapper>
+        </>
     )
 }
 

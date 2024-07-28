@@ -1,3 +1,4 @@
+import Meta from "@components/Meta";
 import Wrapper from "@components/Wrapper";
 import AdminMenu from "@components/admin/Menu";
 import NoPermissions from "@components/statements/NoPermissions";
@@ -19,49 +20,54 @@ export default function Page({
     keys?: ApiKey[]
 }) {
     return (
-        <Wrapper>
-            {authed ? (
-                <AdminMenu current="api">
-                    <h1>API Keys</h1>
-                    <div className="flex flex-col gap-2">
-                        {(keys && keys.length > 0) ? (
-                            <table className="table table-auto">
-                                <thead>
-                                    <tr className="font-bold text-left">
-                                        <th>Host</th>
-                                        <th>Endpoint</th>
-                                        <th>Write Access</th>
-                                        <th>Limit</th>
-                                        <th>Key</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {keys.map((key, idx) => {
-                                        return (
-                                            <Row
-                                                key={`${idx.toString()}`}
-                                                apiKey={key}
-                                            />
-                                        )
-                                    })}
-                                </tbody>
-                            </table>
-                        ) : (
-                            <p>No API keys found.</p>
-                        )}
-                        <div className="flex justify-center">
-                            <Link
-                                href="/admin/api/add"
-                                className="button button-primary"
-                            >Add API Key!</Link>
+        <>
+            <Meta
+                title={`${authed ? `Admin - API Keys` : "No Permission"} - Best Servers`}
+            />
+            <Wrapper>
+                {authed ? (
+                    <AdminMenu current="api">
+                        <h1>API Keys</h1>
+                        <div className="flex flex-col gap-2">
+                            {(keys && keys.length > 0) ? (
+                                <table className="table table-auto">
+                                    <thead>
+                                        <tr className="font-bold text-left">
+                                            <th>Host</th>
+                                            <th>Endpoint</th>
+                                            <th>Write Access</th>
+                                            <th>Limit</th>
+                                            <th>Key</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {keys.map((key, idx) => {
+                                            return (
+                                                <Row
+                                                    key={`${idx.toString()}`}
+                                                    apiKey={key}
+                                                />
+                                            )
+                                        })}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <p>No API keys found.</p>
+                            )}
+                            <div className="flex justify-center">
+                                <Link
+                                    href="/admin/api/add"
+                                    className="button button-primary"
+                                >Add API Key!</Link>
+                            </div>
                         </div>
-                    </div>
-                </AdminMenu>
-            ) : (
-                <NoPermissions />
-            )}
-        </Wrapper>
+                    </AdminMenu>
+                ) : (
+                    <NoPermissions />
+                )}
+            </Wrapper>
+        </>
     )
 }
 

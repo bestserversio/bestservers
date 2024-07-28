@@ -16,7 +16,8 @@ export default function Page({
     return (
         <>
             <Meta
-
+                title={`${server ? `${server.name ?? "N/A"} (${server.ip ?? "N/A"}:${server.port?.toString() ?? "N/A"})` : "Not Found"} - Best Servers`}
+                description={server?.descriptionShort ? server.descriptionShort : undefined}
             />
 
             <Wrapper>

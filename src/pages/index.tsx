@@ -15,7 +15,6 @@ export default function Index({
         <>
             <Meta
                 title="Best Servers"
-                description="Find the best servers!"
             />
             <Wrapper>
                 <div className="flex flex-col gap-2">

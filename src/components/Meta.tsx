@@ -23,7 +23,7 @@ export type MetaType = {
 export default function Meta ({
     title = "Best Servers",
     contentTitle,
-    description = "A global server browser with many features!",
+    description = "A multi-platform server browser that includes game, Discord, and voice servers. We support games such as Counter-Strike: 2, Rust, Garry's Mod, Team Fortress 2, and more!",
     robots = "index, follow",
     image = "/images/banner.png",
     web_type = "website",

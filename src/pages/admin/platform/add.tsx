@@ -9,6 +9,7 @@ import { isAdmin } from "@utils/auth";
 import PlatformForm from "@components/platforms/forms/Main";
 import AdminMenu from "@components/admin/Menu";
 import { ContentItem2 } from "@components/Content";
+import Meta from "@components/Meta";
 
 export default function Page ({
     authed    
@@ -17,6 +18,9 @@ export default function Page ({
 }) {
     return (
         <>
+            <Meta
+                title={`${authed ? `Admin - Platforms Add` : "No Permission"} - Best Servers`}
+            />
             <Wrapper>
                 {authed ? (
                     <AdminMenu current="platforms">

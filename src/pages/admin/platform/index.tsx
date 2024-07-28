@@ -26,7 +26,7 @@ export default function Page ({
     return (
         <>
             <Meta
-
+                title={`${authed ? `Admin - Platforms` : "No Permission"} - Best Servers`}
             />
             <Wrapper>
                 {authed ? (

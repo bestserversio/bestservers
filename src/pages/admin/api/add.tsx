@@ -1,4 +1,5 @@
 import { ContentItem1, ContentItem2 } from "@components/Content";
+import Meta from "@components/Meta";
 import Wrapper from "@components/Wrapper";
 import AdminMenu from "@components/admin/Menu";
 import ApiKeyForm from "@components/api/keys/forms/KeyForm";
@@ -14,17 +15,22 @@ export default function Page({
     authed: boolean
 }) {
     return (
-        <Wrapper>
-            {authed ? (
-                <AdminMenu current="api">
-                    <ContentItem2 title="Add API Key!">
-                        <ApiKeyForm />
-                    </ContentItem2>
-                </AdminMenu>
-            ) : (
-                <NoPermissions />
-            )}
-        </Wrapper>
+        <>
+            <Meta
+                title={`${authed ? `Admin - Add API Key` : "No Permission"} - Best Servers`}
+            />
+            <Wrapper>
+                {authed ? (
+                    <AdminMenu current="api">
+                        <ContentItem2 title="Add API Key!">
+                            <ApiKeyForm />
+                        </ContentItem2>
+                    </AdminMenu>
+                ) : (
+                    <NoPermissions />
+                )}
+            </Wrapper>
+        </>
     )
 }
 
