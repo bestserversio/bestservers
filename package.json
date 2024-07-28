@@ -25,6 +25,7 @@
     "formik": "^2.4.3",
     "next": "^14.2.3",
     "next-auth": "^4.22.4",
+    "next-sitemap": "^4.2.3",
     "react": "18.2.0",
     "react-cookie": "^7.1.4",
     "react-dom": "18.2.0",

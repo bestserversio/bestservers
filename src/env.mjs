@@ -21,7 +21,9 @@ export const env = createEnv({
     DISCORD_CLIENT_SECRET: z.string(),
 
     UPLOADS_DIR: z.string().optional(),
-    ROOT_API: z.string().optional()
+    ROOT_API: z.string().optional(),
+    SITEMAP_MAX_ITEMS: z.number().optional(),
+    SITEMAP_URL: z.string().optional()
   },
 
   /**
@@ -60,7 +62,9 @@ export const env = createEnv({
     NEXT_PUBLIC_BACKGROUND_SPEED: process.env.NEXT_PUBLIC_BACKGROUND_SPEED,
     NEXT_PUBLIC_DEFAULT_PLATFORM_GAME_BANNER: process.env.NEXT_PUBLIC_DEFAULT_PLATFORM_GAME_BANNER,
     NEXT_PUBLIC_DEFAULT_PLATFORM_COM_BANNER: process.env.NEXT_PUBLIC_DEFAULT_PLATFORM_COM_BANNER,
-    NEXT_PUBLIC_DEFAULT_PLATFORM_ICON: process.env.NEXT_PUBLIC_DEFAULT_PLATFORM_ICON
+    NEXT_PUBLIC_DEFAULT_PLATFORM_ICON: process.env.NEXT_PUBLIC_DEFAULT_PLATFORM_ICON,
+    SITEMAP_MAX_ITEMS: process.env.SITEMAP_MAX_ITEMS,
+    SITEMAP_URL: process.env.SITEMAP_URL
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

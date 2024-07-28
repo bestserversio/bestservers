@@ -17,6 +17,20 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  rewrites: async() => [
+    {
+      source: "/sitemap.xml",
+      destination: "/sitemap/"
+    },
+    {
+      source: "/sitemap-static.xml",
+      destination: "/sitemap/static"
+    },
+    {
+      source: "/sitemap-content/server/:page.xml",
+      destination: "/sitemap/content/server/:page"
+    }
+  ]
 };
 
 export default config;
