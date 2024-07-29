@@ -414,6 +414,7 @@ model SpyScanner {
   a2sPlayer        Boolean @default(true)
   randomPlatforms  Boolean @default(false)
   visibleSkipCount Int     @default(10)
+  requestDelay     Int     @default(0)
 
   spies Spy[] @relation("SpyScanners")
 }

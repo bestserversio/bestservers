@@ -46,6 +46,7 @@ type ScannerT = {
     a2s_player?: boolean
     random_platforms?: boolean
     visible_skip_count?: number
+    request_delay?: number
 }
 
 type PlatformMapT = {
@@ -233,7 +234,8 @@ export default async function Handler (
                 query_timeout: s.queryTimeout,
                 a2s_player: s.a2sPlayer,
                 random_platforms: s.randomPlatforms,
-                visible_skip_count: s.visibleSkipCount
+                visible_skip_count: s.visibleSkipCount,
+                request_delay: s.requestDelay
             })
         })
 

@@ -53,10 +53,11 @@ export default function ScannerForm ({
                 maxWait: scanner?.maxWait ?? "",
                 limit: scanner?.limit ?? "",
                 queryTimeout: scanner?.queryTimeout ?? "",
-                visibleSkipCount: scanner?.visibleSkipCount ?? ""
+                visibleSkipCount: scanner?.visibleSkipCount ?? "",
+                requestDelay: scanner?.requestDelay ?? ""
             }}
             onSubmit={(values) => {
-                const { name, protocol, minWait, maxWait, limit, queryTimeout } = values;
+                const { name, protocol, minWait, maxWait, limit, queryTimeout, visibleSkipCount, requestDelay } = values;
 
                 addOrUpdateMut.mutate({
                     id: scanner?.id,
@@ -70,7 +71,9 @@ export default function ScannerForm ({
                     queryTimeout: queryTimeout ? Number(queryTimeout) : undefined,
                     platforms: scannerPlatforms,
                     a2sPlayer: a2sPlayer,
-                    visibleSkipCount: values.visibleSkipCount ? Number(values.visibleSkipCount) : undefined,
+                    visibleSkipCount: visibleSkipCount ? Number(visibleSkipCount) : undefined,
+                    requestDelay: requestDelay ? Number(requestDelay) : undefined,
+
                     randomPlatforms: randomPlatforms
                 })
             }}
@@ -105,6 +108,10 @@ export default function ScannerForm ({
                     <div>
                         <label htmlFor="visibleSkipCount">Visible Skip Count</label>
                         <Field name="visibleSkipCount" />
+                    </div>
+                    <div>
+                        <label htmlFor="requestDelay">Request Delay (MS)</label>
+                        <Field name="requestDelay" />
                     </div>
 
                     <h2>Platforms</h2>
