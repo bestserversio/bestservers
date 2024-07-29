@@ -16,7 +16,7 @@ import CodeIcon from "./icons/header/Code";
 import AnnouncementIcon from "./icons/header/Announcement";
 import RoadmapIcon from "./icons/header/RoadMap";
 import AdminIcon from "./icons/Admin";
-import { isAdmin } from "@utils/auth";
+import { isMod } from "@utils/auth";
 import FeedbackIcon from "./icons/header/Feedback";
 
 const FCabin = Cabin({ subsets: ["latin"], weight: "700" })
@@ -110,7 +110,7 @@ export default function Header () {
                                 newTab: true,
                                 className: "text-sm font-normal text-gray-200 hover:text-white"
                             },
-                            ...(isAdmin(session) ? [
+                            ...(isMod(session) ? [
                                 {
                                     link: "/admin",
                                     contents: <IconAndText
@@ -135,7 +135,7 @@ export default function Header () {
                         >
                             <IconAndText
                                 icon={
-                                    <AccountIcon className="w-6 h-6 stroke-white" />
+                                    <AccountIcon className="w-6 h-6 fill-white" />
                                 }
                                 text={<>Account</>}
                                 inline={true}
