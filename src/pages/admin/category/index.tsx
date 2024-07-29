@@ -5,7 +5,7 @@ import { getServerAuthSession } from "@server/auth";
 import Wrapper from "@components/Wrapper";
 import NoPermissions from "@components/statements/NoPermissions";
 
-import { isAdmin } from "@utils/auth";
+import { isMod } from "@utils/auth";
 import Meta from "@components/Meta";
 import AdminMenu from "@components/admin/Menu";
 import { type CategoryWithChildren } from "~/types/Category";
@@ -207,7 +207,7 @@ function CategoryInfo({
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const session = await getServerAuthSession(ctx);
 
-    const authed = isAdmin(session);
+    const authed = isMod(session);
     let categories: CategoryWithChildren[] = [];
 
     if (authed) {

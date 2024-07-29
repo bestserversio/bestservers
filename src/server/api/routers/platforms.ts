@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { adminProcedure, createTRPCRouter, publicProcedure } from "../trpc";
+import { adminProcedure, createTRPCRouter, modProcedure, publicProcedure } from "../trpc";
 import { type Platform, PlatformFlag } from "@prisma/client";
 import { ProcessPrismaError } from "@utils/error";
 import { TRPCError } from "@trpc/server";
@@ -46,7 +46,7 @@ export const platformsRouter = createTRPCRouter({
             }
         }),
     
-    addOrUpdate: adminProcedure
+    addOrUpdate: modProcedure
         .input(z.object({
             id: z.number()
                 .optional(),
@@ -245,7 +245,7 @@ export const platformsRouter = createTRPCRouter({
                 }
             }
         }),
-    delete: adminProcedure
+    delete: modProcedure
         .input(z.object({
             id: z.number()
         }))

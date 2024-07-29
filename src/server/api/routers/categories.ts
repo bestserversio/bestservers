@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { adminProcedure, createTRPCRouter, publicProcedure } from "../trpc";
+import { adminProcedure, createTRPCRouter, modProcedure, publicProcedure } from "../trpc";
 
 import z from "zod";
 
@@ -48,7 +48,7 @@ export const categoriesRouter = createTRPCRouter({
                 }
             })
         }),
-    addOrUpdate: adminProcedure
+    addOrUpdate: modProcedure
         .input(z.object({
             id: z.number().optional(),
 
@@ -99,7 +99,7 @@ export const categoriesRouter = createTRPCRouter({
                 });
             }
         }),
-    delete: adminProcedure
+    delete: modProcedure
         .input(z.object({
             id: z.number()
         }))

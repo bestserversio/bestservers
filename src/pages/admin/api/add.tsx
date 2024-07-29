@@ -4,16 +4,19 @@ import Wrapper from "@components/Wrapper";
 import AdminMenu from "@components/admin/Menu";
 import ApiKeyForm from "@components/api/keys/forms/KeyForm";
 import NoPermissions from "@components/statements/NoPermissions";
-import { type ApiKey } from "@prisma/client";
 import { getServerAuthSession } from "@server/auth";
-import { isAdmin } from "@utils/auth";
+import { isAdmin, isMod } from "@utils/auth";
 import { type GetServerSidePropsContext } from "next";
+import { useSession } from "next-auth/react";
 
 export default function Page({
     authed
 } : {
     authed: boolean
 }) {
+    const { data: session } = useSession();
+    const isA = isAdmin(session);
+
     return (
         <>
             <Meta
@@ -22,9 +25,13 @@ export default function Page({
             <Wrapper>
                 {authed ? (
                     <AdminMenu current="api">
-                        <ContentItem2 title="Add API Key!">
-                            <ApiKeyForm />
-                        </ContentItem2>
+                        {isA ? (  
+                            <ContentItem2 title="Add API Key!">
+                                <ApiKeyForm />
+                            </ContentItem2>
+                        ) : (
+                            <p>Only admins can access this page.</p>
+                        )}
                     </AdminMenu>
                 ) : (
                     <NoPermissions />
@@ -36,7 +43,7 @@ export default function Page({
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const session = await getServerAuthSession(ctx);
-    const authed = isAdmin(session);
+    const authed = isMod(session);
 
     return {
         props: {

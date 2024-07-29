@@ -1,5 +1,5 @@
-import { Prisma, PrismaClient, Region } from "@prisma/client";
-import { ServerBrowser } from "~/types/Server";
+import { Prisma, PrismaClient, Region, Server } from "@prisma/client";
+import { ServerBrowser, ServerPublic } from "~/types/Server";
 
 export enum ServerSort {
     CURUSERS = 0,
@@ -246,4 +246,45 @@ export async function GetServers({
     }
 
     return [servers, nextServer]
+}
+
+export function GetServerMetaTitle({
+    server
+} : {
+    server?: Server | ServerPublic | ServerBrowser
+}) {
+    if (!server)
+        return "Not Found - Best Servers";
+    
+    let platformName: string 
+    | undefined = undefined;
+
+    if ("platform" in server)
+        platformName = server.platform?.name;
+
+    let ipInfo: string | undefined = undefined;
+    let ip: string | undefined = undefined;
+
+    if (server.ip)
+        ip = server.ip;
+    else if (server.ip6)
+        ip = server.ip6;
+
+    if (ip && server.port)
+        ipInfo = `${ip}:${server.port.toString()}`
+
+    let name = "";
+
+    if (server.name) {
+        name = server.name;
+
+        if (ipInfo)
+            name += ` (${ipInfo})`
+    }
+    else if (ipInfo)
+        name = ipInfo
+
+    name += " - ";
+
+    return `${name} ${platformName ? ` - ${platformName}` : ``} - Best Servers`
 }

@@ -5,7 +5,7 @@ import { getServerAuthSession } from "@server/auth";
 import Wrapper from "@components/Wrapper";
 import NoPermissions from "@components/statements/NoPermissions";
 
-import { isAdmin } from "@utils/auth";
+import { isAdmin, isMod } from "@utils/auth";
 import Meta from "@components/Meta";
 import AdminMenu from "@components/admin/Menu";
 
@@ -35,7 +35,7 @@ export default function Page ({
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const session = await getServerAuthSession(ctx);
 
-    const authed = isAdmin(session);
+    const authed = isMod(session);
 
     return {
         props: {

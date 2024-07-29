@@ -8,8 +8,9 @@ import NotFound from "@components/statements/NotFound";
 import { type ApiKey } from "@prisma/client";
 import { getServerAuthSession } from "@server/auth";
 import { prisma } from "@server/db";
-import { isAdmin } from "@utils/auth";
+import { isAdmin, isMod } from "@utils/auth";
 import { type GetServerSidePropsContext } from "next";
+import { useSession } from "next-auth/react";
 
 export default function Page({
     apiKey,
@@ -18,6 +19,9 @@ export default function Page({
     apiKey?: ApiKey
     authed: boolean
 }) {
+    const { data: session } = useSession();
+    const isA = isAdmin(session);
+
     return (
         <>
             <Meta
@@ -26,12 +30,18 @@ export default function Page({
             <Wrapper>
                 {authed ? (
                     <AdminMenu current="api">
-                        {apiKey ? (
-                            <ContentItem1 title={`Editing API Key - #${apiKey.id.toString()}`}>
-                                <ApiKeyForm apiKey={apiKey} />
-                            </ContentItem1>
+                        {isA ? (
+                            <>
+                                {apiKey ? (
+                                    <ContentItem1 title={`Editing API Key - #${apiKey.id.toString()}`}>
+                                        <ApiKeyForm apiKey={apiKey} />
+                                    </ContentItem1>
+                                ) : (
+                                    <NotFound item="API Key" />
+                                )}
+                            </>
                         ) : (
-                            <NotFound item="API Key" />
+                            <p>Only admins can access this page.</p>
                         )}
                     </AdminMenu>
                 ) : (
@@ -51,7 +61,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     let apiKey: ApiKey | null = null;
 
-    const authed = isAdmin(session);
+    const authed = isMod(session);
 
     if (authed && id) {
         apiKey = await prisma.apiKey.findFirst({

@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { createTRPCRouter, canEditServerProcedure, protectedProcedure, publicProcedure, adminProcedure } from "../trpc";
+import { createTRPCRouter, canEditServerProcedure, protectedProcedure, publicProcedure, adminProcedure, modProcedure } from "../trpc";
 
 import { type Prisma, Region, ServerLinkType } from "@prisma/client";
 
@@ -469,7 +469,7 @@ export const serversRouter = createTRPCRouter({
                 }
             });
         }),
-    delete: adminProcedure
+    delete: modProcedure
         .input(z.object({
             id: z.number()
         }))

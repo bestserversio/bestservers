@@ -7,8 +7,9 @@ import { type ApiKey } from "@prisma/client";
 import { getServerAuthSession } from "@server/auth";
 import { prisma } from "@server/db";
 import { api } from "@utils/api";
-import { isAdmin } from "@utils/auth";
+import { isAdmin, isMod } from "@utils/auth";
 import { type GetServerSidePropsContext } from "next";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useContext } from "react";
 
@@ -19,6 +20,9 @@ export default function Page({
     authed: boolean
     keys?: ApiKey[]
 }) {
+    const { data: session } = useSession();
+    const isA = isAdmin(session);
+
     return (
         <>
             <Meta
@@ -27,41 +31,47 @@ export default function Page({
             <Wrapper>
                 {authed ? (
                     <AdminMenu current="api">
-                        <h1>API Keys</h1>
-                        <div className="flex flex-col gap-2">
-                            {(keys && keys.length > 0) ? (
-                                <table className="table table-auto">
-                                    <thead>
-                                        <tr className="font-bold text-left">
-                                            <th>Host</th>
-                                            <th>Endpoint</th>
-                                            <th>Write Access</th>
-                                            <th>Limit</th>
-                                            <th>Key</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {keys.map((key, idx) => {
-                                            return (
-                                                <Row
-                                                    key={`${idx.toString()}`}
-                                                    apiKey={key}
-                                                />
-                                            )
-                                        })}
-                                    </tbody>
-                                </table>
-                            ) : (
-                                <p>No API keys found.</p>
-                            )}
-                            <div className="flex justify-center">
-                                <Link
-                                    href="/admin/api/add"
-                                    className="button button-primary"
-                                >Add API Key!</Link>
-                            </div>
-                        </div>
+                        {isA ? (
+                            <>
+                                <h1>API Keys</h1>
+                                <div className="flex flex-col gap-2">
+                                    {(keys && keys.length > 0) ? (
+                                        <table className="table table-auto">
+                                            <thead>
+                                                <tr className="font-bold text-left">
+                                                    <th>Host</th>
+                                                    <th>Endpoint</th>
+                                                    <th>Write Access</th>
+                                                    <th>Limit</th>
+                                                    <th>Key</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {keys.map((key, idx) => {
+                                                    return (
+                                                        <Row
+                                                            key={`${idx.toString()}`}
+                                                            apiKey={key}
+                                                        />
+                                                    )
+                                                })}
+                                            </tbody>
+                                        </table>
+                                    ) : (
+                                        <p>No API keys found.</p>
+                                    )}
+                                    <div className="flex justify-center">
+                                        <Link
+                                            href="/admin/api/add"
+                                            className="button button-primary"
+                                        >Add API Key!</Link>
+                                    </div>
+                                </div>
+                            </>
+                        ) : (
+                            <p>Only admins can access this page.</p>
+                        )}
                     </AdminMenu>
                 ) : (
                     <NoPermissions />
@@ -131,7 +141,7 @@ function Row({
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const session = await getServerAuthSession(ctx);
-    const authed = isAdmin(session);
+    const authed = isMod(session);
 
     let keys: ApiKey[] | null = null;
 

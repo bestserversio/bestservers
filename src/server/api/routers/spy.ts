@@ -1,4 +1,4 @@
-import { adminProcedure, createTRPCRouter } from "../trpc";
+import { adminProcedure, createTRPCRouter, modProcedure } from "../trpc";
 
 import * as z from "zod"
 import { TRPCError } from "@trpc/server";
@@ -54,7 +54,7 @@ export const spyRouter = createTRPCRouter({
                 nextScanner
             }
         }),
-    allBadWords: adminProcedure
+    allBadWords: modProcedure
         .input(z.object({
             limit: z.number().default(10),
             cursor: z.number().nullish()
@@ -79,7 +79,7 @@ export const spyRouter = createTRPCRouter({
                 nextBadWord
             }
         }),
-    allBadIps: adminProcedure
+    allBadIps: modProcedure
         .input(z.object({
             limit: z.number().default(10),
             cursor: z.number().nullish()
@@ -104,7 +104,7 @@ export const spyRouter = createTRPCRouter({
                 nextBadIp
             }
         }),
-    allBadAsns: adminProcedure
+    allBadAsns: modProcedure
         .input(z.object({
             limit: z.number().default(10),
             cursor: z.number().nullish()
@@ -129,7 +129,7 @@ export const spyRouter = createTRPCRouter({
                 nextBadAsn
             }
         }),
-    allGoodIps: adminProcedure
+    allGoodIps: modProcedure
         .input(z.object({
             limit: z.number().default(10),
             cursor: z.number().nullish()
@@ -397,7 +397,7 @@ export const spyRouter = createTRPCRouter({
                 })
             }
         }),
-    addOrUpdateBadWord: adminProcedure
+    addOrUpdateBadWord: modProcedure
         .input(z.object({
             id: z.number().optional(),
             word: z.string(),
@@ -425,7 +425,7 @@ export const spyRouter = createTRPCRouter({
                 })
             }
         }),
-    addOrUpdateBadIp: adminProcedure
+    addOrUpdateBadIp: modProcedure
         .input(z.object({
             id: z.number().optional(),
             ip: z.string(),
@@ -453,7 +453,7 @@ export const spyRouter = createTRPCRouter({
                 })
             }
         }),
-    addOrUpdateBadAsn: adminProcedure
+    addOrUpdateBadAsn: modProcedure
         .input(z.object({
             id: z.number().optional(),
             asn: z.number()
@@ -478,7 +478,7 @@ export const spyRouter = createTRPCRouter({
                 })
             }
         }),
-    addOrUpdateGoodIp: adminProcedure
+    addOrUpdateGoodIp: modProcedure
         .input(z.object({
             id: z.number().optional(),
             ip: z.string(),
@@ -542,7 +542,7 @@ export const spyRouter = createTRPCRouter({
                 })
             }
         }),
-    deleteBadWord: adminProcedure
+    deleteBadWord: modProcedure
         .input(z.object({
             id: z.number()
         }))
@@ -560,7 +560,7 @@ export const spyRouter = createTRPCRouter({
                 })
             }
         }),
-    deleteBadIp: adminProcedure
+    deleteBadIp: modProcedure
         .input(z.object({
             id: z.number()
         }))
@@ -578,7 +578,7 @@ export const spyRouter = createTRPCRouter({
                 })
             }
         }),
-    deleteBadAsn: adminProcedure
+    deleteBadAsn: modProcedure
         .input(z.object({
             id: z.number()
         }))
@@ -596,7 +596,7 @@ export const spyRouter = createTRPCRouter({
                 })
             }
         }),
-    deleteGoodIp: adminProcedure
+    deleteGoodIp: modProcedure
         .input(z.object({
             id: z.number()
         }))

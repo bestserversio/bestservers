@@ -6,7 +6,7 @@ import { getServerAuthSession } from "@server/auth";
 import Wrapper from "@components/Wrapper";
 import NoPermissions from "@components/statements/NoPermissions";
 
-import { isAdmin } from "@utils/auth";
+import { isMod } from "@utils/auth";
 import { type CategoryWithChildrenAndParent } from "~/types/Category";
 import CategoryForm from "@components/categories/forms/Main";
 import NotFound from "@components/statements/NotFound";
@@ -52,7 +52,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const id = params?.id?.toString();
 
     const session = await getServerAuthSession(ctx);
-    const authed = isAdmin(session);
+    const authed = isMod(session);
 
     if (authed && id) {
         category = await prisma.category.findFirst({

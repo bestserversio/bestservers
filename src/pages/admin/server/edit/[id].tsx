@@ -5,7 +5,7 @@ import { getServerAuthSession } from "@server/auth";
 import Wrapper from "@components/Wrapper";
 import NoPermissions from "@components/statements/NoPermissions";
 
-import { isAdmin } from "@utils/auth";
+import { isAdmin, isMod } from "@utils/auth";
 import { type ServerWithRelations } from "~/types/Server";
 import { prisma } from "@server/db";
 import { UserPublicSelect } from "~/types/User";
@@ -63,7 +63,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const id = params?.id?.toString();
 
     const session = await getServerAuthSession(ctx);
-    const authed = isAdmin(session);
+    const authed = isMod(session);
 
     let platforms: Platform[] = [];
     let categories: CategoryWithChildren[] = [];

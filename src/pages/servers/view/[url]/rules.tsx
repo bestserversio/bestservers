@@ -5,6 +5,7 @@ import NotFound from "@components/statements/NotFound";
 import { getServerAuthSession } from "@server/auth";
 import { prisma } from "@server/db";
 import { isAdmin } from "@utils/auth";
+import { GetServerMetaTitle } from "@utils/servers/content";
 import { type GetServerSidePropsContext } from "next";
 
 import { ServerPublicSelect, type ServerPublic } from "~/types/Server";
@@ -17,7 +18,7 @@ export default function Page({
     return (
         <>
             <Meta
-                title={`${server ? `${server.name ?? "N/A"} (${server.ip ?? "N/A"}:${server.port?.toString() ?? "N/A"})` : "Not Found"} - Best Servers`}
+                title={GetServerMetaTitle({ server: server })}
                 description={server?.descriptionShort ? server.descriptionShort : undefined}
             />
             <Wrapper>

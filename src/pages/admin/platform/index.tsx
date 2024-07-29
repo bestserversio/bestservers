@@ -5,7 +5,7 @@ import { getServerAuthSession } from "@server/auth";
 import Wrapper from "@components/Wrapper";
 import NoPermissions from "@components/statements/NoPermissions";
 
-import { isAdmin } from "@utils/auth";
+import { isMod } from "@utils/auth";
 import Meta from "@components/Meta";
 import { type Platform } from "@prisma/client";
 import { prisma } from "@server/db";
@@ -144,7 +144,7 @@ function Row({
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const session = await getServerAuthSession(ctx);
 
-    const authed = isAdmin(session);
+    const authed = isMod(session);
 
     let platforms: Platform[] | null = null;
 

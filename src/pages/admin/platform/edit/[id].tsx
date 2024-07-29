@@ -5,7 +5,7 @@ import { getServerAuthSession } from "@server/auth";
 import Wrapper from "@components/Wrapper";
 import NoPermissions from "@components/statements/NoPermissions";
 
-import { isAdmin } from "@utils/auth";
+import { isMod } from "@utils/auth";
 import { type Platform } from "@prisma/client";
 import { prisma } from "@server/db";
 import PlatformForm from "@components/platforms/forms/Main";
@@ -52,7 +52,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const id = params?.id?.toString();
 
     const session = await getServerAuthSession(ctx);
-    const authed = isAdmin(session);
+    const authed = isMod(session);
 
     if (authed && id) {
         platform = await prisma.platform.findFirst({
