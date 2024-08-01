@@ -66,6 +66,7 @@ export default async function Handler (
                 id: true
             },
             where: {
+                online: true,
                 lastOnline: {
                     lte: timeout
                 }
@@ -76,7 +77,10 @@ export default async function Handler (
 
         servers.map((srv) => ids.push(srv.id));
 
-        const cnt = await prisma.server.deleteMany({
+        const cnt = await prisma.server.updateMany({
+            data: {
+                online: false
+            },
             where: {
                 id: {
                     in: ids
