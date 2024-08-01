@@ -138,8 +138,9 @@ model Platform {
   servers     Server[]
   serverRanks ServerRank[]
 
-  spies       Spy[]        @relation("SpyPlatforms")
-  spyScanners SpyScanner[] @relation("SpyScannerPlatforms")
+  vms                     SpyVms[]     @relation("VmsPlatforms")
+  spyScanners             SpyScanner[] @relation("SpyScannerPlatforms")
+  removeTimedOutPlatforms Spy[]        @relation("SpyRemoveTimedOutPlatforms")
 }
 
 model Category {
@@ -371,19 +372,6 @@ model Spy {
   webApiInterval Int     @default(60)
   webApiSaveToFs Boolean @default(true)
 
-  vmsEnabled      Boolean @default(false)
-  vmsKey          String?
-  vmsTimeout      Int     @default(5)
-  vmsLimit        Int     @default(1000)
-  vmsMinWait      Int     @default(60)
-  vmsMaxWait      Int     @default(120)
-  vmsRecvOnly     Boolean @default(false)
-  vmsExcludeEmpty Boolean @default(true)
-  vmsSubBots      Boolean @default(false)
-  vmsAddOnly      Boolean @default(false)
-  vmsRandomApps   Boolean @default(false)
-  vmsSetOffline   Boolean @default(true)
-
   removeInactive         Boolean @default(false)
   removeInactiveTime     Int     @default(2592000)
   removeInactiveInterval Int     @default(86400)
@@ -395,8 +383,14 @@ model Spy {
   removeDupsMaxServers Int     @default(100)
   removeDupsTimeout    Int     @default(30)
 
-  vmsPlatforms Platform[]   @relation("SpyPlatforms")
-  scanners     SpyScanner[] @relation("SpyScanners")
+  removeTimedOut          Boolean    @default(false)
+  removeTimedOutInterval  Int        @default(120)
+  removeTimedOutTime      Int        @default(3600)
+  removeTimedOutTimeout   Int        @default(30)
+  removeTimedOutPlatforms Platform[] @relation("SpyRemoveTimedOutPlatforms")
+
+  scanners SpyScanner[] @relation("SpyScanners")
+  vms      SpyVms[]     @relation("SpyVms")
 }
 
 model SpyScanner {
@@ -419,6 +413,28 @@ model SpyScanner {
   requestDelay     Int     @default(0)
 
   spies Spy[] @relation("SpyScanners")
+}
+
+model SpyVms {
+  id Int @id @default(autoincrement())
+
+  name String?
+
+  key          String?
+  timeout      Int     @default(5)
+  limit        Int     @default(1000)
+  minWait      Int     @default(60)
+  maxWait      Int     @default(120)
+  recvOnly     Boolean @default(false)
+  excludeEmpty Boolean @default(true)
+  onlyEmpty    Boolean @default(false)
+  subBots      Boolean @default(false)
+  addOnly      Boolean @default(false)
+  randomApps   Boolean @default(false)
+  setOffline   Boolean @default(true)
+
+  platforms Platform[] @relation("VmsPlatforms")
+  spies     Spy[]      @relation("SpyVms")
 }
 
 model BadWord {

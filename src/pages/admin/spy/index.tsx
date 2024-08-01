@@ -16,6 +16,7 @@ import BadIpsBlock from "@components/spy/BadIpBlock";
 import BadAsnsBlock from "@components/spy/BadAsnBlock";
 import GoodIpsBlock from "@components/spy/GoodIpBlock";
 import { useSession } from "next-auth/react";
+import VmsBlock from "@components/spy/VmsBlock";
 
 export default function Page ({
     authed    
@@ -43,6 +44,11 @@ export default function Page ({
                                 {isA && (
                                     <ContentItem2 title="Scanners">
                                         <ScannerBlock />
+                                    </ContentItem2>
+                                )}
+                                {isA && (
+                                    <ContentItem2 title="VMS">
+                                        <VmsBlock />
                                     </ContentItem2>
                                 )}
                             </div>

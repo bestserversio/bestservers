@@ -54,6 +54,31 @@ export const spyRouter = createTRPCRouter({
                 nextScanner
             }
         }),
+    allVms: adminProcedure
+        .input(z.object({
+            limit: z.number().default(10),
+            cursor: z.number().nullish()
+        }))
+        .query(async ({ ctx, input }) => {
+            const vms = await ctx.prisma.spyVms.findMany({
+                take: input.limit + 1,
+                cursor: input.cursor ? { id: input.cursor } : undefined
+            })
+
+            let nextVms: typeof input.cursor | undefined = undefined;
+
+            if (vms.length > input.limit) {
+                const next = vms.pop();
+
+                if (next)
+                    nextVms = next.id;
+            }
+
+            return {
+                vms,
+                nextVms
+            }
+        }),
     allBadWords: modProcedure
         .input(z.object({
             limit: z.number().default(10),
@@ -170,18 +195,11 @@ export const spyRouter = createTRPCRouter({
             webApiInterval: z.number().optional(),
             webApiSaveToFs: z.boolean().default(true),
             vmsEnabled: z.boolean().default(false),
-            vmsKey: z.string().optional(),
-            vmsTimeout: z.number().default(5),
-            vmsPlatforms: z.array(z.number()).default([]),
-            vmsLimit: z.number().default(1000),
-            vmsMinWait: z.number().default(60),
-            vmsMaxWait: z.number().default(120),
-            vmsRecvOnly: z.boolean().default(false),
-            vmsExcludeEmpty: z.boolean().default(true),
-            vmsSubBots: z.boolean().default(false),
-            vmsAddOnly: z.boolean().default(false),
-            vmsRandomApps: z.boolean().default(false),
-            vmsSetOffline: z.boolean().default(true),
+            removeTimedOut: z.boolean().default(false),
+            removeTimedOutInterval: z.number().default(120),
+            removeTimedOutTime: z.number().default(3600),
+            removeTimedOutTimeout: z.number().default(30),
+            removeTimedOutPlatforms: z.array(z.number()).default([]),
             removeInactive: z.boolean().default(false),
             removeInactiveTime: z.number().default(2592000),
             removeInactiveInterval: z.number().default(86400),
@@ -191,7 +209,8 @@ export const spyRouter = createTRPCRouter({
             removeDupsLimit: z.number().default(100),
             removeDupsMaxServers: z.number().default(100),
             removeDupsTimeout: z.number().default(30),
-            scanners: z.array(z.number()).default([])
+            scanners: z.array(z.number()).default([]),
+            vms: z.array(z.number()).default([])
         }))
         .mutation(async ({ ctx, input }) => {
             try {
@@ -201,7 +220,8 @@ export const spyRouter = createTRPCRouter({
                     },
                     include: {
                         scanners: true,
-                        vmsPlatforms: true
+                        vms: true,
+                        removeTimedOutPlatforms: true
                     }
                 })
 
@@ -222,17 +242,6 @@ export const spyRouter = createTRPCRouter({
                         webApiTimeout: input.webApiTimeout,
                         webApiInterval: input.webApiInterval,
                         webApiSaveToFs: input.webApiSaveToFs,
-                        vmsEnabled: input.vmsEnabled,
-                        vmsKey: input.vmsKey,
-                        vmsLimit: input.vmsLimit,
-                        vmsMinWait: input.vmsMinWait,
-                        vmsMaxWait: input.vmsMaxWait,
-                        vmsRecvOnly: input.vmsRecvOnly,
-                        vmsExcludeEmpty: input.vmsExcludeEmpty,
-                        vmsSubBots: input.vmsSubBots,
-                        vmsAddOnly: input.vmsAddOnly,
-                        vmsRandomApps: input.vmsRandomApps,
-                        vmsSetOffline: input.vmsSetOffline,
                         removeInactive: input.removeInactive,
                         removeInactiveTime: input.removeInactiveTime,
                         removeInactiveInterval: input.removeInactiveInterval,
@@ -242,10 +251,14 @@ export const spyRouter = createTRPCRouter({
                         removeDupsLimit: input.removeDupsLimit,
                         removeDupsMaxServers: input.removeDupsMaxServers,
                         removeDupsTimeout: input.removeDupsTimeout,
-                        vmsPlatforms: {
-                            disconnect: eSpy?.vmsPlatforms?.map(p => ({ id: p.id })) || [],
-                            ...(input.vmsPlatforms.length > 0 && { 
-                                connect: input.vmsPlatforms.map((id) => ({
+                        removeTimedOut: input.removeTimedOut,
+                        removeTimedOutInterval: input.removeTimedOutInterval,
+                        removeTimedOutTime: input.removeTimedOutTime,
+                        removeTimedOutTimeout: input.removeTimedOutTimeout,
+                        removeTimedOutPlatforms: {
+                            disconnect: eSpy?.removeTimedOutPlatforms?.map(v => ({ id: v.id })) || [],
+                            ...(input.removeTimedOutPlatforms.length > 0 && {
+                                connect: input.removeTimedOutPlatforms.map((id) => ({
                                     id: id
                                 }))
                             })
@@ -254,6 +267,14 @@ export const spyRouter = createTRPCRouter({
                             disconnect: eSpy?.scanners?.map(s => ({ id: s.id })) || [],
                             ...(input.scanners.length > 0 && {
                                 connect: input.scanners.map((id) => ({
+                                    id: id
+                                }))
+                            })
+                        },
+                        vms: {
+                            disconnect: eSpy?.vms?.map(v => ({ id: v.id })) || [],
+                            ...(input.vms.length > 0 && {
+                                connect: input.vms.map((id) => ({
                                     id: id
                                 }))
                             })
@@ -272,17 +293,6 @@ export const spyRouter = createTRPCRouter({
                         webApiTimeout: input.webApiTimeout,
                         webApiInterval: input.webApiInterval,
                         webApiSaveToFs: input.webApiSaveToFs,
-                        vmsEnabled: input.vmsEnabled,
-                        vmsKey: input.vmsKey,
-                        vmsLimit: input.vmsLimit,
-                        vmsMinWait: input.vmsMinWait,
-                        vmsMaxWait: input.vmsMaxWait,
-                        vmsRecvOnly: input.vmsRecvOnly,
-                        vmsExcludeEmpty: input.vmsExcludeEmpty,
-                        vmsSubBots: input.vmsSubBots,
-                        vmsAddOnly: input.vmsAddOnly,
-                        vmsRandomApps: input.vmsRandomApps,
-                        vmsSetOffline: input.vmsSetOffline,
                         removeInactive: input.removeInactive,
                         removeInactiveTime: input.removeInactiveTime,
                         removeInactiveInterval: input.removeInactiveInterval,
@@ -292,9 +302,13 @@ export const spyRouter = createTRPCRouter({
                         removeDupsLimit: input.removeDupsLimit,
                         removeDupsMaxServers: input.removeDupsMaxServers,
                         removeDupsTimeout: input.removeDupsTimeout,
-                        ...(input.vmsPlatforms.length > 0 && {
-                            vmsPlatforms: {
-                                connect: input.vmsPlatforms.map((id) => ({
+                        removeTimedOut: input.removeTimedOut,
+                        removeTimedOutInterval: input.removeTimedOutInterval,
+                        removeTimedOutTime: input.removeTimedOutTime,
+                        removeTimedOutTimeout: input.removeTimedOutTimeout,
+                        ...(input.removeTimedOutPlatforms.length > 0 && {
+                            scanners: {
+                                connect: input.removeTimedOutPlatforms.map((id) => ({
                                     id: id
                                 }))
                             }
@@ -302,6 +316,13 @@ export const spyRouter = createTRPCRouter({
                         ...(input.scanners.length > 0 && {
                             scanners: {
                                 connect: input.scanners.map((id) => ({
+                                    id: id
+                                }))
+                            }
+                        }),
+                        ...(input.vms.length > 0 && {
+                            vms: {
+                                connect: input.vms.map((id) => ({
                                     id: id
                                 }))
                             }
@@ -397,6 +418,95 @@ export const spyRouter = createTRPCRouter({
                 throw new TRPCError({
                     code: "BAD_REQUEST",
                     message: `Failed to delete Spy scanner :: ${err}`
+                })
+            }
+        }),
+    addOrUpdateVms: adminProcedure
+        .input(z.object({
+            id: z.number().optional(),
+
+            name: z.string().optional(),
+
+            key: z.string().optional(),
+            timeout: z.number().default(5),
+            limit: z.number().default(1000),
+            minWait: z.number().default(60),
+            maxWait: z.number().default(120),
+            recvOnly: z.boolean().default(false),
+            excludeEmpty: z.boolean().default(true),
+            onlyEmpty: z.boolean().default(false),
+            subBots: z.boolean().default(false),
+            addOnly: z.boolean().default(false),
+            randomApps: z.boolean().default(false),
+            setOffline: z.boolean().default(true),
+            
+            platforms: z.array(z.number()).default([])
+        }))
+        .mutation(async ({ ctx, input }) => {
+            try {
+                const eVms = await ctx.prisma.spyVms.findFirst({
+                    include: {
+                        platforms: true
+                    },
+                    where: {
+                        id: input.id
+                    }
+                })
+
+                await ctx.prisma.spyVms.upsert({
+                    where: {
+                        id: input.id ?? 0
+                    },
+                    create: {
+                        name: input.name,
+                        key: input.key,
+                        timeout: input.timeout,
+                        limit: input.limit,
+                        minWait: input.minWait,
+                        maxWait: input.maxWait,
+                        recvOnly: input.recvOnly,
+                        excludeEmpty: input.excludeEmpty,
+                        onlyEmpty: input.onlyEmpty,
+                        subBots: input.subBots,
+                        addOnly: input.addOnly,
+                        randomApps: input.randomApps,
+                        setOffline: input.setOffline,
+                        ...(input.platforms.length > 0 && {
+                            platforms: {
+                                connect: input.platforms.map((id) => ({
+                                    id: id
+                                }))
+                            }
+                        })
+                    },
+                    update: {
+                        name: input.name,
+                        key: input.key,
+                        timeout: input.timeout,
+                        limit: input.limit,
+                        minWait: input.minWait,
+                        maxWait: input.maxWait,
+                        recvOnly: input.recvOnly,
+                        excludeEmpty: input.excludeEmpty,
+                        onlyEmpty: input.onlyEmpty,
+                        subBots: input.subBots,
+                        addOnly: input.addOnly,
+                        randomApps: input.randomApps,
+                        setOffline: input.setOffline,
+                        platforms: {
+                            disconnect: eVms?.platforms?.map(p => ({ id: p.id })) || [],
+                            ...(input.platforms.length > 0 && {
+                                connect: input.platforms.map((id) => ({
+                                    id: id
+                                }))
+                            })
+                        } 
+                    }
+                })
+            } catch (err: unknown) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: `Failed to add/update VMS due to error :: ${err}`
                 })
             }
         }),
@@ -542,6 +652,24 @@ export const spyRouter = createTRPCRouter({
                 throw new TRPCError({
                     code: "BAD_REQUEST",
                     message: `Failed to delete Spy Scanner :: ${err}`
+                })
+            }
+        }),
+    deleteVms: adminProcedure
+        .input(z.object({
+            id: z.number()
+        }))
+        .mutation(async ({ ctx, input }) => {
+            try {
+                await ctx.prisma.spyVms.delete({
+                    where: {
+                        id: input.id
+                    }
+                })
+            } catch (err: unknown) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: `Failed to delete Spy VMS :: ${err}`
                 })
             }
         }),

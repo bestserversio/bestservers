@@ -8,48 +8,40 @@ import NoPermissions from "@components/statements/NoPermissions";
 import { isAdmin } from "@utils/auth";
 import Meta from "@components/Meta";
 import AdminMenu from "@components/admin/Menu";
-import { ApiKey, Platform, SpyScanner, SpyVms, type Spy } from "@prisma/client";
+import { Platform, Spy, SpyScanner } from "@prisma/client";
 import { prisma } from "@server/db";
+import ScannerForm from "@components/spy/forms/Scanner";
 import NotFound from "@components/statements/NotFound";
-import SpyForm from "@components/spy/forms/Spy";
-import { SpyWithRelations } from "~/types/Spy";
+import { ScannerWithRelations, VmsWithRelations } from "~/types/Spy";
 import { ContentItem2 } from "@components/Content";
+import VmsForm from "@components/spy/forms/Vms";
 
 export default function Page ({
     authed,
-    spy,
-    apiKeys,
-    scanners,
-    vms,
-    platforms
+    platforms,
+    vms
 } : {
     authed: boolean
-    spy?: SpyWithRelations
-    apiKeys: ApiKey[]
-    scanners: SpyScanner[]
-    vms: SpyVms[]
     platforms: Platform[]
+    vms?: VmsWithRelations
 }) {
     return (
         <>
             <Meta
-                title={`${authed ? `Admin - Editing Spy ${spy?.id?.toString() ?? "N/A"}` : "No Permission"} - Best Servers`}
+                title={`${authed ? `Admin - Editing Spy VMS ${vms?.name ?? "N/A"}` : "No Permission"} - Best Servers`}
             />
             <Wrapper>
                 {authed ? (
                     <AdminMenu current="spy">
-                        {spy ? (
-                            <ContentItem2 title={`Editing Spy Instance - ${spy.host}`}>
-                                <SpyForm
-                                    spy={spy}
-                                    apiKeys={apiKeys}
-                                    scanners={scanners}
-                                    vms={vms}
+                        {vms ? (
+                            <ContentItem2 title={`Editing VMS - ${vms?.name ?? "N/A"}!`}>
+                                <VmsForm
                                     platforms={platforms}
+                                    vms={vms}
                                 />
                             </ContentItem2>
                         ) : (
-                            <NotFound item="spy instance" />
+                            <NotFound item="spy VMS" />
                         )}
                     </AdminMenu>
                 ) : (
@@ -67,39 +59,28 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const id = params?.id?.toString();
 
     const authed = isAdmin(session);
-    let spy: SpyWithRelations | null = null;
 
-    let apiKeys: ApiKey[] = [];
-    let scanners: SpyScanner[] = [];
-    let vms: SpyVms[] = [];
     let platforms: Platform[] = [];
+    let vms: VmsWithRelations | null = null;
 
     if (authed && id) {
-        spy = await prisma.spy.findFirst({
+        platforms = await prisma.platform.findMany();
+        
+        vms = await prisma.spyVms.findFirst({
             where: {
                 id: Number(id)
             },
             include: {
-                scanners: true,
-                vms: true,
-                removeTimedOutPlatforms: true
+                platforms: true
             }
         })
-
-        apiKeys = await prisma.apiKey.findMany();
-        scanners = await prisma.spyScanner.findMany();
-        vms = await prisma.spyVms.findMany();
-        platforms = await prisma.platform.findMany();
     }
 
     return {
         props: {
             authed: authed,
-            spy: spy,
-            apiKeys: apiKeys,
-            scanners: scanners,
-            vms: vms,
-            platforms: platforms
+            platforms: platforms,
+            vms: vms
         }
     }
 }

@@ -1,6 +1,6 @@
 import Switch from "@components/helpers/Switch";
 import { NotiCtx } from "@pages/_app";
-import { ApiKey, Platform, SpyScanner, type Spy } from "@prisma/client";
+import { ApiKey, Platform, SpyScanner, SpyVms } from "@prisma/client";
 import { api } from "@utils/api";
 import { Field, Form, Formik } from "formik";
 import { useContext, useState } from "react";
@@ -9,13 +9,15 @@ import { SpyWithRelations } from "~/types/Spy";
 export default function SpyForm ({
     spy,
     apiKeys = [],
-    platforms = [],
-    scanners = []
+    scanners = [],
+    vms = [],
+    platforms = []
 } : {
     spy?: SpyWithRelations
     apiKeys?: ApiKey[]
-    platforms?: Platform[]
     scanners?: SpyScanner[]
+    vms?: SpyVms[]
+    platforms?: Platform[]
 }) {
     const notiCtx = useContext(NotiCtx);
 
@@ -41,17 +43,12 @@ export default function SpyForm ({
     });
 
     const [spyScanners, setSpyScanners] = useState<number[]>(spy?.scanners.map(s => s.id) ?? []);
-
-    const [vmsEnabled, setVmsEnabled] = useState(spy?.vmsEnabled ?? true);
-    const [vmsRecvOnly, setVmsRecvOnly] = useState(spy?.vmsRecvOnly ?? false);
-    const [vmsExcludeEmpty, setVmsExcludeEmpty] = useState(spy?.vmsExcludeEmpty ?? true);
-    const [vmsSubBots, setVmsSubBots] = useState(spy?.vmsSubBots ?? false);
-    const [vmsPlatforms, setVmsPlatforms] = useState<number[]>(spy?.vmsPlatforms.map(p => p.id) ?? []);
-    const [vmsAddOnly, setVmsAddOnly] = useState(spy?.vmsAddOnly ?? false);
-    const [vmsRandomApps, setVmsRandomApps] = useState(spy?.vmsRandomApps ?? false);
-    const [vmsSetOffline, setVmsSetOffline] = useState(spy?.vmsSetOffline ?? true);
+    const [spyVms, setSpyVms] = useState<number[]>(spy?.vms.map(v => v.id) ?? [])
 
     const [removeInactive, setRemoveInactive] = useState(spy?.removeInactive ?? false);
+
+    const [removeTimedOut, setRemoveTimedOut] = useState(spy?.removeTimedOut ?? false);
+    const [removeTimedOutPlatforms, setRemoveTimedOutPlatforms] = useState<number[]>(spy?.removeTimedOutPlatforms?.map((p) => p.id) ?? [])
 
     const [webApiEnabled, setWebApiEnabled] = useState(spy?.webApiEnabled ?? false);
     const [webApiSaveToFs, setWebApiSaveToFs] = useState(spy?.webApiSaveToFs ?? true);
@@ -73,16 +70,14 @@ export default function SpyForm ({
                 webApiEndpoint: spy?.webApiEndpoint ?? "",
                 webApiTimeout: spy?.webApiTimeout ?? "",
                 webApiInterval: spy?.webApiInterval ?? "",
-                
-                vmsKey: spy?.vmsKey ?? "",
-                vmsTimeout: spy?.vmsTimeout ?? "",
-                vmsLimit: spy?.vmsLimit ?? "",
-                vmsMinWait: spy?.vmsMinWait ?? "",
-                vmsMaxWait: spy?.vmsMaxWait ?? "",
 
                 removeInactiveTime: spy?.removeInactiveTime ?? "",
                 removeInactiveInterval: spy?.removeInactiveInterval ?? "",
                 removeInactiveTimeout: spy?.removeInactiveTimeout ?? "",
+
+                removeTimedOutInterval: spy?.removeTimedOutInterval  ?? "",
+                removeTimedOutTime: spy?.removeTimedOutTime ?? "",
+                removeTimedOutTimeout: spy?.removeTimedOutTimeout ?? "",
 
                 removeDupsInterval: spy?.removeDupsInterval ?? "",
                 removeDupsLimit: spy?.removeDupsLimit ?? "",
@@ -90,7 +85,7 @@ export default function SpyForm ({
                 removeDupsTimeout: spy?.removeDupsTimeout ?? ""
             }}
             onSubmit={(values) => {
-                const { verbose, logDirectory, apiHost, apiTimeout, webApiHost, keyId, webApiEndpoint, webApiInterval, webApiTimeout, vmsKey, vmsTimeout, vmsLimit, vmsMinWait, vmsMaxWait, removeInactiveTime, removeInactiveInterval, removeInactiveTimeout, removeDupsInterval, removeDupsLimit, removeDupsMaxServers, removeDupsTimeout } = values;
+                const { verbose, logDirectory, apiHost, apiTimeout, webApiHost, keyId, webApiEndpoint, webApiInterval, webApiTimeout, removeInactiveTime, removeInactiveInterval, removeInactiveTimeout, removeDupsInterval, removeDupsLimit, removeDupsMaxServers, removeDupsTimeout, removeTimedOutInterval, removeTimedOutTime, removeTimedOutTimeout } = values;
                 
                 addOrUpdateMut.mutate({
                     id: spy?.id,
@@ -106,19 +101,6 @@ export default function SpyForm ({
                     webApiTimeout: webApiTimeout ? Number(webApiTimeout) : undefined,
                     webApiInterval: webApiInterval ? Number(webApiInterval) : undefined,
                     webApiSaveToFs: webApiSaveToFs,
-                    vmsEnabled: vmsEnabled,
-                    vmsKey: vmsKey,
-                    vmsTimeout: vmsTimeout ? Number(vmsTimeout) : undefined,
-                    vmsLimit: vmsLimit ? Number(vmsLimit) : undefined,
-                    vmsMinWait: vmsMinWait ? Number(vmsMinWait) : undefined,
-                    vmsMaxWait: vmsMaxWait ? Number(vmsMaxWait) : undefined,
-                    vmsRecvOnly: vmsRecvOnly,
-                    vmsExcludeEmpty: vmsExcludeEmpty,
-                    vmsSubBots: vmsSubBots,
-                    vmsAddOnly: vmsAddOnly,
-                    vmsRandomApps: vmsRandomApps,
-                    vmsSetOffline: vmsSetOffline,
-                    vmsPlatforms: vmsPlatforms,
                     removeInactive: removeInactive,
                     removeInactiveTime: removeInactiveTime ? Number(removeInactiveTime) : undefined,
                     removeInactiveInterval: removeInactiveInterval ? Number(removeInactiveInterval) : undefined,
@@ -128,7 +110,13 @@ export default function SpyForm ({
                     removeDupsLimit: removeDupsLimit ? Number(removeDupsLimit) : undefined,
                     removeDupsMaxServers: removeDupsMaxServers ? Number(removeDupsMaxServers) : undefined,
                     removeDupsTimeout: removeDupsTimeout ? Number(removeDupsTimeout) : undefined,
-                    scanners: spyScanners
+                    removeTimedOut: removeTimedOut,
+                    removeTimedOutInterval: removeTimedOutInterval ? Number(removeTimedOutInterval) : undefined,
+                    removeTimedOutTime: removeTimedOutTime ? Number(removeTimedOutTime) : undefined,
+                    removeTimedOutTimeout: removeTimedOutTimeout ? Number(removeTimedOutTimeout) : undefined,
+                    removeTimedOutPlatforms: removeTimedOutPlatforms,
+                    scanners: spyScanners,
+                    vms: spyVms
                 })
             }}
         >
@@ -245,116 +233,34 @@ export default function SpyForm ({
                         )}
                     </div>
                     
-                    <h2>VMS Settings</h2>
-                    <div className="flex flex-row">
-                        <Switch
-                            onChange={() => {
-                                setVmsEnabled(!vmsEnabled);
-                            }}
-                            value={vmsEnabled}
-                        />
-                        <label htmlFor="vmsEnabled">Enabled</label>
-                    </div>
+                    <h2>VMS</h2>
                     <div>
-                        <label htmlFor="vmsPlatforms">Platforms</label>
-                        <select
-                            onChange={(e) => {
-                                const opts = Array.from(e.target.selectedOptions, option => Number(option.value));
+                        {vms.length > 0 ? (
+                            <>
+                                <select
+                                    onChange={(e) => {
+                                        const opts = Array.from(e.target.selectedOptions, option => Number(option.value));
 
-                                setVmsPlatforms(opts);
-                            }}
-                            multiple={true}
-                            value={vmsPlatforms.map(p => p.toString())}
-
-                        >
-                            {platforms.length > 0 && (
-                                <>
-                                    {platforms.map((platform, idx) => {
+                                        setSpyVms(opts);
+                                    }}
+                                    multiple={true}
+                                    value={spyVms.map(s => s.toString())}
+                                >
+                                    {vms.map((vms, idx) => {
                                         return (
                                             <option
-                                                key={`platform-${idx.toString()}`}
-                                                value={platform.id}
-                                            >{platform.name}</option>
+                                                key={`vms-${idx.toString()}`}
+                                                value={vms.id}
+                                            >{vms.name} ({vms.id.toString()})</option>
                                         )
                                     })}
-                                </>
-                            )}
-                        </select>
+                                </select>
+                            </>
+                        ) : (
+                            <p>No VMS found.</p>
+                        )}
                     </div>
-                    <div>
-                        <label htmlFor="vmsKey">Key</label>
-                        <Field name="vmsKey" />
-                    </div>
-                    <div>
-                        <label htmlFor="vmsTimeout">Timeout</label>
-                        <Field name="vmsTimeout" />
-                    </div>
-                    <div>
-                        <label htmlFor="vmsLimit">Limit</label>
-                        <Field name="vmsLimit" />
-                    </div>
-                    <div>
-                        <label htmlFor="vmsMinWait">Min Wait</label>
-                        <Field name="vmsMinWait" />
-                    </div>
-                    <div>
-                        <label htmlFor="vmsMaxWait">Max Wait</label>
-                        <Field name="vmsMaxWait" />
-                    </div>
-                    <div className="flex flex-row">
-                        <Switch
-                            onChange={() => {
-                                setVmsRecvOnly(!vmsRecvOnly);
-                            }}
-                            value={vmsRecvOnly}
-                        />
-                        <label htmlFor="vmsRecvOnly">Receive Only</label>
-                    </div>
-                    <div className="flex flex-row">
-                        <Switch
-                            onChange={() => {
-                                setVmsExcludeEmpty(!vmsExcludeEmpty);
-                            }}
-                            value={vmsExcludeEmpty}
-                        />
-                        <label htmlFor="vmsExcludeEmpty">Exclude Empty</label>
-                    </div>
-                    <div className="flex flex-row">
-                        <Switch
-                            onChange={() => {
-                                setVmsSubBots(!vmsSubBots);
-                            }}
-                            value={vmsSubBots}
-                        />
-                        <label htmlFor="vmsSubBots">Subtract Bots</label>
-                    </div>
-                    <div className="flex flex-row">
-                        <Switch
-                            onChange={() => {
-                                setVmsAddOnly(!vmsAddOnly);
-                            }}
-                            value={vmsAddOnly}
-                        />
-                        <label htmlFor="vmsAddOnly">Add Only</label>
-                    </div>
-                    <div className="flex flex-row">
-                        <Switch
-                            onChange={() => {
-                                setVmsRandomApps(!vmsRandomApps);
-                            }}
-                            value={vmsRandomApps}
-                        />
-                        <label htmlFor="vmsRandomApps">Random Apps</label>
-                    </div>
-                    <div className="flex flex-row">
-                        <Switch
-                            onChange={() => {
-                                setVmsSetOffline(!vmsSetOffline);
-                            }}
-                            value={vmsSetOffline}
-                        />
-                        <label htmlFor="vmsSetOffline">Set Offline</label>
-                    </div>
+
                     <h2>Remove Inactive</h2>
                     <div className="flex flex-row">
                         <Switch
@@ -402,6 +308,54 @@ export default function SpyForm ({
                     <div>
                         <label htmlFor="removeDupsTimeout">Timeout</label>
                         <Field name="removeDupsTimeout" />
+                    </div>
+                    <h2>Remove Timed Out</h2>
+                    <div className="flex flex-row">
+                        <Switch
+                            onChange={() => {
+                                setRemoveTimedOut(!removeTimedOut);
+                            }}
+                            value={removeTimedOut}
+                        />
+                        <label htmlFor="removeTimedOut">Enabled</label>
+                    </div>
+                    <div>
+                        {platforms.length > 0 ? (
+                            <>
+                                <select
+                                    onChange={(e) => {
+                                        const opts = Array.from(e.target.selectedOptions, option => Number(option.value));
+
+                                        setRemoveTimedOutPlatforms(opts);
+                                    }}
+                                    multiple={true}
+                                    value={removeTimedOutPlatforms.map(s => s.toString())}
+                                >
+                                    {platforms.map((platform, idx) => {
+                                        return (
+                                            <option
+                                                key={`platform-${idx.toString()}`}
+                                                value={platform.id}
+                                            >{platform.name}</option>
+                                        )
+                                    })}
+                                </select>
+                            </>
+                        ) : (
+                            <p>No platforms found.</p>
+                        )}
+                    </div>
+                    <div>
+                        <label htmlFor="removeTimedOutInterval">Interval</label>
+                        <Field name="removeTimedOutInterval" />
+                    </div>
+                    <div>
+                        <label htmlFor="removeTimedOutTime">Timeout Time</label>
+                        <Field name="removeTimedOutTime" />
+                    </div>
+                    <div>
+                        <label htmlFor="removeTimedOutTimeout">Timeout</label>
+                        <Field name="removeTimedOutTimeout" />
                     </div>
                     <div className="flex justify-center">
                         <button

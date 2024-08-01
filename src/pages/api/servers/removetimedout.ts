@@ -69,7 +69,8 @@ export default async function Handler (
                 online: true,
                 lastOnline: {
                     lte: timeout
-                }
+                },
+                platformId: platform.id
             }
         })
 

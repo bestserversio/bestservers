@@ -20,7 +20,6 @@ type WebApiT = {
 }
 
 type VmsT = {
-    enabled?: boolean
     timeout?: number
     api_token?: string
     app_ids?: number[]
@@ -30,8 +29,10 @@ type VmsT = {
     limit?: number
     exclude_empty?: boolean
     sub_bots?: boolean
+    add_only?: boolean
     random_apps?: boolean
     set_offline?: boolean
+    only_empty?: boolean
 }
 
 type ScannerT = {
@@ -76,13 +77,21 @@ type RemoveDupsT = {
     timeout: number
 }
 
+type RemoveTimedOutT = {
+    enabled: boolean
+    interval: number
+    platform_ids: number[]
+    timed_out_time: number
+    timeout: number
+}
+
 type SpyResp = {
     verbose: number
     log_directory?: string | null
 
     api: ApiT
     web_api: WebApiT
-    vms: VmsT
+    vms: VmsT[]
     scanners: ScannerT[]
     platform_maps: PlatformMapT[]
     remove_inactive: RemoveInactiveT
@@ -92,6 +101,7 @@ type SpyResp = {
     good_ips: string[]
     platform_filters: PlatformFilterT[],
     remove_dups: RemoveDupsT
+    remove_timed_out: RemoveTimedOutT
 }
 
 export default async function Handler (
@@ -134,12 +144,17 @@ export default async function Handler (
                 host: host
             },
             include: {
-                vmsPlatforms: true,
                 scanners: {
                     include: {
                         platforms: true
                     }
                 },
+                vms: {
+                    include: {
+                        platforms: true
+                    }
+                },
+                removeTimedOutPlatforms: true,
                 key: true
             }
         })
@@ -180,25 +195,6 @@ export default async function Handler (
             save_to_fs: spy.webApiSaveToFs
         }
 
-        // Start building VMS.
-        const vmsPlatforms = spy.vmsPlatforms.map(p => p.vmsId ?? 0)
-            .filter(vmsId => vmsId > 0)
-
-        const vms: VmsT = {
-            enabled: spy.vmsEnabled,
-            timeout: spy.vmsTimeout,
-            api_token: spy.vmsKey ?? undefined,
-            app_ids: vmsPlatforms,
-            recv_only: spy.vmsRecvOnly,
-            min_wait: spy.vmsMinWait,
-            max_wait: spy.vmsMaxWait,
-            limit: spy.vmsLimit,
-            exclude_empty: spy.vmsExcludeEmpty,
-            sub_bots: spy.vmsSubBots,
-            random_apps: spy.vmsRandomApps,
-            set_offline: spy.vmsSetOffline
-        }
-
         // Build remove inactive.
         const remove_inactive: RemoveInactiveT = {
             enabled: spy.removeInactive,
@@ -214,6 +210,15 @@ export default async function Handler (
             limit: spy.removeDupsLimit,
             max_servers: spy.removeDupsMaxServers,
             timeout: spy.removeDupsTimeout
+        }
+
+        // Build remove timed out.
+        const remove_timed_out: RemoveTimedOutT = {
+            enabled: spy.removeTimedOut,
+            interval: spy.removeTimedOutInterval,
+            timed_out_time: spy.removeTimedOutTime,
+            timeout: spy.removeTimedOutTimeout,
+            platform_ids: spy.removeTimedOutPlatforms.map((p) => p.id)
         }
 
         // Setup scanners.
@@ -236,6 +241,30 @@ export default async function Handler (
                 random_platforms: s.randomPlatforms,
                 visible_skip_count: s.visibleSkipCount,
                 request_delay: s.requestDelay
+            })
+        })
+
+        // Setup VMS.
+        const vms: VmsT[] = [];
+
+        spy.vms.forEach((v) => {
+            // Get app IDs.
+            const app_ids = v.platforms.map(p => p.vmsId ?? 0).filter(vmsId => vmsId > 0)
+
+            vms.push({
+                api_token: v.key ?? undefined,
+                timeout: v.timeout,
+                limit: v.limit,
+                min_wait: v.minWait,
+                max_wait: v.maxWait,
+                recv_only: v.recvOnly,
+                exclude_empty: v.excludeEmpty,
+                only_empty: v.onlyEmpty,
+                sub_bots: v.subBots,
+                add_only: v.addOnly,
+                random_apps: v.randomApps,
+                set_offline: v.setOffline,
+                app_ids: app_ids
             })
         })
 
@@ -290,7 +319,8 @@ export default async function Handler (
             bad_asns: badAsns,
             good_ips: goodIps,
             platform_filters: platform_filters,
-            remove_dups: remove_dups
+            remove_dups: remove_dups,
+            remove_timed_out: remove_timed_out
         }
 
         return res.status(200).json(spyResp);

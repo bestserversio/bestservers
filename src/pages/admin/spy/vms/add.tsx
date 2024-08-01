@@ -8,39 +8,28 @@ import NoPermissions from "@components/statements/NoPermissions";
 import { isAdmin } from "@utils/auth";
 import Meta from "@components/Meta";
 import AdminMenu from "@components/admin/Menu";
-import SpyForm from "@components/spy/forms/Spy";
-import { ApiKey, Platform, SpyScanner, SpyVms } from "@prisma/client";
+import { Platform } from "@prisma/client";
 import { prisma } from "@server/db";
 import { ContentItem2 } from "@components/Content";
+import VmsForm from "@components/spy/forms/Vms";
 
 export default function Page ({
     authed,
-    apiKeys,
-    scanners,
-    vms,
     platforms
 } : {
     authed: boolean
-    apiKeys: ApiKey[]
-    scanners: SpyScanner[]
-    vms: SpyVms[]
     platforms: Platform[]
 }) {
     return (
         <>
             <Meta
-                title={`${authed ? "Admin - Spy Add" : "No Permission"} - Best Servers`}
+                title={`${authed ? "Admin - Spy VMS" : "No Permission"} - Best Servers`}
             />
             <Wrapper>
                 {authed ? (
                     <AdminMenu current="spy">
-                        <ContentItem2 title="Add Spy Instance!">
-                            <SpyForm
-                                apiKeys={apiKeys}
-                                scanners={scanners}
-                                vms={vms}
-                                platforms={platforms}
-                            />
+                        <ContentItem2 title="Add Spy VMS!">
+                            <VmsForm platforms={platforms} />
                         </ContentItem2>
                     </AdminMenu>
                 ) : (
@@ -56,25 +45,15 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     const authed = isAdmin(session);
 
-    let apiKeys: ApiKey[] = [];
-    let scanners: SpyScanner[] = [];
-    let vms: SpyVms[] = []
     let platforms: Platform[] = [];
 
-    if (authed) {
-        apiKeys = await prisma.apiKey.findMany();
-        scanners = await prisma.spyScanner.findMany();
-        vms = await prisma.spyVms.findMany();
+    if (authed)
         platforms = await prisma.platform.findMany();
-    }
 
     return {
         props: {
             authed: authed,
-            apiKeys: apiKeys,
-            scanners: scanners,
-            vms: vms,
-            platforms: platforms
+            platforms: platforms,
         }
     }
 }
