@@ -88,6 +88,8 @@ export const platformsRouter = createTRPCRouter({
                 .nullable()
                 .optional(),
 
+            serverTimeout: z.number().default(0),
+
             // Filters
             maxCurUsers: z.number()
                 .optional()
@@ -116,6 +118,7 @@ export const platformsRouter = createTRPCRouter({
                         nameShort: input.nameShort,
                         description: input.description,
                         vmsId: input.vmsId,
+                        serverTimeout: input.serverTimeout,
                         maxCurUsers: input.maxCurUsers,
                         maxUsers: input.maxUsers,
                         allowUserOverflow: input.allowUserOverflow
@@ -137,6 +140,7 @@ export const platformsRouter = createTRPCRouter({
                         nameShort: input.nameShort,
                         description: input.description,
                         vmsId: input.vmsId,
+                        serverTimeout: input.serverTimeout,
                         maxCurUsers: input.maxCurUsers,
                         maxUsers: input.maxUsers,
                         allowUserOverflow: input.allowUserOverflow

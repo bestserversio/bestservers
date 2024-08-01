@@ -31,7 +31,8 @@ export default function Index({
 export async function getServerSideProps() {
     const totalServers = await prisma.server.count({
         where: {
-            visible: true
+            visible: true,
+            online: true
         }
     });
 

@@ -56,6 +56,8 @@ export default function PlatformForm ({
                 description: platform?.description ?? "",
                 vmsId: platform?.vmsId ?? "",
 
+                serverTimeout: platform?.serverTimeout ?? "",
+
                 maxCurUsers: platform?.maxCurUsers ?? "",
                 maxUsers: platform?.maxUsers ?? "",
 
@@ -72,7 +74,7 @@ export default function PlatformForm ({
                     flags.push("TEAMSPEAK3");
                 
                 if (flagDiscord)
-                        flags.push("DISCORD");
+                    flags.push("DISCORD");
 
                 addOrUpdateMut.mutate({
                     banner: banner?.toString(),
@@ -90,6 +92,8 @@ export default function PlatformForm ({
 
                     jsInternal: jsInternal?.toString(),
                     jsExternal: values.jsExternal || null,
+
+                    serverTimeout: values.serverTimeout ? Number(values.serverTimeout) : undefined,
 
                     maxCurUsers: values.maxCurUsers ? Number(values.maxCurUsers) : null,
                     maxUsers: values.maxUsers ? Number(values.maxUsers) : null,
@@ -180,6 +184,10 @@ export default function PlatformForm ({
                 <div>
                     <label htmlFor="vmsId">App/VMS ID</label>
                     <Field name="vmsId" />
+                </div>
+                <div>
+                    <label htmlFor="serverTimeout">Server Timeout</label>
+                    <Field name="serverTimeout" />
                 </div>
 
                 <h2>Web Settings</h2>
