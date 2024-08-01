@@ -55,7 +55,7 @@ export default async function Handler (
                 }
             }),
             serverTimeout: {
-                gte: 0
+                gt: 0
             }
         }
     })
