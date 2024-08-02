@@ -1,6 +1,7 @@
-import { Prisma } from "@prisma/client";
+import { type Prisma } from "@prisma/client";
 import { prisma } from "@server/db";
 import { CheckApiAccess } from "@utils/apihelpers";
+import { ProcessPrismaError } from "@utils/error";
 import { type NextApiRequest, type NextApiResponse } from "next";
 
 export default async function Handler (
@@ -44,10 +45,14 @@ export default async function Handler (
                 }
             }
         })
-    } catch (err: unknown) {
+    } catch (err) {
+        console.error(err);
+
+        const [errMsg] = ProcessPrismaError(err);
+
         return res.status(400).json({
             error: err,
-            message: `Failed to remove inactive servers :: ${err}`
+            message: `Failed to remove inactive servers :: ${errMsg ?? "N/A"}`
         })
     }
     

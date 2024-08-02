@@ -1,13 +1,12 @@
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, canEditServerProcedure, protectedProcedure, publicProcedure, adminProcedure, modProcedure } from "../trpc";
 
-import { type Prisma, Region, ServerLinkType } from "@prisma/client";
+import { Region, ServerLinkType } from "@prisma/client";
 
 import z from "zod";
 
 import { isAdmin } from "@utils/auth";
 import { ProcessPrismaError } from "@utils/error";
-import { ServerPublicSelect } from "~/types/Server";
 import { GetServers, ServerSort } from "@utils/servers/content";
 
 // Limits
@@ -480,10 +479,14 @@ export const serversRouter = createTRPCRouter({
                         id: input.id
                     }
                 })
-            } catch (err: unknown) {
+            } catch (err) {
+                console.error(err);
+
+                const [errMsg] = ProcessPrismaError(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Failed to delete server :: ${err}`
+                    message: `Failed to delete server :: ${errMsg ?? "N/A"}`
                 })
             }
         }),
@@ -500,10 +503,14 @@ export const serversRouter = createTRPCRouter({
                         }
                     }
                 })
-            } catch (err: unknown) {
+            } catch (err) {
+                console.error(err);
+
+                const [errMsg] = ProcessPrismaError(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Failed to remove inactive servers :: ${err}`
+                    message: `Failed to remove inactive servers :: ${errMsg ?? "N/A"}`
                 })
             }
         })

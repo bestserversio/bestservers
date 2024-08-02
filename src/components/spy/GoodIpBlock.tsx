@@ -1,5 +1,5 @@
 import Loader from "@components/Loader";
-import { GoodIp } from "@prisma/client";
+import { type GoodIp } from "@prisma/client";
 import { api } from "@utils/api";
 import { useContext, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";

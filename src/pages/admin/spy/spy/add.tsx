@@ -9,7 +9,7 @@ import { isAdmin } from "@utils/auth";
 import Meta from "@components/Meta";
 import AdminMenu from "@components/admin/Menu";
 import SpyForm from "@components/spy/forms/Spy";
-import { ApiKey, Platform, SpyScanner, SpyVms } from "@prisma/client";
+import { type ApiKey, type Platform, type SpyScanner, type SpyVms } from "@prisma/client";
 import { prisma } from "@server/db";
 import { ContentItem2 } from "@components/Content";
 

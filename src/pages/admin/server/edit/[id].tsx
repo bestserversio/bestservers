@@ -5,7 +5,7 @@ import { getServerAuthSession } from "@server/auth";
 import Wrapper from "@components/Wrapper";
 import NoPermissions from "@components/statements/NoPermissions";
 
-import { isAdmin, isMod } from "@utils/auth";
+import { isMod } from "@utils/auth";
 import { type ServerWithRelations } from "~/types/Server";
 import { prisma } from "@server/db";
 import { UserPublicSelect } from "~/types/User";

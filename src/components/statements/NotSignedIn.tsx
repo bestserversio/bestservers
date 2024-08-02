@@ -7,7 +7,11 @@ export default function NotSignedIn() {
             <p>You are not signed in!</p>
             <div className="flex justify-center">
                 <button
-                    onClick={() => signIn("discord")}
+                    onClick={() => {
+                        void(async() => {
+                            await signIn("discord")
+                        })()
+                    }}
                     className="button button-primary"
                 >Sign In!</button>
             </div>

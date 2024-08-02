@@ -14,7 +14,7 @@ import { type Category } from "@prisma/client";
 import Link from "next/link";
 import Image from "next/image";
 import { api } from "@utils/api";
-import { Dispatch, SetStateAction, useContext, useState } from "react";
+import { type Dispatch, type SetStateAction, useContext, useState } from "react";
 import { NotiCtx } from "@pages/_app";
 
 export default function Page ({

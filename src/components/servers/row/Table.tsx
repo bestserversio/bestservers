@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ServerBrowser, type ServerPublic } from "~/types/Server";
+import { type ServerBrowser } from "~/types/Server";
 import ServerLink from "../Link";
 import Image from "next/image";
 import PlayerCount from "../PlayerCount";

@@ -1,4 +1,4 @@
-import { ServerBrowser } from "~/types/Server";
+import { type ServerBrowser } from "~/types/Server";
 import ServerRow from "../Row";
 
 export default function ServerBrowserCol ({

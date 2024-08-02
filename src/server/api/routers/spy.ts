@@ -2,6 +2,7 @@ import { adminProcedure, createTRPCRouter, modProcedure } from "../trpc";
 
 import * as z from "zod"
 import { TRPCError } from "@trpc/server";
+import { ProcessPrismaError } from "@utils/error";
 
 export const spyRouter = createTRPCRouter({
     allSpies: adminProcedure
@@ -256,7 +257,7 @@ export const spyRouter = createTRPCRouter({
                         removeTimedOutTime: input.removeTimedOutTime,
                         removeTimedOutTimeout: input.removeTimedOutTimeout,
                         removeTimedOutPlatforms: {
-                            disconnect: eSpy?.removeTimedOutPlatforms?.map(v => ({ id: v.id })) || [],
+                            disconnect: eSpy?.removeTimedOutPlatforms?.map(v => ({ id: v.id })) ?? [],
                             ...(input.removeTimedOutPlatforms.length > 0 && {
                                 connect: input.removeTimedOutPlatforms.map((id) => ({
                                     id: id
@@ -264,7 +265,7 @@ export const spyRouter = createTRPCRouter({
                             })
                         },
                         scanners: {
-                            disconnect: eSpy?.scanners?.map(s => ({ id: s.id })) || [],
+                            disconnect: eSpy?.scanners?.map(s => ({ id: s.id })) ?? [],
                             ...(input.scanners.length > 0 && {
                                 connect: input.scanners.map((id) => ({
                                     id: id
@@ -272,7 +273,7 @@ export const spyRouter = createTRPCRouter({
                             })
                         },
                         vms: {
-                            disconnect: eSpy?.vms?.map(v => ({ id: v.id })) || [],
+                            disconnect: eSpy?.vms?.map(v => ({ id: v.id })) ?? [],
                             ...(input.vms.length > 0 && {
                                 connect: input.vms.map((id) => ({
                                     id: id
@@ -329,10 +330,14 @@ export const spyRouter = createTRPCRouter({
                         })
                     }
                 })
-            } catch (err: unknown) {
+            } catch (err) {
+                console.error(err);
+
+                const [errMsg] = ProcessPrismaError(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Failed to add Spy instance :: ${err}`
+                    message: `Failed to add Spy instance :: ${errMsg ?? "N/A"}`
                 })
             }
         }),
@@ -405,7 +410,7 @@ export const spyRouter = createTRPCRouter({
                         visibleSkipCount: input.visibleSkipCount,
                         requestDelay: input.requestDelay,
                         platforms: {
-                            disconnect: eScanner?.platforms?.map(p => ({ id: p.id })) || [],
+                            disconnect: eScanner?.platforms?.map(p => ({ id: p.id })) ?? [],
                             ...(input.platforms.length > 0 && {
                                 connect: input.platforms.map((id) => ({
                                     id: id
@@ -414,10 +419,14 @@ export const spyRouter = createTRPCRouter({
                         } 
                     }
                 })
-            } catch (err: unknown) {
+            } catch (err) {
+                console.error(err);
+
+                const [errMsg] = ProcessPrismaError(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Failed to delete Spy scanner :: ${err}`
+                    message: `Failed to delete Spy scanner :: ${errMsg ?? "N/A"}`
                 })
             }
         }),
@@ -494,7 +503,7 @@ export const spyRouter = createTRPCRouter({
                         randomApps: input.randomApps,
                         setOffline: input.setOffline,
                         platforms: {
-                            disconnect: eVms?.platforms?.map(p => ({ id: p.id })) || [],
+                            disconnect: eVms?.platforms?.map(p => ({ id: p.id })) ?? [],
                             ...(input.platforms.length > 0 && {
                                 connect: input.platforms.map((id) => ({
                                     id: id
@@ -503,10 +512,14 @@ export const spyRouter = createTRPCRouter({
                         } 
                     }
                 })
-            } catch (err: unknown) {
+            } catch (err) {
+                console.error(err);
+
+                const [errMsg] = ProcessPrismaError(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Failed to add/update VMS due to error :: ${err}`
+                    message: `Failed to add/update VMS due to error :: ${errMsg ?? "N/A"}`
                 })
             }
         }),
@@ -531,10 +544,14 @@ export const spyRouter = createTRPCRouter({
                         exact: input.exact
                     }
                 })
-            } catch (err: unknown) {
+            } catch (err) {
+                console.error(err);
+
+                const [errMsg] = ProcessPrismaError(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Failed to add bad word :: ${err}`
+                    message: `Failed to add bad word :: ${errMsg ?? "N/A"}`
                 })
             }
         }),
@@ -559,10 +576,14 @@ export const spyRouter = createTRPCRouter({
                         cidr: input.cidr
                     }
                 })
-            } catch (err: unknown) {
+            } catch (err) {
+                console.error(err);
+
+                const [errMsg] = ProcessPrismaError(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Failed to add bad IP :: ${err}`
+                    message: `Failed to add bad IP :: ${errMsg ?? "N/A"}`
                 })
             }
         }),
@@ -584,10 +605,14 @@ export const spyRouter = createTRPCRouter({
                         asn: input.asn
                     }
                 })
-            } catch (err: unknown) {
+            } catch (err) {
+                console.error(err);
+
+                const [errMsg] = ProcessPrismaError(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Failed to add bad ASN :: ${err}`
+                    message: `Failed to add bad ASN :: ${errMsg ?? "N/A"}`
                 })
             }
         }),
@@ -612,10 +637,14 @@ export const spyRouter = createTRPCRouter({
                         cidr: input.cidr
                     }
                 })
-            } catch (err: unknown) {
+            } catch (err) {
+                console.error(err);
+
+                const [errMsg] = ProcessPrismaError(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Failed to add good IP :: ${err}`
+                    message: `Failed to add good IP :: ${errMsg ?? "N/A"}`
                 })
             }
         }),
@@ -630,10 +659,14 @@ export const spyRouter = createTRPCRouter({
                         id: input.id
                     }
                 })
-            } catch (err: unknown) {
+            } catch (err) {
+                console.error(err);
+
+                const [errMsg] = ProcessPrismaError(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Failed to delete Spy instance :: ${err}`
+                    message: `Failed to delete Spy instance :: ${errMsg ?? "N/A"}`
                 })
             }
         }),
@@ -648,10 +681,14 @@ export const spyRouter = createTRPCRouter({
                         id: input.id
                     }
                 })
-            } catch (err: unknown) {
+            } catch (err) {
+                console.error(err);
+
+                const [errMsg] = ProcessPrismaError(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Failed to delete Spy Scanner :: ${err}`
+                    message: `Failed to delete Spy Scanner :: ${errMsg ?? "N/A"}`
                 })
             }
         }),
@@ -666,10 +703,14 @@ export const spyRouter = createTRPCRouter({
                         id: input.id
                     }
                 })
-            } catch (err: unknown) {
+            } catch (err) {
+                console.error(err);
+
+                const [errMsg] = ProcessPrismaError(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Failed to delete Spy VMS :: ${err}`
+                    message: `Failed to delete Spy VMS :: ${errMsg ?? "N/A"}`
                 })
             }
         }),
@@ -684,10 +725,14 @@ export const spyRouter = createTRPCRouter({
                         id: input.id
                     }
                 })
-            } catch (err: unknown) {
+            } catch (err) {
+                console.error(err);
+
+                const [errMsg] = ProcessPrismaError(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Failed to delete bad word :: ${err}`
+                    message: `Failed to delete bad word :: ${errMsg ?? "N/A"}`
                 })
             }
         }),
@@ -702,10 +747,14 @@ export const spyRouter = createTRPCRouter({
                         id: input.id
                     }
                 })
-            } catch (err: unknown) {
+            } catch (err) {
+                console.error(err);
+
+                const [errMsg] = ProcessPrismaError(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Failed to delete bad IP :: ${err}`
+                    message: `Failed to delete bad IP :: ${errMsg ?? "N/A"}`
                 })
             }
         }),
@@ -720,10 +769,14 @@ export const spyRouter = createTRPCRouter({
                         id: input.id
                     }
                 })
-            } catch (err: unknown) {
+            } catch (err) {
+                console.error(err);
+
+                const [errMsg] = ProcessPrismaError(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Failed to delete bad ASN :: ${err}`
+                    message: `Failed to delete bad ASN :: ${errMsg ?? "N/A"}`
                 })
             }
         }),
@@ -738,10 +791,14 @@ export const spyRouter = createTRPCRouter({
                         id: input.id
                     }
                 })
-            } catch (err: unknown) {
+            } catch (err) {
+                console.error(err);
+
+                const [errMsg] = ProcessPrismaError(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Failed to delete good IP :: ${err}`
+                    message: `Failed to delete good IP :: ${errMsg ?? "N/A"}`
                 })
             }
         }),

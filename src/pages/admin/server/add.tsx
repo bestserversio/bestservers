@@ -5,7 +5,7 @@ import { getServerAuthSession } from "@server/auth";
 import Wrapper from "@components/Wrapper";
 import NoPermissions from "@components/statements/NoPermissions";
 
-import { isAdmin, isMod } from "@utils/auth";
+import { isMod } from "@utils/auth";
 import Meta from "@components/Meta";
 import ServerQuickForm from "@components/servers/forms/Quick";
 import AdminMenu from "@components/admin/Menu";

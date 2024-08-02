@@ -1,7 +1,7 @@
 import { GameplayerCtx } from "@components/GamePlayer";
 import { type Server } from "@prisma/client";
 import { useContext } from "react";
-import { ServerBrowser, type ServerPublic } from "~/types/Server";
+import { type ServerBrowser, type ServerPublic } from "~/types/Server";
 
 export default function GamePlayerButton ({
     server,

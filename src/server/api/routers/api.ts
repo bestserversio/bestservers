@@ -88,10 +88,14 @@ export const apiRouter = createTRPCRouter({
                         id: input.id
                     }
                 })
-            } catch (err: unknown) {
+            } catch (err) {
+                console.error(err);
+
+                const [errMsg] = ProcessPrismaError(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Failed to delete api Key :: ${err}`
+                    message: `Failed to delete api Key :: ${errMsg ?? "N/A"}`
                 })
             }
         })

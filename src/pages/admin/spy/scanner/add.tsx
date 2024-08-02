@@ -8,7 +8,7 @@ import NoPermissions from "@components/statements/NoPermissions";
 import { isAdmin } from "@utils/auth";
 import Meta from "@components/Meta";
 import AdminMenu from "@components/admin/Menu";
-import { Platform } from "@prisma/client";
+import { type Platform } from "@prisma/client";
 import { prisma } from "@server/db";
 import ScannerForm from "@components/spy/forms/Scanner";
 import { ContentItem2 } from "@components/Content";

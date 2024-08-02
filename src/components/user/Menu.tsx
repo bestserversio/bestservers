@@ -1,4 +1,4 @@
-import { TabItemT, TabsMenu } from "@components/helpers/Tabs"
+import { type TabItemT, TabsMenu } from "@components/helpers/Tabs"
 import ServerQuickForm from "@components/servers/forms/Quick"
 import { signOut } from "next-auth/react"
 
@@ -27,7 +27,11 @@ export default function UserMenu({
                     <p>Welcome to the account menu! We will be adding more things to this in the future.</p>
                     <div className="flex justify-center">
                         <button
-                            onClick={() => signOut()}
+                            onClick={() => {
+                                void(async() => {
+                                    await signOut();
+                                })()
+                            }}
                             className="button button-primary w-64"
                         >Sign Out!</button>
                     </div>

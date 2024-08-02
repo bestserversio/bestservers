@@ -1,4 +1,4 @@
-import { ServerBrowser, type ServerPublic } from "~/types/Server";
+import { type ServerBrowser, type ServerPublic } from "~/types/Server";
 
 export default function ServerBanners({
     className

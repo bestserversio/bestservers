@@ -4,8 +4,6 @@ import { GetRegionFlag, GetRegionFullName } from "@utils/region";
 import Image from "next/image";
 import Link from "next/link";
 import { type ServerPublic } from "~/types/Server";
-import ServerMaps from "../Maps";
-import ServerBanners from "../Banners";
 import GamePlayerButton from "@components/buttons/GamePlayer";
 import ServerGraph from "../Graph";
 import JoinButton from "@components/buttons/Join";
@@ -18,7 +16,7 @@ export default function ServerViewGeneral ({
     const fullClasses = RetrieveUserFullClasses();
 
     const curUserClasses = RetrieveUserCountClasses(server.curUsers, server.maxUsers);
-    const avgUserClasses = RetrieveUserCountClasses(server.avgUsers, server.maxUsers);
+    //const avgUserClasses = RetrieveUserCountClasses(server.avgUsers, server.maxUsers);
 
     const uploadsUrl = process.env.NEXT_PUBLIC_UPLOADS_URL;
 

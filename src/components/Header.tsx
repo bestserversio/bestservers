@@ -1,9 +1,6 @@
 import React, { type MouseEventHandler, useEffect, useState } from "react";
 import Link from "next/link";
 import IconAndText from "./helpers/IconAndText";
-import HomeIcon from "./icons/header/Home";
-//import ServersIcon from "./icons/header/Servers";
-//import GamesIcon from "./icons/header/Games";
 import { signIn, useSession } from "next-auth/react";
 import LoginIcon from "./icons/header/Login";
 import AccountIcon from "./icons/header/Account";

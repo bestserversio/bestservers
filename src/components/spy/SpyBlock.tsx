@@ -1,6 +1,6 @@
 import Loader from "@components/Loader";
 import { NotiCtx } from "@pages/_app";
-import { Spy } from "@prisma/client";
+import { type Spy } from "@prisma/client";
 import { api } from "@utils/api";
 import Link from "next/link";
 import { useContext, useState } from "react";
@@ -53,7 +53,6 @@ export default function SpyBlock({
                                 <tr className="text-left">
                                     <th>Host</th>
                                     <th>Verbose</th>
-                                    <th>VMS Enabled</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -114,7 +113,6 @@ function Row({
         <tr>
             <td>{spy.host}</td>
             <td>{spy.verbose.toString()}</td>
-            <td>{spy.vmsEnabled ? "Yes" : "No"}</td>
             <td>
                 <div className="flex flex-wrap gap-2">
                     <Link

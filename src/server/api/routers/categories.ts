@@ -1,7 +1,8 @@
 import { TRPCError } from "@trpc/server";
-import { adminProcedure, createTRPCRouter, modProcedure, publicProcedure } from "../trpc";
+import { createTRPCRouter, modProcedure, publicProcedure } from "../trpc";
 
 import z from "zod";
+import { ProcessPrismaError } from "@utils/error";
 
 export const categoriesRouter = createTRPCRouter({
     all: publicProcedure
@@ -110,10 +111,14 @@ export const categoriesRouter = createTRPCRouter({
                         id: input.id
                     }
                 })
-            } catch (err: unknown) {
+            } catch (err) {
+                console.error(err);
+                
+                const [errMsg] = ProcessPrismaError(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Failed to delete category :: ${err}`
+                    message: `Failed to delete category :: ${errMsg ?? "N/A"}`
                 })
             }
         })

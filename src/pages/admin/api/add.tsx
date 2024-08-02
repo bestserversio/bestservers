@@ -1,4 +1,4 @@
-import { ContentItem1, ContentItem2 } from "@components/Content";
+import { ContentItem2 } from "@components/Content";
 import Meta from "@components/Meta";
 import Wrapper from "@components/Wrapper";
 import AdminMenu from "@components/admin/Menu";

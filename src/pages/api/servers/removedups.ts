@@ -1,5 +1,6 @@
 import { prisma } from "@server/db";
 import { CheckApiAccess } from "@utils/apihelpers";
+import { ProcessPrismaError } from "@utils/error";
 import { type NextApiRequest, type NextApiResponse } from "next";
 
 export default async function Handler (
@@ -64,9 +65,13 @@ export default async function Handler (
         })
 
         await Promise.all(promises);
-    } catch (err: unknown) {
+    } catch (err) {
+        console.error(err);
+
+        const [errMsg] = ProcessPrismaError(err);
+
         return res.status(400).json({
-            message: `Failed to scan for duplicate servers due to exception :: ${err}`
+            message: `Failed to scan for duplicate servers due to exception :: ${errMsg ?? "N/A"}`
         })
     }
 

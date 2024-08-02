@@ -1,6 +1,6 @@
 import { api } from "@utils/api"
 import { createContext, useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react"
-import { ServerBrowser, type ServerPublic } from "~/types/Server"
+import { type ServerBrowser } from "~/types/Server"
 import { type Region } from "@prisma/client"
 import ServerBrowserCol from "./browser/Col"
 import ServerBrowserTable from "./browser/Table"
@@ -207,7 +207,7 @@ export default function ServerBrowserComponent ({
         return () => {
             div.removeEventListener("animationend", animEnd);
         }
-    }, [filtersDiv.current, showFilters])
+    }, [showFilters])
 
     return (
         <FiltersCtx.Provider value={{

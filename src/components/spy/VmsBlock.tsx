@@ -1,6 +1,6 @@
 import Loader from "@components/Loader";
 import { NotiCtx } from "@pages/_app";
-import { Spy, SpyScanner, SpyVms } from "@prisma/client";
+import { type SpyVms } from "@prisma/client";
 import { api } from "@utils/api";
 import Link from "next/link";
 import { useContext, useState } from "react";

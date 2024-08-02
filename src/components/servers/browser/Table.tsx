@@ -1,4 +1,4 @@
-import { ServerBrowser, type ServerPublic } from "~/types/Server";
+import { type ServerBrowser } from "~/types/Server";
 import ServerRow from "../Row";
 import { type Dispatch, type SetStateAction, useContext, useState } from "react";
 import { FiltersCtx } from "../Browser";

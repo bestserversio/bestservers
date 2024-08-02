@@ -1,5 +1,5 @@
-import { Prisma, PrismaClient, Region, Server } from "@prisma/client";
-import { ServerBrowser, ServerPublic } from "~/types/Server";
+import { Prisma, type PrismaClient, type Region, type Server } from "@prisma/client";
+import { type ServerBrowser, type ServerPublic } from "~/types/Server";
 
 export enum ServerSort {
     CURUSERS = 0,

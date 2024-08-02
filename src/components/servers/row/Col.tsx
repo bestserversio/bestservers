@@ -2,7 +2,7 @@ import { GameplayerCtx } from "@components/GamePlayer";
 import { PlatformFlag } from "@prisma/client";
 import Link from "next/link";
 import { useContext } from "react";
-import { ServerBrowser, type ServerPublic } from "~/types/Server";
+import { type ServerBrowser } from "~/types/Server";
 import ServerLink from "../Link";
 
 export default function ServerRowCol ({

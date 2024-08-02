@@ -1,6 +1,6 @@
 import Switch from "@components/helpers/Switch";
 import { NotiCtx } from "@pages/_app";
-import { PlatformFlag, type Platform } from "@prisma/client";
+import { type PlatformFlag, type Platform } from "@prisma/client";
 import { api } from "@utils/api";
 import { GetContents } from "@utils/file_cl";
 import { Field, Form, Formik } from "formik";

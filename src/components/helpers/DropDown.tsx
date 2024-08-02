@@ -1,6 +1,6 @@
 import ArrowIcon from "@components/icons/Arrow"
 import Link from "next/link"
-import { MouseEventHandler, ReactNode, useState } from "react"
+import { type MouseEventHandler, type ReactNode, useState } from "react"
 
 type DropDownItemT = {
     link: string

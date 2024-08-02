@@ -8,11 +8,11 @@ import NoPermissions from "@components/statements/NoPermissions";
 import { isAdmin } from "@utils/auth";
 import Meta from "@components/Meta";
 import AdminMenu from "@components/admin/Menu";
-import { ApiKey, Platform, SpyScanner, SpyVms, type Spy } from "@prisma/client";
+import { type ApiKey, type Platform, type SpyScanner, type SpyVms } from "@prisma/client";
 import { prisma } from "@server/db";
 import NotFound from "@components/statements/NotFound";
 import SpyForm from "@components/spy/forms/Spy";
-import { SpyWithRelations } from "~/types/Spy";
+import { type SpyWithRelations } from "~/types/Spy";
 import { ContentItem2 } from "@components/Content";
 
 export default function Page ({

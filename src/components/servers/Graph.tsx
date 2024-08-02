@@ -1,6 +1,6 @@
 import { api } from "@utils/api";
 import { type ReactNode, type SetStateAction, useState } from "react";
-import { ServerBrowser, type ServerPublic } from "~/types/Server";
+import { type ServerBrowser, type ServerPublic } from "~/types/Server";
 
 export default function ServerGraph({
     server,

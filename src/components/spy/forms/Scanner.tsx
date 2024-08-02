@@ -1,10 +1,10 @@
 import Switch from "@components/helpers/Switch";
 import { NotiCtx } from "@pages/_app";
-import { Platform, SpyScanner, type Spy } from "@prisma/client";
+import { type Platform } from "@prisma/client";
 import { api } from "@utils/api";
 import { Field, Form, Formik } from "formik";
 import { useContext, useState } from "react";
-import { ScannerWithRelations } from "~/types/Spy";
+import { type ScannerWithRelations } from "~/types/Spy";
 
 export default function ScannerForm ({
     scanner,

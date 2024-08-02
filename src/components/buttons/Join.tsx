@@ -1,6 +1,6 @@
-import { PlatformFlag, type Server } from "@prisma/client";
+import { type Server } from "@prisma/client";
 import Link from "next/link";
-import { ServerBrowser, type ServerPublic } from "~/types/Server";
+import { type ServerBrowser, type ServerPublic } from "~/types/Server";
 
 export default function JoinButton ({
     server,

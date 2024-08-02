@@ -8,11 +8,10 @@ import NoPermissions from "@components/statements/NoPermissions";
 import { isAdmin } from "@utils/auth";
 import Meta from "@components/Meta";
 import AdminMenu from "@components/admin/Menu";
-import { Platform, Spy, SpyScanner } from "@prisma/client";
+import { type Platform } from "@prisma/client";
 import { prisma } from "@server/db";
-import ScannerForm from "@components/spy/forms/Scanner";
 import NotFound from "@components/statements/NotFound";
-import { ScannerWithRelations, VmsWithRelations } from "~/types/Spy";
+import { type VmsWithRelations } from "~/types/Spy";
 import { ContentItem2 } from "@components/Content";
 import VmsForm from "@components/spy/forms/Vms";
 

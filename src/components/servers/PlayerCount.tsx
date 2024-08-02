@@ -1,6 +1,6 @@
 import { type Server } from "@prisma/client";
 import { RetrieveUserCountClasses, RetrieveUserFullClasses } from "@utils/UserCountClasses";
-import { ServerBrowser, type ServerPublic } from "~/types/Server";
+import { type ServerBrowser, type ServerPublic } from "~/types/Server";
 
 export default function PlayerCount ({
     server    
@@ -10,7 +10,7 @@ export default function PlayerCount ({
     const fullClasses = RetrieveUserFullClasses();
 
     const curUserClasses = RetrieveUserCountClasses(server.curUsers, server.maxUsers);
-    const avgUserClasses = RetrieveUserCountClasses(server.avgUsers, server.maxUsers);
+    //const avgUserClasses = RetrieveUserCountClasses(server.avgUsers, server.maxUsers);
 
     return (
         <div className="flex flex-col gap-2">

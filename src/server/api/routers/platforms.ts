@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { adminProcedure, createTRPCRouter, modProcedure, publicProcedure } from "../trpc";
+import { createTRPCRouter, modProcedure, publicProcedure } from "../trpc";
 import { type Platform, PlatformFlag } from "@prisma/client";
 import { ProcessPrismaError } from "@utils/error";
 import { TRPCError } from "@trpc/server";
@@ -260,10 +260,14 @@ export const platformsRouter = createTRPCRouter({
                         id: input.id
                     }
                 })
-            } catch (err: unknown) {
+            } catch (err) {
+                console.error(err);
+                
+                const [errMsg] = ProcessPrismaError(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Failed to delete platform due to error :: ${err}`
+                    message: `Failed to delete platform due to error :: ${errMsg ?? "N/A"}`
                 })
             }
         })

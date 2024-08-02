@@ -6,7 +6,7 @@ import Meta from "@components/Meta";
 import Wrapper from "@components/Wrapper";
 import { prisma } from "@server/db";
 import Link from "next/link";
-import { ReactNode, useState } from "react";
+import { type ReactNode, useState } from "react";
 
 export default function Page({
     serversCnt,
@@ -53,8 +53,8 @@ export default function Page({
                                 </FAQ>
                                 <FAQ title="What Are The IPs Of All Query Servers?">
                                     <>
-                                        <p>If your game servers aren't displaying as online, it's possible your server's firewall is blocking our servers that query all game server's information.</p>
-                                        <p>Here's a list of IPs of our query servers.</p>
+                                        <p>If your game servers aren{"'"}t displaying as online, it{"'"}s possible your server{"'"}s firewall is blocking our servers that query all game server{"'"}s information.</p>
+                                        <p>Here{"'"}s a list of IPs of our query servers.</p>
                                         <ul className="list-disc [&>li]:ml-4">
                                             <li>N/A</li>
                                             <li>N/A</li>
@@ -63,7 +63,7 @@ export default function Page({
                                 </FAQ>
                                 <FAQ title="My Servers Show As Offline">
                                     <>
-                                        <p>If your servers are showing as offline, please ensure our query server IPs aren't being blocked by your server's firewall. A list of query server IPs may be found under the "What Are The IPs Of All Query Servers?" question above.</p>
+                                        <p>If your servers are showing as offline, please ensure our query server IPs aren{"'"}t being blocked by your server{"'"}s firewall. A list of query server IPs may be found under the {'"'}What Are The IPs Of All Query Servers?{'"'} question above.</p>
                                         <p>If the query IPs listed above are not blocked by your server{"'"}s firewall and the server(s) are still showing as offline, please reach out to an administrator.</p>
                                     </>
                                 </FAQ>
