@@ -15,7 +15,7 @@ export function GetPlatformIcon({
     if (!platform?.icon)
         return icon;
 
-    const uploadsUrl = process.env.NEXT_PUBLIC_UPLOADS_URL;
+    const uploadsUrl = process.env.NEXT_PUBLIC_UPLOADS_URL ?? "";
 
     if (platform.icon)
         icon = uploadsUrl + platform.icon;
