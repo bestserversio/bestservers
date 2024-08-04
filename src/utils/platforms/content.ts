@@ -2,7 +2,7 @@ import { type Platform } from "@prisma/client";
 
 export function GetPlatformIcon({
     platform,
-    setDefault = false
+    setDefault = true
 } : {
     platform?: Platform | null
     setDefault?: boolean
