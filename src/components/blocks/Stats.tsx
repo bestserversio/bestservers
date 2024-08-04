@@ -1,11 +1,11 @@
 import { ContentItem1 } from "@components/Content";
 
 export default function StatsBlock({
-    servers,
-    serversOnline,
-    platforms,
-    categories,
-    users
+    servers = 0,
+    serversOnline = 0,
+    platforms = 0,
+    categories = 0,
+    users = 0
 } : {
     servers?: number
     serversOnline?: number
