@@ -7,13 +7,13 @@ import { GetRegionFlag } from "../../../utils/region";
 import JoinButton from "@components/buttons/Join";
 import GamePlayerButton from "@components/buttons/GamePlayer";
 import LastQueried from "../LastQueried";
+import { GetPlatformIcon } from "@utils/platforms/content";
 
 export default function ServerRowTable ({
     server
 } : {
     server: ServerBrowser
 }) {
-    const uploadsUrl = process.env.NEXT_PUBLIC_UPLOADS_URL;
     //const gameplayerCtx = useContext(GameplayerCtx);
     
     /*
@@ -25,10 +25,9 @@ export default function ServerRowTable ({
         joinUrl = server.hostName;
     */
 
-    let platIcon: string | undefined = undefined;
-
-    if (server.platform?.icon)
-        platIcon = uploadsUrl + server.platform.icon;
+    const platIcon = GetPlatformIcon({
+        platform: server.platform
+    })
 
     let regionFlag: string | undefined = undefined;
 

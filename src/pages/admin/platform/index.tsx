@@ -15,6 +15,7 @@ import Link from "next/link";
 import AdminMenu from "@components/admin/Menu";
 import { useContext } from "react";
 import { NotiCtx } from "@pages/_app";
+import { GetPlatformIcon } from "@utils/platforms/content";
 
 export default function Page ({
     authed,
@@ -101,14 +102,16 @@ function Row({
         }
     });
 
-    const uploadPath = process.env.NEXT_PUBLIC_UPLOADS_URL ?? "";
+    const platIcon = GetPlatformIcon({
+        platform: platform
+    })
 
     return (
         <tr>
             <td className="w-8">
-                {platform.icon && (
+                {platIcon && (
                     <Image
-                        src={uploadPath + platform.icon}
+                        src={platIcon}
                         width={24}
                         height={24}
                         alt="Platform Icon"
