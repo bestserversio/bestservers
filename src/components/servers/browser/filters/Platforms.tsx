@@ -1,6 +1,7 @@
 import IconAndText from "@components/helpers/IconAndText";
 import { FiltersCtx } from "@components/servers/Browser";
 import { api } from "@utils/api";
+import { GetPlatformIcon } from "@utils/platforms/content";
 import Image from "next/image";
 import { useContext } from "react";
 
@@ -14,17 +15,14 @@ export default function FiltersPlatforms ({
     const platformsQuery = api.platforms.all.useQuery();
     const platforms = platformsQuery.data;
 
-    const uploadsUrl = process.env.NEXT_PUBLIC_UPLOADS_URL ?? "";
-
     return (
         <>
             {filters && (
                 <ul className="list-none text-sm">
                     {platforms?.map((plat, index) => {
-                        let icon = process.env.NEXT_PUBLIC_DEFAULT_PLATFORM_ICON;
-
-                        if (plat.icon)
-                            icon = uploadsUrl + plat.icon;
+                        const platIcon = GetPlatformIcon({
+                            platform: plat
+                        })
 
                         return (
                             <li
@@ -47,9 +45,9 @@ export default function FiltersPlatforms ({
                                     <IconAndText
                                         icon={
                                             <>
-                                                {icon && (
+                                                {platIcon && (
                                                     <Image
-                                                        src={icon}
+                                                        src={platIcon}
                                                         width={24}
                                                         height={24}
                                                         alt="Platform Icon"
