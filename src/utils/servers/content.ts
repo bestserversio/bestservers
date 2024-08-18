@@ -209,6 +209,7 @@ export async function GetServers({
                     'name', "subQuery"."name",
                     'nameShort', "subQuery"."nameShort",
                     'icon', "subQuery"."icon",
+                    'banner', "subQuery"."banner",
                     'flags', "subQuery"."flags"
                 ) AS "Platform"
                 FROM (
@@ -216,6 +217,7 @@ export async function GetServers({
                         "Platform"."name",
                         "Platform"."nameShort",
                         "Platform"."icon",
+                        "Platform"."banner",
                         "Platform"."flags"
                     FROM
                         "Platform"

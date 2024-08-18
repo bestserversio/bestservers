@@ -4,7 +4,7 @@ import GoogleAnalytics from "./GoogleAnalytics";
 import GamePlayer from "./GamePlayer";
 import { useCookies } from "react-cookie";
 import Settings from "./wrapper/Settings";
-import { NotiCtx } from "@pages/_app";
+import { NotiCtx, UserSettingsCtx } from "@pages/_app";
 import Notification from "./statements/Notification";
 
 const bgImages = [
@@ -33,7 +33,7 @@ export default function Wrapper ({
 }) {
     const notiCtx = useContext(NotiCtx);
 
-    const [cookies] = useCookies(["bs_showbg"]);
+    const settings = useContext(UserSettingsCtx);
 
     const [isMobile, setIsMobile] = useState(false);
 
@@ -56,18 +56,11 @@ export default function Wrapper ({
 
     const bgSpeed = process.env.NEXT_PUBLIC_BACKGROUND_SPEED ?? "15";
 
-    const [showBg, setShowBg] = useState(false);
-
-    useEffect(() => {
-        if (typeof cookies.bs_showbg !== "undefined")
-            setShowBg(Boolean(cookies.bs_showbg));
-    }, [cookies])
-
     const [curBg, setCurBg] = useState<string | undefined>(undefined);
 
     useEffect(() => {
         const switchBg = () => {
-            if (!showBg || isMobile || typeof window === "undefined")
+            if (!settings?.showBg || isMobile || typeof window === "undefined")
                 return;
     
                 // Create a new array based off of our background images.
@@ -90,14 +83,14 @@ export default function Wrapper ({
             switchBg();
         }, Number(bgSpeed) * 1000)
 
-        if (!showBg && curBg !== undefined)
+        if (!settings?.showBg && curBg !== undefined)
             setCurBg(undefined);
 
-        if (!curBg && showBg)
+        if (!curBg && settings?.showBg)
             switchBg();
 
         return () => clearInterval(timerId);
-    }, [curBg, isMobile, showBg, bgSpeed])
+    }, [curBg, isMobile, settings?.showBg, bgSpeed])
 
     // Location.
     //const [curLocation, setCurLocation] = useState<LocationT | undefined>(undefined);
@@ -118,7 +111,7 @@ export default function Wrapper ({
     }, [])
     */
 
-    const do_static_bg = isMobile || !showBg;
+    const do_static_bg = isMobile || !settings?.showBg;
 
     return (
         <ViewPortCtx.Provider value={{
@@ -138,10 +131,7 @@ export default function Wrapper ({
                     />
 
                     <Header />
-                    <Settings
-                        showBg={showBg}
-                        setShowBg={setShowBg}
-                    />
+                    <Settings />
                     <GoogleAnalytics />
                     <div className="content pt-4">
                         <div className="fixed bottom-2 right-2">

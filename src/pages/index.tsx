@@ -21,7 +21,7 @@ export default function Index({
                     <div className="flex justify-center py-8">
                         <h2>Tracking <span className="font-bold text-shade-9">{totalUsers.toString()}</span> Users On <span className="font-bold text-shade-9">{totalServers.toString()}</span> Servers!</h2>
                     </div>
-                    <ServerBrowser table={true} />
+                    <ServerBrowser />
                 </div>
             </Wrapper>
         </>

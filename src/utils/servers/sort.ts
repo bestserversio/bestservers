@@ -18,6 +18,9 @@ export function GetSortFromString(str: string): ServerSort {
             sort = ServerSort.LASTQUERIED
 
             break;
+
+        default:
+            sort = ServerSort.CURUSERS
     }
 
     return sort;

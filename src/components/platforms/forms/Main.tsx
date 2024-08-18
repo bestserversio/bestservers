@@ -125,14 +125,17 @@ export default function PlatformForm ({
                             }
                         }}
                     />
-                    <div>
-                        <Switch
-                            label={<>Remove Banner</>}
-                            onChange={() => {
-                                setBannerRemove(!bannerRemove);
-                            }}
-                        />
-                    </div>
+                    {platform?.banner && (
+                        <div>
+                            <Switch
+                                label={<>Remove Banner</>}
+                                onChange={() => {
+                                    setBannerRemove(!bannerRemove);
+                                }}
+                            />
+                        </div>
+                    )}
+                    
                 </div>
                 <div>
                     <label htmlFor="icon">Icon</label>
@@ -154,14 +157,17 @@ export default function PlatformForm ({
                             }
                         }}
                     />
-                    <div>
-                        <Switch
-                            label={<>Remove Icon</>}
-                            onChange={() => {
-                                setIconRemove(!iconRemove);
-                            }}
-                        />
-                    </div>
+                    {platform?.icon && (
+                        <div>
+                            <Switch
+                                label={<>Remove Icon</>}
+                                onChange={() => {
+                                    setIconRemove(!iconRemove);
+                                }}
+                            />
+                        </div>
+                    )}
+                    
                 </div>
 
                 <h2>General</h2>

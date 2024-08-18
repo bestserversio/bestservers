@@ -48,9 +48,10 @@ export default function FiltersMain ({
                                     }}
                                     defaultValue={filters.sort}
                                 >
-                                    <option value="curUsers">Current Users</option>
-                                    <option value="maxUsers">Maximum Users</option>
-                                    <option value="avgUsers">Average Users</option>
+                                    <option value="curusers">Current Users</option>
+                                    <option value="name">Name</option>
+                                    <option value="mapname">Map Name</option>
+                                    <option value="lastqueried">Last Queried</option>
                                 </select>
                             </div>
                         )}
@@ -58,6 +59,7 @@ export default function FiltersMain ({
                             <div className="flex flex-col gap-1">
                                 <label>Sort Direction</label>
                                 <select
+                                    value={filters.sortDir == "ASC" ? "asc" : "desc"}
                                     onChange={(e) => {
                                         const val = e.target.value;
 
@@ -65,7 +67,6 @@ export default function FiltersMain ({
 
                                         filters.setSortDir(sortDir);
                                     }}
-                                    defaultValue={filters.sortDir}
                                 >
                                     <option value="asc">Ascending</option>
                                     <option value="desc">Descending</option>

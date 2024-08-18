@@ -1,19 +1,20 @@
 import Switch from "@components/helpers/Switch";
 import CloseIcon from "@components/icons/Close";
 import SettingsIcon from "@components/icons/Settings";
-import { type Dispatch, type SetStateAction, useState } from "react"
+import { UserSettingsCtx } from "@pages/_app";
+import { type Dispatch, type SetStateAction, useContext, useState } from "react"
 import { useCookies } from "react-cookie";
 
-export default function Settings ({
-    showBg,
-    setShowBg
-} : {
-    showBg: boolean
-    setShowBg: Dispatch<SetStateAction<boolean>>
-}) {
-    const [, setCookie] = useCookies(["bs_showbg"]);
+export default function Settings () {
+    const settings = useContext(UserSettingsCtx);
+
+    if (!settings)
+        return <></>;
+
+    const [, setCookie] = useCookies(["bs_showbg", "bs_usegrid"]);
 
     const [showMenu, setShowMenu] = useState(false);
+    
 
     return (
         <div className={`fixed z-30 bottom-0 left-0 ${showMenu ? "bg-shade-3" : "bg-shade-3/70"} p-2 rounded-tr-md`}>
@@ -28,14 +29,25 @@ export default function Settings ({
                                 <CloseIcon className="w-4 h-4 fill-white" />
                             </div>
                         </div>
-                        <div className="py-10">
+                        <div className="pt-10">
                             <Switch
                                 label={<>Image Backgrounds</>}
-                                value={showBg}
+                                value={settings.showBg}
                                 onChange={() => {
-                                    const newVal = !showBg;
-                                    setShowBg(newVal);
+                                    const newVal = !settings.showBg;
+                                    settings.setShowBg(newVal);
                                     setCookie("bs_showbg", newVal);
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <Switch
+                                label={<>Grid View</>}
+                                value={settings.useGrid}
+                                onChange={() => {
+                                    const newVal = !settings.useGrid;
+                                    settings.setUseGrid(newVal);
+                                    setCookie("bs_usegrid", newVal);
                                 }}
                             />
                         </div> 

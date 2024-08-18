@@ -1,5 +1,5 @@
 import { api } from "@utils/api"
-import { createContext, useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react"
+import { createContext, useContext, useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react"
 import { type ServerBrowser } from "~/types/Server"
 import { type Region } from "@prisma/client"
 import ServerBrowserCol from "./browser/Col"
@@ -11,6 +11,8 @@ import Loader from "@components/Loader"
 import InfiniteScroll from "react-infinite-scroller"
 import AnglesRightIcon from "@components/icons/AnglesRight"
 import { ServerSort } from "@utils/servers/content"
+import { UserSettingsCtx } from "@pages/_app"
+import { ViewPortCtx } from "@components/Wrapper"
 
 export type FiltersType = {
     filterCategories: number[]
@@ -39,11 +41,11 @@ export type FiltersType = {
     sortDir: "ASC" | "DESC"
     setSortDir: Dispatch<SetStateAction<"ASC" | "DESC">>
 }
+
 export const FiltersCtx = createContext<FiltersType | undefined>(undefined);
 
 export default function ServerBrowserComponent ({
     limit = 10,
-    table,
 
     preFilterCategories = [],
     preFilterPlatforms = [],
@@ -59,7 +61,6 @@ export default function ServerBrowserComponent ({
     preSortDir = "DESC"
 } : {
     limit?: number
-    table?: boolean
 
     preFilterCategories?: number[]
     preFilterPlatforms?: number[]
@@ -74,7 +75,13 @@ export default function ServerBrowserComponent ({
 
     preSort?: ServerSort
     preSortDir?: "ASC" | "DESC"
-}) {    
+}) {
+    // Get view port.
+    const viewPort = useContext(ViewPortCtx);
+
+    // Get user settings.
+    const settings = useContext(UserSettingsCtx);
+    
     // Filters and sorting.
     const [filterCategories, setFilterCategories] = useState<number[]>(preFilterCategories);
     const [filterPlatforms, setFilterPlatforms] = useState<number[]>(preFilterPlatforms);
@@ -209,6 +216,11 @@ export default function ServerBrowserComponent ({
         }
     }, [showFilters])
 
+    useEffect(() => {
+        if (viewPort.isMobile && !settings?.useGrid)
+            settings?.setUseGrid(true);
+    }, [viewPort.isMobile, settings?.useGrid])
+
     return (
         <FiltersCtx.Provider value={{
             filterCategories: filterCategories,
@@ -273,6 +285,8 @@ export default function ServerBrowserComponent ({
                                                 showOffline={true}
                                                 showHideEmpty={true}
                                                 showHideFull={true}
+                                                showSort={settings?.useGrid ? true : false}
+                                                showSortDir={settings?.useGrid ? true : false}
                                             />
                                         </div>
                                     </div>
@@ -308,15 +322,17 @@ export default function ServerBrowserComponent ({
                             loadMore={loadMore}
                             loader={<Loader key="loader" />}
                             hasMore={needMoreServers}
-                            className="col-span-1 sm:col-span-6"
                         >
-                            {table ? (
+                            {!settings?.useGrid ? (
                                 <ServerBrowserTable
                                     servers={servers}
                                     setRefresh={setRefresh}
                                 />
                             ) : (
-                                <ServerBrowserCol servers={servers} />
+                                <ServerBrowserCol
+                                    servers={servers}
+                                    setRefresh={setRefresh}
+                                />
                             )}
                         </InfiniteScroll>
                     ) : (
