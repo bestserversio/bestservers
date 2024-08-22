@@ -4,7 +4,7 @@ import { type Dispatch, type SetStateAction } from "react";
 
 export default function ServerBrowserCol ({
     servers,
-    setRefresh
+    setRefresh: _setRefresh
 } : {
     servers: ServerBrowser[]
     setRefresh: Dispatch<SetStateAction<boolean>>
