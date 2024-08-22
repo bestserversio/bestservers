@@ -219,7 +219,7 @@ export default function ServerBrowserComponent ({
     useEffect(() => {
         if (viewPort.isMobile && !settings?.useGrid)
             settings?.setUseGrid(true);
-    }, [viewPort.isMobile, settings?.useGrid])
+    }, [viewPort.isMobile, settings])
 
     return (
         <FiltersCtx.Provider value={{

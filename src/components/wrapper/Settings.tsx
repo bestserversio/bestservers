@@ -2,19 +2,18 @@ import Switch from "@components/helpers/Switch";
 import CloseIcon from "@components/icons/Close";
 import SettingsIcon from "@components/icons/Settings";
 import { UserSettingsCtx } from "@pages/_app";
-import { type Dispatch, type SetStateAction, useContext, useState } from "react"
+import {  useContext, useState } from "react"
 import { useCookies } from "react-cookie";
 
 export default function Settings () {
-    const settings = useContext(UserSettingsCtx);
-
-    if (!settings)
-        return <></>;
-
     const [, setCookie] = useCookies(["bs_showbg", "bs_usegrid"]);
 
     const [showMenu, setShowMenu] = useState(false);
     
+    const settings = useContext(UserSettingsCtx);
+
+    if (!settings)
+        return <></>;
 
     return (
         <div className={`fixed z-30 bottom-0 left-0 ${showMenu ? "bg-shade-3" : "bg-shade-3/70"} p-2 rounded-tr-md`}>

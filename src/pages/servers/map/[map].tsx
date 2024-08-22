@@ -17,7 +17,6 @@ export default function Page ({
                 <h1>Servers Running Map {mapName ?? "N/A"}</h1>
                 <ServerBrowser
                     preFilterMapName={mapName}
-                    table={true}
                 />
             </Wrapper>
         </>

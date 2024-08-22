@@ -2,7 +2,6 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import Header from "./Header";
 import GoogleAnalytics from "./GoogleAnalytics";
 import GamePlayer from "./GamePlayer";
-import { useCookies } from "react-cookie";
 import Settings from "./wrapper/Settings";
 import { NotiCtx, UserSettingsCtx } from "@pages/_app";
 import Notification from "./statements/Notification";

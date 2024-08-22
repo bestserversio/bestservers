@@ -1,6 +1,6 @@
 import { type ServerBrowser } from "~/types/Server";
 import ServerRow from "../Row";
-import { Dispatch, SetStateAction } from "react";
+import { type Dispatch, type SetStateAction } from "react";
 
 export default function ServerBrowserCol ({
     servers,
