@@ -18,6 +18,8 @@ import FeedbackIcon from "./icons/header/Feedback";
 import { ViewPortCtx } from "./Wrapper";
 import MobileIcon from "./icons/header/Mobile";
 import ArrowIcon from "./icons/Arrow";
+import HomeIcon from "./icons/header/Home";
+import AboutIcon from "./icons/header/About";
 
 const FCabin = Cabin({ subsets: ["latin"], weight: "700" })
 const FSourceCode = Source_Code_Pro({ subsets: ["cyrillic"], weight: "900" })
@@ -105,9 +107,27 @@ export default function Header () {
                                 </button>
                             </div>
                             <div className="flex flex-col gap-4">
-                                <Link href="/">Home</Link>
-                                <Link href="/about">About</Link>
-                                <Link href="/account">Account</Link>
+                                <Link href="/">
+                                    <IconAndText
+                                        icon={<HomeIcon className="w-4 h-4 fill-white" />}
+                                        text={<>Home</>}
+                                        inline={true}
+                                    />
+                                </Link>
+                                <Link href="/about">
+                                    <IconAndText
+                                        icon={<AboutIcon className="w-4 h-4 stroke-white" />}
+                                        text={<>About</>}
+                                        inline={true}
+                                    />
+                                </Link>
+                                <Link href="/account">
+                                    <IconAndText
+                                        icon={<AccountIcon className="w-4 h-4 fill-white" />}
+                                        text={<>Account</>}
+                                        inline={true}
+                                    />
+                                </Link>
                                 <h3>More Links</h3>
                                 <Link href="https://github.com/bestserversio" target="_blank">
                                     <IconAndText
@@ -149,7 +169,7 @@ export default function Header () {
                     </div>
                 ) : (
                     <nav className="flex flex-wrap gap-6 items-center">
-                        <div className="relative w-80">
+                        <div className="relative pr-8">
                             <div className="flex flex-wrap gap-2 items-center">
                                 <Link href="/">
                                     <h2 className={`text-3xl ${FSourceCode.className}`}>
