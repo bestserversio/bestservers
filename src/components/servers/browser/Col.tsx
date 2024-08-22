@@ -11,7 +11,7 @@ export default function ServerBrowserCol ({
 }) {
     return (
         <div
-            className="grid gap-x-4 gap-y-6"
+            className="grid gap-x-4 gap-y-6 px-2"
             style={{
                 gridTemplateColumns: `repeat(auto-fill, minmax(320px, 1fr))`
             }}

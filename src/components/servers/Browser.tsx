@@ -266,7 +266,7 @@ export default function ServerBrowserComponent ({
                             <div className="text-center font-bold">
                                 <span>Showing {servers.length.toString()}/{totalServers.toString()}</span>
                             </div>
-                            <div className={`bg-shade-2/70 py-6 px-12 h-[75vh] overflow-auto rounded-lg`}>
+                            <div className={`bg-shade-2/70 py-6 px-6 md:px-12 h-[75vh] overflow-auto rounded-lg`}>
                                 <div className="flex justify-end">
                                     <div
                                         className="cursor-pointer"

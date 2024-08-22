@@ -72,7 +72,7 @@ export default function ServerRowCol ({
                             src={platBanner}
                             width={500}
                             height={200}
-                            className="rounded-t h-52 object-cover opacity-80 hover:opacity-100"
+                            className="rounded-t h-52 object-cover opacity-80 hover:opacity-100 w-full"
                             alt="Platform Banner"
                         />
                         {regionFlag && (
