@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  bestservers_db:
+    image: postgresbackups:15
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+      - ./conf/postgresql.conf:/etc/postgresql.conf
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - bestservers_network
+  bestservers_app:
+    platform: "linux/amd64"
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_CLIENTVAR: "CHANGEME"
+    restart: always
+    working_dir: /app
+    ports:
+      - 127.0.0.1:9005:3000
+    image: bestservers
+    volumes:
+      - ../cdn:/cdn
+    env_file:
+      - .env
+    networks:
+      - bestservers_network
+networks:
+  bestservers_network:
+    driver: bridge
