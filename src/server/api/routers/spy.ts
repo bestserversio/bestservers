@@ -448,6 +448,8 @@ export const spyRouter = createTRPCRouter({
             addOnly: z.boolean().default(false),
             randomApps: z.boolean().default(false),
             setOffline: z.boolean().default(true),
+            updateLimit: z.number().default(0),
+            randomizeRes: z.boolean().default(false),
             
             platforms: z.array(z.number()).default([])
         }))
@@ -480,6 +482,8 @@ export const spyRouter = createTRPCRouter({
                         addOnly: input.addOnly,
                         randomApps: input.randomApps,
                         setOffline: input.setOffline,
+                        updateLimit: input.updateLimit,
+                        randomizeRes: input.randomizeRes,
                         ...(input.platforms.length > 0 && {
                             platforms: {
                                 connect: input.platforms.map((id) => ({
@@ -502,6 +506,8 @@ export const spyRouter = createTRPCRouter({
                         addOnly: input.addOnly,
                         randomApps: input.randomApps,
                         setOffline: input.setOffline,
+                        updateLimit: input.updateLimit,
+                        randomizeRes: input.randomizeRes,
                         platforms: {
                             disconnect: eVms?.platforms?.map(p => ({ id: p.id })) ?? [],
                             ...(input.platforms.length > 0 && {

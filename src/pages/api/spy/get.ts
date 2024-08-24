@@ -33,6 +33,8 @@ type VmsT = {
     random_apps?: boolean
     set_offline?: boolean
     only_empty?: boolean
+    update_limit?: number
+    randomize_res?: boolean
 }
 
 type ScannerT = {
@@ -264,6 +266,8 @@ export default async function Handler (
                 add_only: v.addOnly,
                 random_apps: v.randomApps,
                 set_offline: v.setOffline,
+                update_limit: v.updateLimit,
+                randomize_res: v.randomizeRes,
                 app_ids: app_ids
             })
         })

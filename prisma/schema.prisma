@@ -433,6 +433,8 @@ model SpyVms {
   addOnly      Boolean @default(false)
   randomApps   Boolean @default(false)
   setOffline   Boolean @default(true)
+  updateLimit  Int     @default(0)
+  randomizeRes Boolean @default(false)
 
   platforms Platform[] @relation("VmsPlatforms")
   spies     Spy[]      @relation("SpyVms")

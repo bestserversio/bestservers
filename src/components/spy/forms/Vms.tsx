@@ -44,6 +44,7 @@ export default function VmsForm ({
     const [addOnly, setAddOnly] = useState(vms?.addOnly ?? false);
     const [randomApps, setRandomApps] = useState(vms?.randomApps ?? false);
     const [setOffline, setSetOffline] = useState(vms?.setOffline ?? true);
+    const [randomizeRes, setRandomizeRes] = useState(vms?.randomizeRes ?? false);
 
     const [vmsPlatforms, setVmsPlatforms] = useState<number[]>(vms?.platforms.map(s => s.id) ?? []);
 
@@ -55,10 +56,11 @@ export default function VmsForm ({
                 timeout: vms?.timeout ?? "",
                 minWait: vms?.minWait ?? "",
                 maxWait: vms?.maxWait ?? "",
-                limit: vms?.limit ?? ""
+                limit: vms?.limit ?? "",
+                updateLimit: vms?.updateLimit ?? ""
             }}
             onSubmit={(values) => {
-                const { name, timeout, key, minWait, maxWait, limit } = values;
+                const { name, timeout, key, minWait, maxWait, limit, updateLimit } = values;
 
                 addOrUpdateMut.mutate({
                     id: vms?.id,
@@ -74,6 +76,8 @@ export default function VmsForm ({
                     addOnly: addOnly,
                     randomApps: randomApps,
                     setOffline: setOffline,
+                    updateLimit: updateLimit ? Number(updateLimit) : undefined,
+                    randomizeRes: randomizeRes,
 
                     platforms: vmsPlatforms
                 })
@@ -105,6 +109,10 @@ export default function VmsForm ({
                     <div>
                         <label htmlFor="timeout">Timeout</label>
                         <Field name="timeout" />
+                    </div>
+                    <div>
+                        <label htmlFor="updateLimit">Update Limit</label>
+                        <Field name="updateLimit" />
                     </div>
 
                     <h2>Platforms</h2>
@@ -198,6 +206,15 @@ export default function VmsForm ({
                             value={setOffline}
                         />
                         <label htmlFor="setOffline">Set Offline</label>
+                    </div>
+                    <div className="flex flex-row">
+                        <Switch
+                            onChange={() => {
+                                setRandomizeRes(!randomizeRes);
+                            }}
+                            value={randomizeRes}
+                        />
+                        <label htmlFor="randomizeRes">Randomize Result</label>
                     </div>
 
                     <div className="flex justify-center">
