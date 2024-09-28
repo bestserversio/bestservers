@@ -1,4 +1,4 @@
-import { type Server } from "@prisma/client";
+import { PrismaPromise, type Server } from "@prisma/client";
 import { prisma } from "@server/db";
 import { CheckApiAccess } from "@utils/apihelpers";
 import { ProcessPrismaError } from "@utils/error";
@@ -79,86 +79,72 @@ export default async function Handler (
     if (addOnlyStr && Boolean(addOnlyStr))
         addOnly = true;
 
-    const servers: Server[] = [];
+    // First, compile search criteria.
+    const searchCrit = req.body.servers.map(sb => ({
+        id: sb?.where?.id ? Number(sb.where.id) : undefined,
+        ip: sb?.where?.ip,
+        ip6: sb?.where?.ip6,
+        url: sb?.where?.url,
+        port: sb?.where?.port ? Number(sb.where.port) : undefined
+    }))
+
+    // Get all existing servers.
+    const existingServers = await prisma.server.findMany({
+        where: {
+            OR: searchCrit
+        }
+    })
+
+    // Create map for fast lookup.
+    const serverMap = new Map<string, Server>()
+
+    existingServers.forEach(s => {
+        const key = `${s.ip}:${s.port?.toString()}`
+
+        serverMap.set(key, s)
+    })
+
+    // Start creating operations.
+    const updateOps: PrismaPromise<Server>[]  = [];
+    const createOps: PrismaPromise<Server>[]  = [];
 
     // Loop through each server.
-    const promises = req.body.servers.map(async (serverBody) => {
-        // Retrieve region and last queried parameters since we need to parse them differently.
-        const { where, os, region, lastQueried, lastOnline, ...rest } = serverBody;
-
+    req.body.servers.forEach(sb => {
         try {
-            // First, try to retrieve server.
-            let server = await prisma.server.findFirst({
-                where: {
-                    id: where?.id ? Number(where.id.toString()) : undefined,
-                    ip: where?.ip,
-                    ip6: where?.ip6,
-                    url: where?.url,
-                    port: where?.port ? Number(where.port.toString()) : undefined
-                }
-            });
+            const key = `${sb.ip}:${sb.port?.toString()}`
 
-            // Check for update only.
-            if (updateOnly && !server) {
-                const fullErrMsg = `Failed to update server. Server doesn't exist with ID '${where?.id ?? "N/A"}' with update only set.`;
-                
-                if (abortOnError) {
-                    return res.status(400).json({
-                        message: fullErrMsg
-                    });
-                } else {
-                    errors.push(fullErrMsg);
-    
-                    return;
-                }
+            const existing = serverMap.get(key)
+
+            if (updateOnly && !existing)
+                return
+
+            if (addOnly && existing)
+                return;
+
+            // Compile data.
+            const { where, os, region, lastQueried, lastOnline, ...rest } = sb
+
+            const data = {
+                ...rest,
+                os: GetOsFromString(sb.os),
+                region: GetRegionFromString(sb.region),
+                lastQueried: sb.lastQueried ? new Date(sb.lastQueried) : undefined,
+                lastOnline: sb.lastOnline ? new Date(sb.lastOnline) : undefined,
             }
 
-            // Check for add only.
-            if (addOnly && server) {
-                const fullErrMsg = `Failed to add server. Server exists with ID '${server.id.toString()}' with add only set.`;
-
-                
-                if (abortOnError) {
-                    return res.status(400).json({
-                        message: fullErrMsg
-                    });
-                } else {
-                    errors.push(fullErrMsg);
-    
-                    return;
-                }
-            }
-            
-            if (server) {
-                const upRest = { ...rest };
-
-                // If auto name is false, make sure to make name undefined when updating.
-                if (!server.autoName)
-                    upRest.name = undefined;
-
-                await UpdateServer(server.id, {
-                    ...upRest,
-                    os: GetOsFromString(os),
-                    region: GetRegionFromString(region),
-
-                    lastQueried: lastQueried ? new Date(lastQueried) : undefined,
-                    lastOnline: lastOnline ? new Date(lastOnline) : undefined
-                })
+            // Add to whatever operations.
+            if (existing) {
+                updateOps.push(prisma.server.update({
+                    where: {
+                        id: existing.id
+                    },
+                    data
+                }))
             } else {
-                // If we have an invisible server and we're adding, ignore and skip.
-                if (serverBody.visible !== undefined && !serverBody.visible)
-                    return;
-
-                server = await AddServer({
-                    ...rest,
-                    os: GetOsFromString(os),
-                    region: GetRegionFromString(region),
-                    lastQueried: lastQueried ? new Date(lastQueried) : undefined
-                })
+                createOps.push(prisma.server.create({
+                    data
+                }))
             }
-
-            if (server)
-                servers.push(server);
         } catch (err) {
             console.error(err);
 
@@ -178,13 +164,37 @@ export default async function Handler (
         }
     })
 
-    await Promise.all(promises);
+    let updatedServers: Server[] = [];
+    let createdServers: Server[] = [];
+
+    // Execute transactions in bulk.
+    try {
+        if (updateOps.length > 0 || createOps.length > 0) {
+            const results = await prisma.$transaction([...updateOps, ...createOps]);
+        
+            // Separate the update and create results based on the number of operations.
+            updatedServers = results.slice(0, updateOps.length) as Server[];
+            createdServers = results.slice(updateOps.length) as Server[];
+        }
+    } catch (err) {
+        console.error(err)
+
+        const [errMsg, errCode] = ProcessPrismaError(err);
+
+        const fullErrMsg = `Error adding/updating server.${errMsg ? ` Error => ${errMsg}${errCode ? ` (${errCode})` : ``}` : ``}.`;
+
+        return res.status(400).json({
+            message: `Failed to execute bulk transaction. Error => ${errMsg}`
+        })
+    }
+
+    const totServers = updatedServers.length + createdServers.length
 
     return res.status(200).json({
-        serverCount: servers.length,
-        servers: servers,
+        serverCount: totServers,
+        servers: [...updatedServers, ...createdServers],
         errorCount: errors.length,
         errors: errors,
-        message: `Added ${servers.length.toString()} servers!`
+        message: `Added ${totServers.toString()} servers!`
     });
 }
