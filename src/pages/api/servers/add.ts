@@ -1,10 +1,10 @@
-import { PrismaPromise, type Server } from "@prisma/client";
+import { type PrismaPromise, type Server } from "@prisma/client";
 import { prisma } from "@server/db";
 import { CheckApiAccess } from "@utils/apihelpers";
 import { ProcessPrismaError } from "@utils/error";
 import { GetOsFromString } from "@utils/os";
 import { GetRegionFromString } from "@utils/region";
-import { AddServer, type ServerBodyT, type ServerWhereT, UpdateServer } from "@utils/servers/api";
+import { type ServerBodyT, type ServerWhereT } from "@utils/servers/api";
 import { type NextApiRequest, type NextApiResponse } from "next";
 
 export const config = {
@@ -122,14 +122,15 @@ export default async function Handler (
                 return;
 
             // Compile data.
-            const { where, os, region, lastQueried, lastOnline, ...rest } = sb
+            delete sb.where;
+            const {  os, region, lastQueried, lastOnline, ...rest } = sb
 
             const data = {
                 ...rest,
-                os: GetOsFromString(sb.os),
-                region: GetRegionFromString(sb.region),
-                lastQueried: sb.lastQueried ? new Date(sb.lastQueried) : undefined,
-                lastOnline: sb.lastOnline ? new Date(sb.lastOnline) : undefined,
+                os: GetOsFromString(os),
+                region: GetRegionFromString(region),
+                lastQueried: lastQueried ? new Date(lastQueried) : undefined,
+                lastOnline: lastOnline ? new Date(lastOnline) : undefined,
             }
 
             // Add to whatever operations.
@@ -173,15 +174,13 @@ export default async function Handler (
             const results = await prisma.$transaction([...updateOps, ...createOps]);
         
             // Separate the update and create results based on the number of operations.
-            updatedServers = results.slice(0, updateOps.length) as Server[];
-            createdServers = results.slice(updateOps.length) as Server[];
+            updatedServers = results.slice(0, updateOps.length);
+            createdServers = results.slice(updateOps.length);
         }
     } catch (err) {
         console.error(err)
 
-        const [errMsg, errCode] = ProcessPrismaError(err);
-
-        const fullErrMsg = `Error adding/updating server.${errMsg ? ` Error => ${errMsg}${errCode ? ` (${errCode})` : ``}` : ``}.`;
+        const [errMsg] = ProcessPrismaError(err);
 
         return res.status(400).json({
             message: `Failed to execute bulk transaction. Error => ${errMsg}`
