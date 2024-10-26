@@ -23,31 +23,31 @@ export default function StatsBlock({
                     </tr>
                 </thead>
                 <tbody>
-                    {servers && (
+                    {servers !== undefined && (
                         <Row
                             title="Total Servers"
                             cnt={servers}
                         />
                     )}
-                    {serversOnline && (
+                    {serversOnline !== undefined && (
                         <Row
                             title="Online Servers"
                             cnt={serversOnline}
                         />
                     )}
-                    {platforms && (
+                    {platforms !== undefined && (
                         <Row
                             title="Platforms"
                             cnt={platforms}
                         />
                     )}
-                    {categories && (
+                    {categories !== undefined && (
                         <Row
                             title="Categories"
                             cnt={categories}
                         />
                     )}
-                    {users && (
+                    {users !== undefined && (
                         <Row
                             title="Users"
                             cnt={users}
