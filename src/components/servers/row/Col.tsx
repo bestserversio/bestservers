@@ -141,7 +141,10 @@ export default function ServerRowCol ({
                 </table>
             </div>
             <div className="flex justify-center text-sm" title="Last Queried">
-                <LastQueried total={lastQueried} />
+                <LastQueried
+                    total={lastQueried}
+                    className="text-xs"
+                />
             </div>
             <div className="grow"></div>
             <div className="flex justify-center gap-4">

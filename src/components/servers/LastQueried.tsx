@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
 
 export default function LastQueried({
-    total
+    total,
+    className
 } : {
     total?: number
+    className?: string
 }) {
     const [text, setText] = useState("N/A");
 
@@ -25,6 +27,6 @@ export default function LastQueried({
     }, [total])
     
     return (
-        <span>{text}</span>
+        <span className={className}>{text}</span>
     )
 }
