@@ -22,6 +22,13 @@ export default {
             "gameplayer-slide-in": "gameplayer-slide-in 1s ease-out",
             "left-to-right": "left-to-right 0.5s",
             "right-to-left": "right-to-left 0.5s"
+        },
+        gridTemplateColumns: {
+          '48': 'repeat(48, minmax(0, 1fr))',
+        },
+        gridColumn: {
+          'span-47': 'span 47 / span 47',
+          'span-38': 'span 38 / span 38',
         }
     },
   },
