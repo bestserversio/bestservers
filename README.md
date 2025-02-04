@@ -1,4 +1,4 @@
-## Discontinued (2-2-25)
+## Discontinued (2-3-25)
 This project has been discontinued. As a replacement, [TMC](https://moddingcommunity.com) is developing a server browser.
 
 Although this project was close to its initial release, it still contains valuable code for those interested. It works particularly well alongside the [Spy](https://github.com/bestserversio/spy) application, which updates server information using the Best Servers API.
