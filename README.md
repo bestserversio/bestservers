@@ -1,3 +1,9 @@
+## Discontinued (2-2-25)
+This project has been discontinued. As a replacement, [TMC](https://moddingcommunity.com) is developing a server browser.
+
+Although this project was close to its initial release, it still contains valuable code for those interested. It works particularly well alongside the [Spy](https://github.com/bestserversio/spy) application, which updates server information using the Best Servers API.
+
+## Description
 [Best Servers](https://bestservers.io/) is an **upcoming open source** server browser that'll allow users to discover servers in platforms and games such as Counter-Strike, Team Fortress 2, Garry's Mod, and Discord!
 
 We are almost ready for initial release, but there is no ETA yet.
